@@ -1,0 +1,29 @@
+{
+    // Tab
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    // Formatting
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": false,
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+    },
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true
+    },
+    "editor.codeActionsOnSave": {
+      // For ESLint
+      "source.fixAll.eslint": true
+    },
+    // Auto-import alias
+    "javascript.preferences.importModuleSpecifier": "non-relative",
+    // Read .bash_profile
+    "terminal.integrated.shellArgs.osx": [ "-l" ],
+    "terminal.integrated.shellArgs.linux": [ "-l" ],
+    "terminal.integrated.shellArgs.windows": [ "-l" ],
+    // Folder Path
+    "workbench.editor.labelFormat": "short"
+  }
+  

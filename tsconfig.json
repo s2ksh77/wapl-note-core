@@ -1,0 +1,35 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "baseUrl": ".",
+    "target": "es5",
+    "jsx": "react",
+    "allowSyntheticDefaultImports": true,
+    "typeRoots": ["./node_modules/@types", "./src/@types"],
+    
+    // rollup-plugin-typescript2 forced options
+    "noEmitHelpers": false,
+    "importHelpers": true,
+    "noResolve": false,
+    "noEmit": false,
+    "inlineSourceMap": false,
+    "moduleResolution": "node",
+    "module": "ES2015",
+    
+    "paths": {
+      "@/*": ["src/apps/note/*"],
+      "~/*": ["src/*"]
+    },
+
+    "resolveJsonModule": true,
+
+    "declaration": true,
+    "declarationDir": "dist/dts",
+    "plugins": [{
+      "transform": "ts-transform-paths",
+      "exclude": ["*"]
+    }]
+  },
+  "include": ["src/**/*.ts", "src/**/*.d.ts"],
+  "exclude": [".git", "dist", "tests","node_modules", "**/node_modules/*"]
+}
