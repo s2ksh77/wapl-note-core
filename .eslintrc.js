@@ -41,10 +41,7 @@ module.exports = {
   settings: {
     'import/resolver': {
       alias: {
-        map: [
-          ['@', './src/apps/note'],
-          ['~', './src'],
-        ],
+        map: [['~', './src']],
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       },
     },

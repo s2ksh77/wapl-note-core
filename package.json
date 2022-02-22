@@ -109,8 +109,6 @@
      "ts-transform-paths": "^2.0.3",
      "tslib": "^2.2.0",
      "ttypescript": "^1.5.13",
-     "typescript": "^4.2.4",
-     "teespace-core": "git+http://192.168.158.12:9000/teespace/teespace-core.git#develop",
-     "teespace-drive-app": "git+http://192.168.158.12:9000/teespace/teespace-drive-app.git#develop"
+     "typescript": "^4.2.4"
   }
 }
