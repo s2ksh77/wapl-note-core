@@ -13,3 +13,18 @@ export declare type SharedUserId = string | null;
 export declare type Title = string | null;
 export declare type CreatedDate = string | null;
 export declare type DeletedDate = string | null;
+export declare enum NoteViewType {
+    MyNote = "MyNote",
+    TalkNote = "TalkNote",
+    SharedNote = "SharedNote"
+}
+export declare enum SelectType {
+    Checkbox = "Checkbox",
+    Radio = "Radio"
+}
+export declare enum MenuType {
+    TALKROOM = "talk",
+    CHAPTER = "chapter",
+    PAGE = "page",
+    TAG = "tag"
+}

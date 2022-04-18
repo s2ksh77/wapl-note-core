@@ -1,7 +1,6 @@
-import { ChapterId } from "../@types/common";
-import { ChapterRepo } from "../repositories/ChapterRepo";
 export declare class ChapterStore {
-    currentChapterId: ChapterId;
-    repo: ChapterRepo;
-    constructor();
+    rootStore: any;
+    headerTitle: string;
+    constructor(rootStore: any);
+    setHeaderTitle(title: any): void;
 }

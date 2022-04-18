@@ -3,16 +3,68 @@ import { PageDTO } from "../models/dto/PageDTO";
 import type { IPageRepo } from "./PageRepoType";
 export declare class PageRepo implements IPageRepo {
     prefix: string;
-    getNoteInfoList(pageId: PageId, channelId: ChannelId): Promise<any>;
-    createPage(dto: PageDTO): Promise<any>;
-    deletePage(pageList: any): Promise<any>;
-    updatePage(dto: PageDTO): Promise<any>;
-    createSharePage(pageList: any): Promise<any>;
-    throwPage(pageList: any): Promise<any>;
-    restorePage(pageList: any): Promise<any>;
-    bookmarkPage(pageId: any): Promise<any>;
-    unbookmarkPage(pageId: any): Promise<any>;
-    getbookmarkList(channelId: ChannelId): Promise<any>;
-    getRecentList(channelId: ChannelId, num: any): Promise<any>;
+    getNoteInfoList(pageId: PageId, channelId: ChannelId): Promise<{
+        data: {
+            dto: any;
+        };
+    }>;
+    createPage(dto: PageDTO): Promise<{
+        status: number;
+        data: {
+            dto: any;
+        };
+    }>;
+    deletePage(pageList: any): Promise<{
+        status: number;
+        data: {
+            dto: any;
+        };
+    }>;
+    updatePage(dto: PageDTO): Promise<{
+        status: number;
+        data: {
+            dto: any;
+        };
+    }>;
+    createSharePage(pageList: any): Promise<{
+        status: number;
+        data: {
+            dto: any;
+        };
+    }>;
+    throwPage(pageList: any): Promise<{
+        status: number;
+        data: {
+            dto: any;
+        };
+    }>;
+    restorePage(pageList: any): Promise<{
+        status: number;
+        data: {
+            dto: any;
+        };
+    }>;
+    bookmarkPage(pageId: any): Promise<{
+        status: number;
+        data: {
+            dto: any;
+        };
+    }>;
+    unbookmarkPage(pageId: any): Promise<{
+        status: number;
+        data: {
+            dto: any;
+        };
+    }>;
+    getbookmarkList(channelId: ChannelId): Promise<{
+        data: {
+            dto: any;
+        };
+    }>;
+    getRecentList(channelId: ChannelId, num: any): Promise<{
+        data: {
+            dto: any;
+        };
+    }>;
 }
 export declare const PageRepoImpl: PageRepo;

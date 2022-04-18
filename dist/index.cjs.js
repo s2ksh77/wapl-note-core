@@ -2,13 +2,34 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var teespaceCore = require('teespace-core');
 var i18next = require('i18next');
 var reactI18next = require('react-i18next');
+var mobx = require('mobx');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var i18next__default = /*#__PURE__*/_interopDefaultLegacy(i18next);
+
+/**
+ * verdaccio 서버에 패키지가 올라가있는 관계로 ( 깃 주소가 다름 )
+ * teespace-core 및 teespace-drive-app 에 있는 함수는 임시 dummy로 활용하여 사용해야 함
+ * 필요한 함수 복사해올 예정
+ * @author soohyun
+ */
+var API = {
+    get: function (url, queryString) {
+        return { data: { dto: null } };
+    },
+    post: function (url, payload) {
+        return { status: 200, data: { dto: null } };
+    },
+    put: function (url, payload, queryString) {
+        return { status: 200, data: { dto: null } };
+    },
+    delete: function (url) {
+        return { status: 200, data: { dto: null } };
+    },
+};
 
 var NOTE_PAGE_LIST_CMPNT_DEF_01$1 = "새 챕터";
 var NOTE_PAGE_LIST_CMPNT_DEF_02$1 = "새 페이지";
@@ -664,11 +685,9 @@ i18n.use(reactI18next.initReactI18next).init({
 });
 
 var useNoteI18nInit = function () {
-    teespaceCore.useI18nInit(i18n);
 };
 
 var useNoteCore = function () {
-    useNoteI18nInit();
 };
 
 var ChapterModel = /** @class */ (function () {
@@ -837,13 +856,15 @@ var ChapterRepo = /** @class */ (function () {
     }
     ChapterRepo.prototype.getChapterList = function (channelId) {
         return __awaiter(this, void 0, void 0, function () {
-            var e_1;
+            var res, e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.get("".concat(this.prefix, "/noteChapter?action=List&note_channel_id=").concat(channelId))];
-                    case 1: return [2 /*return*/, _a.sent()];
+                        return [4 /*yield*/, API.get("".concat(this.prefix, "/noteChapter?action=List&note_channel_id=").concat(channelId))];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.data.dto];
                     case 2:
                         e_1 = _a.sent();
                         throw Error(JSON.stringify(e_1));
@@ -854,13 +875,15 @@ var ChapterRepo = /** @class */ (function () {
     };
     ChapterRepo.prototype.getChapterChildren = function (chapterId, channelId) {
         return __awaiter(this, void 0, void 0, function () {
-            var e_2;
+            var res, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.Get("".concat(this.prefix, "/note?action=List&note_channel_id=").concat(channelId, "&parent_notebook=").concat(chapterId))];
-                    case 1: return [2 /*return*/, _a.sent()];
+                        return [4 /*yield*/, API.get("".concat(this.prefix, "/note?action=List&note_channel_id=").concat(channelId, "&parent_notebook=").concat(chapterId))];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.data.dto];
                     case 2:
                         e_2 = _a.sent();
                         throw Error(JSON.stringify(e_2));
@@ -871,15 +894,17 @@ var ChapterRepo = /** @class */ (function () {
     };
     ChapterRepo.prototype.getChapterInfo = function (chapterId) {
         return __awaiter(this, void 0, void 0, function () {
+            var res;
             return __generator(this, function (_a) {
-                return [2 /*return*/, teespaceCore.API.Get("".concat(this.prefix, "/chaptershare?action=List&id=").concat(chapterId))];
+                res = API.get("".concat(this.prefix, "/chaptershare?action=List&id=").concat(chapterId));
+                return [2 /*return*/, res.data.dto];
             });
         });
     };
     ChapterRepo.prototype.createShareChapter = function (chapterList) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, teespaceCore.API.post("".concat(this.prefix, "/chaptershare"), {
+                return [2 /*return*/, API.post("".concat(this.prefix, "/chaptershare"), {
                         dto: {
                             notbookList: chapterList,
                         },
@@ -894,7 +919,7 @@ var ChapterRepo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.post("".concat(this.prefix, "/langauge/").concat(i18nLanguage, "/notebooks"), {
+                        return [4 /*yield*/, API.post("".concat(this.prefix, "/langauge/").concat(i18nLanguage, "/notebooks"), {
                                 dto: dto,
                             })];
                     case 1:
@@ -915,7 +940,7 @@ var ChapterRepo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.post("".concat(this.prefix, "/children/none}/notebooks"), {
+                        return [4 /*yield*/, API.post("".concat(this.prefix, "/children/none}/notebooks"), {
                                 dto: dto,
                             })];
                     case 1:
@@ -936,7 +961,7 @@ var ChapterRepo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.post("".concat(this.prefix, "/notebook?action=Delete"), {
+                        return [4 /*yield*/, API.post("".concat(this.prefix, "/notebook?action=Delete"), {
                                 dto: {
                                     notbookList: chapterList,
                                 },
@@ -959,7 +984,7 @@ var ChapterRepo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.put("".concat(this.prefix, "/notebooks?action=Update"), {
+                        return [4 /*yield*/, API.put("".concat(this.prefix, "/notebooks?action=Update"), {
                                 dto: dto,
                             })];
                     case 1:
@@ -983,193 +1008,157 @@ var FileRepo = /** @class */ (function () {
         this.storagePrefix = 'Storage';
         this.gatewayPrefix = 'gateway-api';
         this.drivePrefix = 'drive-api';
+        // async createFileMeta(targetList) {
+        //   return API.post(`${this.prefix}/noteFileMeta`, {
+        //     dto: {
+        //       fileList: targetList,
+        //     },
+        //   });
+        // }
+        // async storageFileDeepCopy(fileId, workspaceId, channelId, userId) {
+        //   const targetSRC = `${this.storagePrefix}/StorageFile?action=Copy&Type=Deep`;
+        //   try {
+        //     return API.put(targetSRC, {
+        //       dto: {
+        //         workspace_id: workspaceId,
+        //         channel_id: channelId,
+        //         storageFileInfo: {
+        //           user_id: userId,
+        //           file_id: fileId,
+        //         },
+        //       },
+        //     });
+        //   } catch (e) {
+        //     throw Error(JSON.stringify(e));
+        //   }
+        // }
+        // async createUploadMeta(dto) {
+        //   try {
+        //     return API.post(`${this.prefix}/noteFile`, dto);
+        //   } catch (e) {
+        //     throw Error(JSON.stringify(e));
+        //   }
+        // }
+        // async createUploadStorage(
+        //   fileId,
+        //   file,
+        //   onUploadProgress,
+        //   workspaceId,
+        //   channelId,
+        //   userId,
+        // ) {
+        //   try {
+        //     return API.post(
+        //       `${this.storagePrefix}/StorageFile?action=Create&fileID=${fileId}&workspaceID=${workspaceId}&channelID=${channelId}&userID=${userId}`,
+        //       file,
+        //       {
+        //         headers: {
+        //           'content-type': 'multipart/form-data',
+        //         },
+        //         xhrFields: {
+        //           withCredentials: true,
+        //         },
+        //         onUploadProgress,
+        //       },
+        //     );
+        //   } catch (e) {
+        //     throw Error(JSON.stringify(e));
+        //   }
+        // }
+        // async uploadFileGW(
+        //   file,
+        //   fileName,
+        //   fileExtension,
+        //   location,
+        //   onUploadProgress,
+        //   cancelSource,
+        //   channelId,
+        //   pageId,
+        // ) {
+        //   const uploadFile = new File([file], `${fileName}.${fileExtension}`);
+        //   return API.post(
+        //     `/${this.gatewayPrefix}/upload?channel=${channelId}&name=${fileName}&ext=${fileExtension}&location=${location}&dir=` +
+        //       `${pageId}`,
+        //     uploadFile,
+        //     {
+        //       headers: {
+        //         'content-type': 'multipart/form-data',
+        //       },
+        //       xhrFields: {
+        //         withCredentials: true,
+        //       },
+        //       onUploadProgress,
+        //       cancelToken: cancelSource.token,
+        //     },
+        //   );
+        // }
+        // async deleteFile(deleteFileId, channelId) {
+        //   try {
+        //     return await API.post(`${this.prefix}/noteFile?action=Delete`, {
+        //       dto: {
+        //         type: 'hard',
+        //         file: [
+        //           {
+        //             channel: channelId,
+        //             file_parent_id: channelId,
+        //             file_id: deleteFileId,
+        //             is_folder: 'N',
+        //           },
+        //         ],
+        //       },
+        //     });
+        //   } catch (e) {
+        //     throw Error(JSON.stringify(e));
+        //   }
+        // }
+        // deleteAllFile(fileList, channelId) {
+        //   const deleteFileList = [];
+        //   if (fileList) {
+        //     fileList.forEach(file => {
+        //       deleteFileList.push({
+        //         channel: channelId,
+        //         file_parent_id: channelId,
+        //         file_id: file.file_id,
+        //         is_folder: 'N',
+        //       });
+        //     });
+        //     return API.post(`${this.drivePrefix}/files?action=Delete`, {
+        //       dto: {
+        //         type: 'hard',
+        //         file: deleteFileList,
+        //       },
+        //     });
+        //   }
+        //   return Promise.resolve();
+        // }
+        // async getStorageVolume() {
+        //   try {
+        //     return API.get(`/${this.storagePrefix}/StorageVolumeDomain`);
+        //   } catch (e) {
+        //     throw Error(JSON.stringify(e));
+        //   }
+        // }
+        // async getDuplicateFile(fileName, fileExt, pageId) {
+        //   let query = `/${this.drivePrefix}/files/${pageId}?`;
+        //   query += `type=0`;
+        //   query += `&name=${fileName}`;
+        //   if (fileExt) query += `&ext=${fileExt}`;
+        //   try {
+        //     return API.get(query);
+        //   } catch (e) {
+        //     throw Error(JSON.stringify(e));
+        //   }
+        // }
+        // async getRecycleBinAllFile(channelId) {
+        //   try {
+        //     return await API.get(
+        //       `${this.prefix}/noteRecycleBinFile?action=List&note_channel_id=${channelId}`,
+        //     );
+        //   } catch (e) {
+        //     throw Error(JSON.stringify(e));
+        //   }
+        // }
     }
-    FileRepo.prototype.createFileMeta = function (targetList) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, teespaceCore.API.post("".concat(this.prefix, "/noteFileMeta"), {
-                        dto: {
-                            fileList: targetList,
-                        },
-                    })];
-            });
-        });
-    };
-    FileRepo.prototype.storageFileDeepCopy = function (fileId, workspaceId, channelId, userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var targetSRC;
-            return __generator(this, function (_a) {
-                targetSRC = "".concat(this.storagePrefix, "/StorageFile?action=Copy&Type=Deep");
-                try {
-                    return [2 /*return*/, teespaceCore.API.put(targetSRC, {
-                            dto: {
-                                workspace_id: workspaceId,
-                                channel_id: channelId,
-                                storageFileInfo: {
-                                    user_id: userId,
-                                    file_id: fileId,
-                                },
-                            },
-                        })];
-                }
-                catch (e) {
-                    throw Error(JSON.stringify(e));
-                }
-                return [2 /*return*/];
-            });
-        });
-    };
-    FileRepo.prototype.createUploadMeta = function (dto) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                try {
-                    return [2 /*return*/, teespaceCore.API.post("".concat(this.prefix, "/noteFile"), dto)];
-                }
-                catch (e) {
-                    throw Error(JSON.stringify(e));
-                }
-                return [2 /*return*/];
-            });
-        });
-    };
-    FileRepo.prototype.createUploadStorage = function (fileId, file, onUploadProgress, workspaceId, channelId, userId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                try {
-                    return [2 /*return*/, teespaceCore.API.post("".concat(this.storagePrefix, "/StorageFile?action=Create&fileID=").concat(fileId, "&workspaceID=").concat(workspaceId, "&channelID=").concat(channelId, "&userID=").concat(userId), file, {
-                            headers: {
-                                'content-type': 'multipart/form-data',
-                            },
-                            xhrFields: {
-                                withCredentials: true,
-                            },
-                            onUploadProgress: onUploadProgress,
-                        })];
-                }
-                catch (e) {
-                    throw Error(JSON.stringify(e));
-                }
-                return [2 /*return*/];
-            });
-        });
-    };
-    FileRepo.prototype.uploadFileGW = function (file, fileName, fileExtension, location, onUploadProgress, cancelSource, channelId, pageId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var uploadFile;
-            return __generator(this, function (_a) {
-                uploadFile = new File([file], "".concat(fileName, ".").concat(fileExtension));
-                return [2 /*return*/, teespaceCore.API.post("/".concat(this.gatewayPrefix, "/upload?channel=").concat(channelId, "&name=").concat(fileName, "&ext=").concat(fileExtension, "&location=").concat(location, "&dir=") +
-                        "".concat(pageId), uploadFile, {
-                        headers: {
-                            'content-type': 'multipart/form-data',
-                        },
-                        xhrFields: {
-                            withCredentials: true,
-                        },
-                        onUploadProgress: onUploadProgress,
-                        cancelToken: cancelSource.token,
-                    })];
-            });
-        });
-    };
-    FileRepo.prototype.deleteFile = function (deleteFileId, channelId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var e_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.post("".concat(this.prefix, "/noteFile?action=Delete"), {
-                                dto: {
-                                    type: 'hard',
-                                    file: [
-                                        {
-                                            channel: channelId,
-                                            file_parent_id: channelId,
-                                            file_id: deleteFileId,
-                                            is_folder: 'N',
-                                        },
-                                    ],
-                                },
-                            })];
-                    case 1: return [2 /*return*/, _a.sent()];
-                    case 2:
-                        e_1 = _a.sent();
-                        throw Error(JSON.stringify(e_1));
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    FileRepo.prototype.deleteAllFile = function (fileList, channelId) {
-        var deleteFileList = [];
-        if (fileList) {
-            fileList.forEach(function (file) {
-                deleteFileList.push({
-                    channel: channelId,
-                    file_parent_id: channelId,
-                    file_id: file.file_id,
-                    is_folder: 'N',
-                });
-            });
-            return teespaceCore.API.post("".concat(this.drivePrefix, "/files?action=Delete"), {
-                dto: {
-                    type: 'hard',
-                    file: deleteFileList,
-                },
-            });
-        }
-        return Promise.resolve();
-    };
-    FileRepo.prototype.getStorageVolume = function () {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                try {
-                    return [2 /*return*/, teespaceCore.API.get("/".concat(this.storagePrefix, "/StorageVolumeDomain"))];
-                }
-                catch (e) {
-                    throw Error(JSON.stringify(e));
-                }
-                return [2 /*return*/];
-            });
-        });
-    };
-    FileRepo.prototype.getDuplicateFile = function (fileName, fileExt, pageId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var query;
-            return __generator(this, function (_a) {
-                query = "/".concat(this.drivePrefix, "/files/").concat(pageId, "?");
-                query += "type=0";
-                query += "&name=".concat(fileName);
-                if (fileExt)
-                    query += "&ext=".concat(fileExt);
-                try {
-                    return [2 /*return*/, teespaceCore.API.get(query)];
-                }
-                catch (e) {
-                    throw Error(JSON.stringify(e));
-                }
-                return [2 /*return*/];
-            });
-        });
-    };
-    FileRepo.prototype.getRecycleBinAllFile = function (channelId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var e_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.get("".concat(this.prefix, "/noteRecycleBinFile?action=List&note_channel_id=").concat(channelId))];
-                    case 1: return [2 /*return*/, _a.sent()];
-                    case 2:
-                        e_2 = _a.sent();
-                        throw Error(JSON.stringify(e_2));
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
     return FileRepo;
 }());
 var FileRepoImpl = new FileRepo();
@@ -1185,7 +1174,7 @@ var PageRepo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.Get("".concat(this.prefix, "/noteinfo?action=List&note_id=").concat(pageId, "&note_channel_id=").concat(channelId))];
+                        return [4 /*yield*/, API.get("".concat(this.prefix, "/noteinfo?action=List&note_id=").concat(pageId, "&note_channel_id=").concat(channelId))];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
                         e_1 = _a.sent();
@@ -1199,7 +1188,7 @@ var PageRepo = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, teespaceCore.API.Post("".concat(this.prefix, "/note"), {
+                    return [2 /*return*/, API.post("".concat(this.prefix, "/note"), {
                             dto: dto,
                         })];
                 }
@@ -1217,7 +1206,7 @@ var PageRepo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.Post("".concat(this.prefix, "/note?action=Delete"), {
+                        return [4 /*yield*/, API.post("".concat(this.prefix, "/note?action=Delete"), {
                                 dto: {
                                     noteList: pageList,
                                 },
@@ -1238,7 +1227,7 @@ var PageRepo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.Put("".concat(this.prefix, "/note?action=Update"), {
+                        return [4 /*yield*/, API.put("".concat(this.prefix, "/note?action=Update"), {
                                 dto: dto,
                             })];
                     case 1: return [2 /*return*/, _a.sent()];
@@ -1253,7 +1242,7 @@ var PageRepo = /** @class */ (function () {
     PageRepo.prototype.createSharePage = function (pageList) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, teespaceCore.API.post("".concat(this.prefix, "/noteshare"), {
+                return [2 /*return*/, API.post("".concat(this.prefix, "/noteshare"), {
                         dto: {
                             noteList: pageList,
                         },
@@ -1268,7 +1257,7 @@ var PageRepo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.post("".concat(this.prefix, "/noteRecycleBin?action=Update"), {
+                        return [4 /*yield*/, API.post("".concat(this.prefix, "/noteRecycleBin?action=Update"), {
                                 dto: {
                                     noteList: pageList,
                                 },
@@ -1289,7 +1278,7 @@ var PageRepo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.post("".concat(this.prefix, "/noteRecycleBin?action=Update"), {
+                        return [4 /*yield*/, API.post("".concat(this.prefix, "/noteRecycleBin?action=Update"), {
                                 dto: {
                                     noteList: pageList,
                                 },
@@ -1310,7 +1299,7 @@ var PageRepo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.post("".concat(this.prefix, "/bookmark"), {
+                        return [4 /*yield*/, API.post("".concat(this.prefix, "/bookmark"), {
                                 dto: {
                                     note_id: pageId,
                                 },
@@ -1331,7 +1320,7 @@ var PageRepo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, teespaceCore.API.post("".concat(this.prefix, "/bookmark?action=Delete"), {
+                        return [4 /*yield*/, API.post("".concat(this.prefix, "/bookmark?action=Delete"), {
                                 dto: {
                                     note_id: pageId,
                                 },
@@ -1355,7 +1344,7 @@ var PageRepo = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, teespaceCore.API.get("".concat(this.prefix, "/bookmark?action=List").concat(query))];
+                        return [4 /*yield*/, API.get("".concat(this.prefix, "/bookmark?action=List").concat(query))];
                     case 2: return [2 /*return*/, _a.sent()];
                     case 3:
                         e_8 = _a.sent();
@@ -1375,7 +1364,7 @@ var PageRepo = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, teespaceCore.API.get("".concat(this.prefix, "/noteRecent?action=List&note_channel_id=").concat(channelId).concat(query))];
+                        return [4 /*yield*/, API.get("".concat(this.prefix, "/noteRecent?action=List&note_channel_id=").concat(channelId).concat(query))];
                     case 2: return [2 /*return*/, _a.sent()];
                     case 3:
                         e_9 = _a.sent();
@@ -1397,7 +1386,7 @@ var SearchRepo = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, teespaceCore.API.post("".concat(this.prefix, "/noteSearch?action=List"), {
+                    return [2 /*return*/, API.post("".concat(this.prefix, "/noteSearch?action=List"), {
                             dto: {
                                 note_channel_id: channelId,
                                 text: searchKey,
@@ -1423,7 +1412,7 @@ var TagRepo = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, teespaceCore.API.post("".concat(this.prefix, "/tag"), {
+                    return [2 /*return*/, API.post("".concat(this.prefix, "/tag"), {
                             dto: {
                                 tagList: tagList,
                             },
@@ -1440,7 +1429,7 @@ var TagRepo = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, teespaceCore.API.post("".concat(this.prefix, "/tag?action=Delete"), {
+                    return [2 /*return*/, API.post("".concat(this.prefix, "/tag?action=Delete"), {
                             dto: {
                                 tagList: targetList,
                             },
@@ -1457,7 +1446,7 @@ var TagRepo = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, teespaceCore.API.post("".concat(this.prefix, "/tag?action=Update"), {
+                    return [2 /*return*/, API.post("".concat(this.prefix, "/tag?action=Update"), {
                             dto: {
                                 tagList: tagList,
                             },
@@ -1473,7 +1462,7 @@ var TagRepo = /** @class */ (function () {
     TagRepo.prototype.getNoteTagList = function (pageId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, teespaceCore.API.Get("".concat(this.prefix, "/tag?action=List&note_id=").concat(pageId, "&t=").concat(new Date()
+                return [2 /*return*/, API.get("".concat(this.prefix, "/tag?action=List&note_id=").concat(pageId, "&t=").concat(new Date()
                         .getTime()
                         .toString()))];
             });
@@ -1482,7 +1471,7 @@ var TagRepo = /** @class */ (function () {
     TagRepo.prototype.getAllSortedTagList = function (ChannelId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, teespaceCore.API.Get("".concat(this.prefix, "/tagSort?action=List&note_channel_id=").concat(ChannelId, "&t=").concat(new Date()
+                return [2 /*return*/, API.get("".concat(this.prefix, "/tagSort?action=List&note_channel_id=").concat(ChannelId, "&t=").concat(new Date()
                         .getTime()
                         .toString()))];
             });
@@ -1491,7 +1480,7 @@ var TagRepo = /** @class */ (function () {
     TagRepo.prototype.getTagNoteList = function (tagId, userId, ChannelId) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
-                return [2 /*return*/, teespaceCore.API.Get("".concat(this.prefix, "/tagnote?action=List&tag_id=").concat(tagId, "&USER_ID=").concat(userId, "\n      &note_channel_id=").concat(ChannelId))];
+                return [2 /*return*/, API.get("".concat(this.prefix, "/tagnote?action=List&tag_id=").concat(tagId, "&USER_ID=").concat(userId, "\n      &note_channel_id=").concat(ChannelId))];
             });
         });
     };
@@ -1500,10 +1489,79 @@ var TagRepo = /** @class */ (function () {
 var TagRepoImpl = new TagRepo();
 
 var ChapterStore = /** @class */ (function () {
-    function ChapterStore() {
-        this.repo = ChapterRepoImpl;
+    function ChapterStore(rootStore) {
+        mobx.makeAutoObservable(this);
+        this.rootStore = rootStore;
     }
+    ChapterStore.prototype.setHeaderTitle = function (title) {
+        this.headerTitle = title;
+    };
     return ChapterStore;
+}());
+
+var NoteStore = /** @class */ (function () {
+    function NoteStore(_a) {
+        var roomId = _a.roomId, channelId = _a.channelId;
+        this.constants = Object.freeze({
+            roomId: roomId,
+            channelId: channelId,
+        });
+    }
+    return NoteStore;
+}());
+
+var NoteViewType;
+(function (NoteViewType) {
+    NoteViewType["MyNote"] = "MyNote";
+    NoteViewType["TalkNote"] = "TalkNote";
+    NoteViewType["SharedNote"] = "SharedNote";
+})(NoteViewType || (NoteViewType = {}));
+var SelectType;
+(function (SelectType) {
+    SelectType["Checkbox"] = "Checkbox";
+    SelectType["Radio"] = "Radio";
+})(SelectType || (SelectType = {}));
+var MenuType;
+(function (MenuType) {
+    MenuType["TALKROOM"] = "talk";
+    MenuType["CHAPTER"] = "chapter";
+    MenuType["PAGE"] = "page";
+    MenuType["TAG"] = "tag";
+})(MenuType || (MenuType = {}));
+
+var NoteViewStore = /** @class */ (function () {
+    function NoteViewStore(rootStore) {
+        mobx.makeAutoObservable(this);
+        this.rootStore = rootStore;
+        this.type = NoteViewType.MyNote;
+    }
+    NoteViewStore.prototype.toggleMultiSelectMode = function () {
+        this.isLongPressed = !this.isLongPressed;
+    };
+    NoteViewStore.prototype.setType = function (type) {
+        this.type = type;
+    };
+    return NoteViewStore;
+}());
+
+var PageStore = /** @class */ (function () {
+    function PageStore(rootStore) {
+        mobx.makeAutoObservable(this);
+        this.rootStore = rootStore;
+    }
+    PageStore.prototype.changeMode = function () {
+        this.isLongPressed = !this.isLongPressed;
+    };
+    return PageStore;
+}());
+
+var RootStore = /** @class */ (function () {
+    function RootStore() {
+        this.pageStore = new PageStore(this);
+        this.noteViewStore = new NoteViewStore(this);
+        this.chapterStore = new ChapterStore(this);
+    }
+    return RootStore;
 }());
 
 exports.ChapterModel = ChapterModel;
@@ -1512,13 +1570,16 @@ exports.ChapterRepoImpl = ChapterRepoImpl;
 exports.ChapterStore = ChapterStore;
 exports.FileRepo = FileRepo;
 exports.FileRepoImpl = FileRepoImpl;
+exports.NoteStore = NoteStore;
+exports.NoteViewStore = NoteViewStore;
 exports.PageModel = PageModel;
 exports.PageRepo = PageRepo;
 exports.PageRepoImpl = PageRepoImpl;
+exports.PageStore = PageStore;
+exports.RootStore = RootStore;
 exports.SearchRepo = SearchRepo;
 exports.SearchRepoImpl = SearchRepoImpl;
 exports.TagRepo = TagRepo;
 exports.TagRepoImpl = TagRepoImpl;
-exports.i18n = i18n;
 exports.useNoteCore = useNoteCore;
 exports.useNoteI18nInit = useNoteI18nInit;
