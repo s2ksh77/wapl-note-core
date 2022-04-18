@@ -1,10 +1,9 @@
 import React, { createContext, useContext } from 'react';
-import { action, decorate, observable, runInAction } from 'mobx';
-import { RoomStore, UserStore } from 'teespace-core';
+import { action, observable, runInAction } from 'mobx';
 import type { ChannelId, RoomId } from '~/@types/common';
 
 type Props = {
-  roomId: RoomId;
+  roomId: RoomId; 
   channelId: ChannelId;
 };
 

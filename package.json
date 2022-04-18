@@ -58,7 +58,6 @@
      "react-quill": "^1.3.5",
      "react-uuid": "^1.0.2",
      "styled-components": "^5.1.1",
-     "teespace-core": "git+http://192.168.158.12:9000/teespace/teespace-core.git#develop",
      "teespace-drive-app": "git+http://192.168.158.12:9000/teespace/teespace-drive-app.git#develop"
   },
   "devDependencies": {
@@ -91,7 +90,7 @@
      "eslint-plugin-react-hooks": "1.7.0",
      "husky": "^4.3.0",
      "identity-obj-proxy": "^3.0.0",
-     "mobx": "^5.15.6",
+     "mobx": "^6.5.0",
      "mobx-react": "^6.3.0",
      "postcss": "^8.2.12",
      "prettier": "^2.2.1",

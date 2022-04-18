@@ -1,16 +1,16 @@
 import { makeAutoObservable } from 'mobx';
 
-export class ChapterStore {
+export class PageStore {
   rootStore;
 
-  headerTitle: string;
+  isLongPressed: boolean;
 
   constructor(rootStore) {
     makeAutoObservable(this);
     this.rootStore = rootStore;
   }
 
-  setHeaderTitle(title): void {
-    this.headerTitle = title;
+  changeMode(): void {
+    this.isLongPressed = !this.isLongPressed;
   }
 }

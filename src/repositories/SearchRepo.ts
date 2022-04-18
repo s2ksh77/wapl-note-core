@@ -1,4 +1,4 @@
-import { API } from 'teespace-core';
+import { API } from '~/lib/external';
 import { ChannelId } from '~/@types/common';
 import type { ISearchRepo } from '~/repositories/SearchRepoType';
 

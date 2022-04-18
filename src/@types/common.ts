@@ -13,3 +13,21 @@ export type SharedUserId = string | null;
 export type Title = string | null;
 export type CreatedDate = string | null;
 export type DeletedDate = string | null;
+
+export enum NoteViewType {
+  MyNote = 'MyNote',
+  TalkNote = 'TalkNote',
+  SharedNote = 'SharedNote',
+}
+
+export enum SelectType {
+  Checkbox = 'Checkbox',
+  Radio = 'Radio',
+}
+
+export enum MenuType {
+  TALKROOM = 'talk',
+  CHAPTER = 'chapter',
+  PAGE = 'page',
+  TAG = 'tag',
+}

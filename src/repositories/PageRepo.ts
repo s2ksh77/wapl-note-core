@@ -1,4 +1,4 @@
-import { API } from 'teespace-core';
+import { API } from '~/lib/external';
 import type { ChannelId, PageId } from '~/@types/common';
 import { PageDTO } from '~/models/dto/PageDTO';
 import type { IPageRepo } from '~/repositories/PageRepoType';
@@ -8,7 +8,7 @@ export class PageRepo implements IPageRepo {
 
   async getNoteInfoList(pageId: PageId, channelId: ChannelId) {
     try {
-      return await API.Get(
+      return await API.get(
         `${this.prefix}/noteinfo?action=List&note_id=${pageId}&note_channel_id=${channelId}`,
       );
     } catch (e) {
@@ -18,7 +18,7 @@ export class PageRepo implements IPageRepo {
 
   async createPage(dto: PageDTO) {
     try {
-      return API.Post(`${this.prefix}/note`, {
+      return API.post(`${this.prefix}/note`, {
         dto,
       });
     } catch (e) {
@@ -28,7 +28,7 @@ export class PageRepo implements IPageRepo {
 
   async deletePage(pageList) {
     try {
-      return await API.Post(`${this.prefix}/note?action=Delete`, {
+      return await API.post(`${this.prefix}/note?action=Delete`, {
         dto: {
           noteList: pageList,
         },
@@ -40,7 +40,7 @@ export class PageRepo implements IPageRepo {
 
   async updatePage(dto: PageDTO) {
     try {
-      return await API.Put(`${this.prefix}/note?action=Update`, {
+      return await API.put(`${this.prefix}/note?action=Update`, {
         dto,
       });
     } catch (e) {

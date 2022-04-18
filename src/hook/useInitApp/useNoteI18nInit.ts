@@ -1,4 +1,4 @@
-import { useI18nInit } from 'teespace-core';
+import { useI18nInit } from '~/lib/external';
 import { i18n } from '~/i18n';
 
 export const useNoteI18nInit = (): void => {

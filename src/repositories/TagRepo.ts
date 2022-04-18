@@ -1,4 +1,4 @@
-import { API } from 'teespace-core';
+import { API } from '~/lib/external';
 import type { ITagRepo } from '~/repositories/TagRepoType';
 
 export class TagRepo implements ITagRepo {
@@ -41,7 +41,7 @@ export class TagRepo implements ITagRepo {
   }
 
   async getNoteTagList(pageId) {
-    return API.Get(
+    return API.get(
       `${this.prefix}/tag?action=List&note_id=${pageId}&t=${new Date()
         .getTime()
         .toString()}`,
@@ -49,7 +49,7 @@ export class TagRepo implements ITagRepo {
   }
 
   async getAllSortedTagList(ChannelId) {
-    return API.Get(
+    return API.get(
       `${this.prefix}/tagSort?action=List&note_channel_id=${ChannelId}&t=${new Date()
         .getTime()
         .toString()}`,
@@ -57,7 +57,7 @@ export class TagRepo implements ITagRepo {
   }
 
   async getTagNoteList(tagId, userId, ChannelId) {
-    return API.Get(
+    return API.get(
       `${this.prefix}/tagnote?action=List&tag_id=${tagId}&USER_ID=${userId}
       &note_channel_id=${ChannelId}`,
     );

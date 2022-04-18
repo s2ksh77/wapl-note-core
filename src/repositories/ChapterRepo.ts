@@ -1,4 +1,4 @@
-import { API } from 'teespace-core';
+import { API } from '~/lib/external';
 import type { ChannelId, ChapterId } from '~/@types/common';
 import type { IChapterRepo } from '~/repositories/ChapterRepoType';
 import { ChapterDTO } from '~/models/dto/ChapterDTO';
@@ -8,9 +8,10 @@ export class ChapterRepo implements IChapterRepo {
 
   async getChapterList(channelId: ChannelId): Promise<Dto.GetChapterListResponse> {
     try {
-      return await API.get(
+      const res = await API.get(
         `${this.prefix}/noteChapter?action=List&note_channel_id=${channelId}`,
       );
+      return res.data.dto;
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
@@ -21,16 +22,18 @@ export class ChapterRepo implements IChapterRepo {
     channelId: ChannelId,
   ): Promise<Dto.GetChapterChildrenResponse> {
     try {
-      return await API.Get(
+      const res = await API.get(
         `${this.prefix}/note?action=List&note_channel_id=${channelId}&parent_notebook=${chapterId}`,
       );
+      return res.data.dto;
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
   }
 
   async getChapterInfo(chapterId: ChapterId): Promise<Dto.GetChapterInfoResponse> {
-    return API.Get(`${this.prefix}/chaptershare?action=List&id=${chapterId}`);
+    const res = API.get(`${this.prefix}/chaptershare?action=List&id=${chapterId}`);
+    return res.data.dto;
   }
 
   async createShareChapter(chapterList) {

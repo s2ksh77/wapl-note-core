@@ -4,14 +4,14 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import alias from '@rollup/plugin-alias';
 import json from '@rollup/plugin-json';
+import ttypescript from 'ttypescript';
 import postcss from 'rollup-plugin-postcss';
 import { babel } from '@rollup/plugin-babel';
 import typescript from 'rollup-plugin-typescript2';
+import del from 'rollup-plugin-delete';
+import url from '@rollup/plugin-url';
 import { uglify } from 'rollup-plugin-uglify';
 import strip from '@rollup/plugin-strip';
-import { visualizer } from 'rollup-plugin-visualizer';
-import ttypescript from 'ttypescript';
-import del from 'rollup-plugin-delete';
 import pkg from './package.json';
 
 const extensions = [
@@ -34,7 +34,6 @@ const plugins = [
   alias({
     entries: {
       '~': path.resolve(__dirname, 'src'),
-      '@': path.resolve(__dirname, 'src/apps/talk'),
     },
   }),
   json(),
@@ -53,9 +52,14 @@ const plugins = [
     typescript: ttypescript,
   }),
   del({
-    targets: 'dist/dts/*',
+    targets: 'dist/public/*',
   }),
-  visualizer(),
+  url({
+    limit: 0,
+    publicPath: process.env.PUBLIC_PATH,
+    fileName: '[hash][extname]',
+    destDir: './dist/public/',
+  }),
 ];
 // NOTE: 플랫폼 외부 프로젝트에 사용할 경우 external 수정 필요 (겹치는 파일 제거)
 const external = [
@@ -86,20 +90,18 @@ switch (process.env.NODE_ENV) {
   default:
 }
 
-export default [
-  {
-    input: './src/external.ts',
-    output: [
-      {
-        file: pkg.main,
-        format: 'cjs',
-      },
-      {
-        file: pkg.module,
-        format: 'esm',
-      },
-    ],
-    plugins,
-    external,
-  },
-];
+export default {
+  input: './src/external.ts',
+  output: [
+    {
+      file: pkg.main,
+      format: 'cjs',
+    },
+    {
+      file: pkg.module,
+      format: 'esm',
+    },
+  ],
+  plugins,
+  external,
+};
