@@ -15,28 +15,3 @@ export declare const WWMS: {
     addHandler: (appKey: string, handlerName: string, handler: (mqtt: any) => void) => void;
 };
 export declare const useI18nInit: (i18n: i18n) => void;
-export declare const API: {
-    get: (url: any, queryString?: any) => {
-        data: {
-            dto: any;
-        };
-    };
-    post: (url: any, payload?: any) => {
-        status: number;
-        data: {
-            dto: any;
-        };
-    };
-    put: (url: any, payload?: any, queryString?: any) => {
-        status: number;
-        data: {
-            dto: any;
-        };
-    };
-    delete: (url: any) => {
-        status: number;
-        data: {
-            dto: any;
-        };
-    };
-};

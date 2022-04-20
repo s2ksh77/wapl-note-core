@@ -1,13 +1,17 @@
-import { API } from '~/lib/external';
-import { ChannelId } from '~/@types/common';
+import API from '~/lib/API';
+import { ChannelId, prefix } from '~/@types/common';
 import type { ISearchRepo } from '~/repositories/SearchRepoType';
 
 export class SearchRepo implements ISearchRepo {
-  prefix = 'note-api';
+  API: API;
+
+  constructor() {
+    this.API = new API();
+  }
 
   async getSearchList(searchKey, channelId: ChannelId) {
     try {
-      return API.post(`${this.prefix}/noteSearch?action=List`, {
+      return this.API.post(`${prefix}/noteSearch?action=List`, {
         dto: {
           note_channel_id: channelId,
           text: searchKey,

@@ -1,4 +1,4 @@
-import { API } from '~/lib/external';
+import API from '~/lib/API';
 import type { IFileRepo } from '~/repositories/FileRepoType';
 
 export class FileRepo implements IFileRepo {

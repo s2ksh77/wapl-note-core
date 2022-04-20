@@ -1,15 +1,20 @@
-import { API } from '~/lib/external';
+import API from '~/lib/API';
 import type { ChannelId, PageId } from '~/@types/common';
 import { PageDTO } from '~/models/dto/PageDTO';
 import type { IPageRepo } from '~/repositories/PageRepoType';
+import { prefix } from '~/@types/common';
 
 export class PageRepo implements IPageRepo {
-  prefix = 'note-api';
+  API: API;
+
+  constructor() {
+    this.API = new API();
+  }
 
   async getNoteInfoList(pageId: PageId, channelId: ChannelId) {
     try {
-      return await API.get(
-        `${this.prefix}/noteinfo?action=List&note_id=${pageId}&note_channel_id=${channelId}`,
+      return await this.API.get(
+        `${prefix}/noteinfo?action=List&note_id=${pageId}&note_channel_id=${channelId}`,
       );
     } catch (e) {
       throw Error(JSON.stringify(e));
@@ -18,7 +23,7 @@ export class PageRepo implements IPageRepo {
 
   async createPage(dto: PageDTO) {
     try {
-      return API.post(`${this.prefix}/note`, {
+      return this.API.post(`${prefix}/note`, {
         dto,
       });
     } catch (e) {
@@ -28,7 +33,7 @@ export class PageRepo implements IPageRepo {
 
   async deletePage(pageList) {
     try {
-      return await API.post(`${this.prefix}/note?action=Delete`, {
+      return await this.API.post(`${prefix}/note?action=Delete`, {
         dto: {
           noteList: pageList,
         },
@@ -40,7 +45,7 @@ export class PageRepo implements IPageRepo {
 
   async updatePage(dto: PageDTO) {
     try {
-      return await API.put(`${this.prefix}/note?action=Update`, {
+      return await this.API.put(`${prefix}/note?action=Update`, {
         dto,
       });
     } catch (e) {
@@ -49,7 +54,7 @@ export class PageRepo implements IPageRepo {
   }
 
   async createSharePage(pageList) {
-    return API.post(`${this.prefix}/noteshare`, {
+    return this.API.post(`${prefix}/noteshare`, {
       dto: {
         noteList: pageList,
       },
@@ -65,7 +70,7 @@ export class PageRepo implements IPageRepo {
     //   page.parent_notebook = null;
     // });
     try {
-      return await API.post(`${this.prefix}/noteRecycleBin?action=Update`, {
+      return await this.API.post(`${prefix}/noteRecycleBin?action=Update`, {
         dto: {
           noteList: pageList,
         },
@@ -84,7 +89,7 @@ export class PageRepo implements IPageRepo {
     //   page.WS_ID = this.WS_ID;
     // });
     try {
-      return await API.post(`${this.prefix}/noteRecycleBin?action=Update`, {
+      return await this.API.post(`${prefix}/noteRecycleBin?action=Update`, {
         dto: {
           noteList: pageList,
         },
@@ -96,7 +101,7 @@ export class PageRepo implements IPageRepo {
 
   async bookmarkPage(pageId) {
     try {
-      return await API.post(`${this.prefix}/bookmark`, {
+      return await this.API.post(`${prefix}/bookmark`, {
         dto: {
           note_id: pageId,
         },
@@ -108,7 +113,7 @@ export class PageRepo implements IPageRepo {
 
   async unbookmarkPage(pageId) {
     try {
-      return await API.post(`${this.prefix}/bookmark?action=Delete`, {
+      return await this.API.post(`${prefix}/bookmark?action=Delete`, {
         dto: {
           note_id: pageId,
         },
@@ -121,7 +126,7 @@ export class PageRepo implements IPageRepo {
   async getbookmarkList(channelId: ChannelId) {
     const query = channelId ? `&note_channel_id=${channelId}` : '';
     try {
-      return await API.get(`${this.prefix}/bookmark?action=List${query}`);
+      return await this.API.get(`${prefix}/bookmark?action=List${query}`);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
@@ -130,8 +135,8 @@ export class PageRepo implements IPageRepo {
   async getRecentList(channelId: ChannelId, num) {
     const query = num ? `&rownum=${num}` : '';
     try {
-      return await API.get(
-        `${this.prefix}/noteRecent?action=List&note_channel_id=${channelId}${query}`,
+      return await this.API.get(
+        `${prefix}/noteRecent?action=List&note_channel_id=${channelId}${query}`,
       );
     } catch (e) {
       throw Error(JSON.stringify(e));

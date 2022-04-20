@@ -1,12 +1,17 @@
-import { API } from '~/lib/external';
+import API from '~/lib/API';
 import type { ITagRepo } from '~/repositories/TagRepoType';
+import { prefix } from '~/@types/common';
 
 export class TagRepo implements ITagRepo {
-  prefix = 'note-api';
+  API: API;
+
+  constructor() {
+    this.API = new API();
+  }
 
   async createTag(tagList) {
     try {
-      return API.post(`${this.prefix}/tag`, {
+      return this.API.post(`${prefix}/tag`, {
         dto: {
           tagList,
         },
@@ -18,7 +23,7 @@ export class TagRepo implements ITagRepo {
 
   async deleteTag(targetList) {
     try {
-      return API.post(`${this.prefix}/tag?action=Delete`, {
+      return this.API.post(`${prefix}/tag?action=Delete`, {
         dto: {
           tagList: targetList,
         },
@@ -30,7 +35,7 @@ export class TagRepo implements ITagRepo {
 
   async updateTag(tagList) {
     try {
-      return API.post(`${this.prefix}/tag?action=Update`, {
+      return this.API.post(`${prefix}/tag?action=Update`, {
         dto: {
           tagList,
         },
@@ -41,24 +46,22 @@ export class TagRepo implements ITagRepo {
   }
 
   async getNoteTagList(pageId) {
-    return API.get(
-      `${this.prefix}/tag?action=List&note_id=${pageId}&t=${new Date()
-        .getTime()
-        .toString()}`,
+    return this.API.get(
+      `${prefix}/tag?action=List&note_id=${pageId}&t=${new Date().getTime().toString()}`,
     );
   }
 
   async getAllSortedTagList(ChannelId) {
-    return API.get(
-      `${this.prefix}/tagSort?action=List&note_channel_id=${ChannelId}&t=${new Date()
+    return this.API.get(
+      `${prefix}/tagSort?action=List&note_channel_id=${ChannelId}&t=${new Date()
         .getTime()
         .toString()}`,
     );
   }
 
   async getTagNoteList(tagId, userId, ChannelId) {
-    return API.get(
-      `${this.prefix}/tagnote?action=List&tag_id=${tagId}&USER_ID=${userId}
+    return this.API.get(
+      `${prefix}/tagnote?action=List&tag_id=${tagId}&USER_ID=${userId}
       &note_channel_id=${ChannelId}`,
     );
   }

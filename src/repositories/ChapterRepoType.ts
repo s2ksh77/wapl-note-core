@@ -1,29 +1,27 @@
-import { ChannelId, ChapterId, Color, WorkspaceId } from '~/@types/common';
+import { ChannelId, ChapterId } from '~/@types/common';
 import type { ChapterDTO } from '~/models/dto/ChapterDTO';
 import type { PageDTO } from '~/models/dto/PageDTO';
 
 export type GetChapterListResponseDTO = {
-  notbookList: ChapterDTO[];
+  success: boolean;
+  response: ChapterDTO[];
 };
 
 export type GetChapterChildrenResponseDTO = {
-  noteList: PageDTO[];
+  success: boolean;
+  response: PageDTO[];
 };
 
 export type GetChapterInfoResponseDTO = {
-  dto: ChapterDTO;
+  success: boolean;
+  response: ChapterDTO;
 };
 
 export interface IChapterRepo {
-  getChapterList(channelId: ChannelId): Promise<Dto.GetChapterListResponse>;
-  getChapterChildren(
-    chapterId: ChapterId,
-    channelId: ChannelId,
-  ): Promise<Dto.GetChapterChildrenResponse>;
-  getChapterInfo(chapterId: ChapterId): Promise<Dto.GetChapterInfoResponse>;
-  createShareChapter(chapterList);
-  createChapter(dto: ChapterDTO, i18nLanguage);
-  createEmptyChapter(dto: ChapterDTO);
-  deleteChapter(chapterList: ChapterDTO[]);
-  updateChapter(dto: ChapterDTO);
+  getChapterList(channelId: ChannelId);
+  getChapterInfoList(chapterId: ChapterId, channelId: ChannelId);
+  createShareChapter(chapterList, channelId: ChannelId);
+  createChapter(dto: ChapterDTO, i18nLanguage: string, channelId: ChannelId);
+  // deleteChapter(chapterList: ChapterDTO[], channelId: ChannelId, chapterId: ChapterId);
+  updateChapter(dto: ChapterDTO, channelId: ChannelId);
 }

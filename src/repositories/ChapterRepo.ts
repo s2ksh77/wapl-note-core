@@ -1,93 +1,111 @@
-import { API } from '~/lib/external';
+/* eslint-disable class-methods-use-this */
+/* eslint-disable consistent-return */
+import API from '~/lib/API';
 import type { ChannelId, ChapterId } from '~/@types/common';
+import { baseUrl, prefix } from '~/@types/common';
 import type { IChapterRepo } from '~/repositories/ChapterRepoType';
 import { ChapterDTO } from '~/models/dto/ChapterDTO';
 
 export class ChapterRepo implements IChapterRepo {
-  prefix = 'note-api';
+  API: API;
 
-  async getChapterList(channelId: ChannelId): Promise<Dto.GetChapterListResponse> {
+  constructor() {
+    this.API = new API();
+  }
+
+  async getChapterList(channelId: ChannelId) {
     try {
-      const res = await API.get(
-        `${this.prefix}/noteChapter?action=List&note_channel_id=${channelId}`,
-      );
-      return res.data.dto;
+      const res = await this.API.get(`${baseUrl}${prefix}/app/${channelId}`);
+      console.log('res', res);
+      return res;
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
   }
 
-  async getChapterChildren(
-    chapterId: ChapterId,
-    channelId: ChannelId,
-  ): Promise<Dto.GetChapterChildrenResponse> {
+  async getChapterInfoList(chapterId: ChapterId, channelId: ChannelId) {
     try {
-      const res = await API.get(
-        `${this.prefix}/note?action=List&note_channel_id=${channelId}&parent_notebook=${chapterId}`,
+      const res = await this.API.get(
+        `${baseUrl}${prefix}/app/${channelId}/chapter/${chapterId}`,
       );
-      return res.data.dto;
+      return res;
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
   }
 
-  async getChapterInfo(chapterId: ChapterId): Promise<Dto.GetChapterInfoResponse> {
-    const res = API.get(`${this.prefix}/chaptershare?action=List&id=${chapterId}`);
-    return res.data.dto;
-  }
-
-  async createShareChapter(chapterList) {
-    return API.post(`${this.prefix}/chaptershare`, {
-      dto: {
-        notbookList: chapterList,
+  async createShareChapter(chapterList: ChapterDTO[], channelId: ChannelId) {
+    const res = await this.API.post(
+      `${baseUrl}${prefix}/app/${channelId}/chapter/share`,
+      {
+        chapterList,
       },
-    });
+    );
+    return res;
   }
 
-  async createChapter(dto: ChapterDTO, i18nLanguage) {
+  async createChapter(dto: ChapterDTO, i18nLanguage: string, channelId: ChannelId) {
     try {
-      const { data } = await API.post(
-        `${this.prefix}/langauge/${i18nLanguage}/notebooks`,
-        {
-          dto,
-        },
-      );
-      return data;
-    } catch (e) {
-      throw Error(JSON.stringify(e));
-    }
-  }
-
-  async createEmptyChapter(dto: ChapterDTO) {
-    try {
-      const { data } = await API.post(`${this.prefix}/children/none}/notebooks`, {
+      const res = await this.API.post(`${baseUrl}${prefix}/app/${channelId}/chapter`, {
         dto,
       });
-      return data;
+      return res;
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
   }
 
-  async deleteChapter(chapterList) {
-    try {
-      const { data } = await API.post(`${this.prefix}/notebook?action=Delete`, {
-        dto: {
-          notbookList: chapterList,
-        },
-      });
-      return data;
-    } catch (e) {
-      throw Error(JSON.stringify(e));
-    }
-  }
+  // async createEmptyChapter(dto: ChapterDTO) {
+  //   try {
+  //     const res = await this.API.post(`${prefix}/children/none}/notebooks`, {
+  //       dto,
+  //     });
+  //     return data;
+  //   } catch (e) {
+  //     throw Error(JSON.stringify(e));
+  //   }
+  // }
 
-  async updateChapter(dto: ChapterDTO) {
+  // async deleteChapter(
+  //   chapterList: ChapterDTO[],
+  //   channelId: ChannelId,
+  //   chapterId: ChapterId,
+  // ) {
+  //   try {
+  //     const res = await this.API.delete(
+  //       `${prefix}/app/${channelId}/chapter/${chapterId}`,
+  //       chapterList,
+  //     );
+
+  //   } catch (e) {
+  //     throw Error(JSON.stringify(e));
+  //   }
+  // }
+
+  // async deleteChapter(
+  //   chapterList: ChapterDTO[],
+  //   channelId: ChannelId,
+  //   chapterId: ChapterId,
+  // ) {
+  //   try {
+  //     const res = await this.API.delete(
+  //       `${prefix}/app/${channelId}/chapter/${chapterId}`,
+  //       {
+  //         dto,
+  //       },
+  //     );
+
+  //   } catch (e) {
+  //     throw Error(JSON.stringify(e));
+  //   }
+  // }
+
+  async updateChapter(dto: ChapterDTO, channelId: ChannelId) {
     try {
-      const { data } = await API.put(`${this.prefix}/notebooks?action=Update`, {
+      const res = await this.API.put(`${baseUrl}${prefix}/app/${channelId}/chapter`, {
         dto,
       });
-      return data;
+      return res;
     } catch (e) {
       throw Error(JSON.stringify(e));
     }

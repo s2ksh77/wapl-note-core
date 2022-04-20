@@ -3,7 +3,7 @@ import { action, observable, runInAction } from 'mobx';
 import type { ChannelId, RoomId } from '~/@types/common';
 
 type Props = {
-  roomId: RoomId; 
+  roomId: RoomId;
   channelId: ChannelId;
 };
 

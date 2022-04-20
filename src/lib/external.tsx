@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
 import React from 'react';
 import type { i18n } from 'i18next';
 /**
@@ -7,28 +8,17 @@ import type { i18n } from 'i18next';
  * @author soohyun
  */
 
- export const EventBus = {
-  on: (eventName: string | string[], handler: (param?: any) => void) => { return 0 },
+export const EventBus = {
+  on: (eventName: string | string[], handler: (param?: any) => void) => {
+    return 0;
+  },
   off: (eventName: string, handlerId: number) => {},
   once: (eventName: string, handler: (param?: any) => void) => {},
-  dispatch: (eventName: any, params: any) => { return null },
+  dispatch: (eventName: any, params: any) => {
+    return null;
+  },
 };
-export const WWMS= {
+export const WWMS = {
   addHandler: (appKey: string, handlerName: string, handler: (mqtt: any) => void) => {},
 };
-export const useI18nInit = (i18n: i18n) => {}
-
-export const API = {
-  get: (url, queryString?) => {
-    return { data: { dto: null } };
-  },
-  post: (url, payload?) => {
-    return { status: 200, data: { dto: null } };
-  },
-  put: (url, payload?, queryString?) => {
-    return { status: 200, data: { dto: null } };
-  },
-  delete: url => {
-    return { status: 200, data: { dto: null } };
-  },
-};
+export const useI18nInit = (i18n: i18n) => {};
