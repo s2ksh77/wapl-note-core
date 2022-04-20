@@ -1,143 +1,129 @@
 import API from '~/lib/API';
-import type { ChannelId, PageId } from '~/@types/common';
+import { baseUrl, ChannelId, ChapterId, PageId, prefix } from '~/@types/common';
 import { PageDTO } from '~/models/dto/PageDTO';
 import type { IPageRepo } from '~/repositories/PageRepoType';
-import { prefix } from '~/@types/common';
 
 export class PageRepo implements IPageRepo {
   API: API;
+  channelId; // TODO: param으로 다 받을까..
 
   constructor() {
     this.API = new API();
   }
 
-  async getNoteInfoList(pageId: PageId, channelId: ChannelId) {
+  async getAllPageList(channelId: ChannelId) {
     try {
-      return await this.API.get(
-        `${prefix}/noteinfo?action=List&note_id=${pageId}&note_channel_id=${channelId}`,
-      );
-    } catch (e) {
-      throw Error(JSON.stringify(e));
-    }
-  }
-
-  async createPage(dto: PageDTO) {
-    try {
-      return this.API.post(`${prefix}/note`, {
-        dto,
-      });
-    } catch (e) {
-      throw Error(JSON.stringify(e));
-    }
-  }
-
-  async deletePage(pageList) {
-    try {
-      return await this.API.post(`${prefix}/note?action=Delete`, {
-        dto: {
-          noteList: pageList,
-        },
-      });
-    } catch (e) {
-      throw Error(JSON.stringify(e));
-    }
-  }
-
-  async updatePage(dto: PageDTO) {
-    try {
-      return await this.API.put(`${prefix}/note?action=Update`, {
-        dto,
-      });
-    } catch (e) {
-      throw Error(JSON.stringify(e));
-    }
-  }
-
-  async createSharePage(pageList) {
-    return this.API.post(`${prefix}/noteshare`, {
-      dto: {
-        noteList: pageList,
-      },
-    });
-  }
-
-  async throwPage(pageList) {
-    // pageList -> pageId 리스트
-    // pageList.forEach(page => {
-    //   page.USER_ID = this.USER_ID;
-    //   page.WS_ID = this.WS_ID;
-    //   page.note_channel_id = this.chId;
-    //   page.parent_notebook = null;
-    // });
-    try {
-      return await this.API.post(`${prefix}/noteRecycleBin?action=Update`, {
-        dto: {
-          noteList: pageList,
-        },
-      });
-    } catch (e) {
-      throw Error(JSON.stringify(e));
-    }
-  }
-
-  async restorePage(pageList) {
-    // pageList -> pageId 리스트, chapterId 리스트
-    // [{note_id: asdf, parent_notebook : asdf} ... ]
-    // pageList.forEach(page => {
-    //   page.note_channel_id = this.chId;
-    //   page.USER_ID = this.USER_ID;
-    //   page.WS_ID = this.WS_ID;
-    // });
-    try {
-      return await this.API.post(`${prefix}/noteRecycleBin?action=Update`, {
-        dto: {
-          noteList: pageList,
-        },
-      });
-    } catch (e) {
-      throw Error(JSON.stringify(e));
-    }
-  }
-
-  async bookmarkPage(pageId) {
-    try {
-      return await this.API.post(`${prefix}/bookmark`, {
-        dto: {
-          note_id: pageId,
-        },
-      });
-    } catch (e) {
-      throw Error(JSON.stringify(e));
-    }
-  }
-
-  async unbookmarkPage(pageId) {
-    try {
-      return await this.API.post(`${prefix}/bookmark?action=Delete`, {
-        dto: {
-          note_id: pageId,
-        },
-      });
-    } catch (e) {
-      throw Error(JSON.stringify(e));
-    }
-  }
-
-  async getbookmarkList(channelId: ChannelId) {
-    const query = channelId ? `&note_channel_id=${channelId}` : '';
-    try {
-      return await this.API.get(`${prefix}/bookmark?action=List${query}`);
+      return await this.API.get(`${baseUrl}${prefix}/app/${channelId}/page/all`);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
   }
 
   async getRecentList(channelId: ChannelId, num) {
-    const query = num ? `&rownum=${num}` : '';
+    const query = num ? `?count=${num}` : '';
     try {
-      return await this.API.get(
-        `${prefix}/noteRecent?action=List&note_channel_id=${channelId}${query}`,
+      return await this.API.get(`${baseUrl}${prefix}/app/${channelId}/page${query}`);
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
+  async getNoteInfoList(pageId: PageId, channelId: ChannelId) {
+    try {
+      return await this.API.get(`${baseUrl}${prefix}/app/${channelId}/page/${pageId}`);
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
+  async createPage(channelId: ChannelId, chapterId: ChapterId, dto: PageDTO) {
+    try {
+      return this.API.post(
+        `${baseUrl}${prefix}/app/${channelId}/chapter/${chapterId}/page`,
+        {
+          dto,
+        },
       );
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
+  // 단일 페이지 삭제
+  async deletePage(channelId: ChannelId, chapterId: ChapterId, pageId: PageId) {
+    try {
+      return await this.API.delete(
+        `${baseUrl}${prefix}/app/${channelId}/chapter/${chapterId}/page/${pageId}`,
+      );
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
+  async updatePage(
+    channelId: ChannelId,
+    chapterId: ChapterId,
+    action: string,
+    dto: PageDTO,
+  ) {
+    try {
+      return await this.API.put(
+        `${baseUrl}${prefix}/app/${channelId}/chapter/${chapterId}/page?action=${action}`,
+        {
+          dto,
+        },
+      );
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
+  async createSharePage(channelId: ChannelId, dto: PageDTO) {
+    return this.API.post(`${baseUrl}${prefix}/app/${channelId}/page/copy`, {
+      dto,
+    });
+  }
+
+  async updateRecyclePage(channelId: ChannelId, action: string, dto: PageDTO) {
+    try {
+      return await this.API.post(
+        `${baseUrl}${prefix}/app/${channelId}/page/recycle?action=${action}`,
+        {
+          dto,
+        },
+      );
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
+  async bookmarkPage(pageId: PageId) {
+    try {
+      return await this.API.post(`${baseUrl}${prefix}/page/${pageId}/bookmark`);
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
+  async unbookmarkPage(pageId: PageId) {
+    try {
+      return await this.API.delete(`${baseUrl}${prefix}/page/${pageId}/bookmark`);
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
+  async getBookmarkInChannel(channelId: ChannelId) {
+    try {
+      return await this.API.get(`${baseUrl}${prefix}/app/${channelId}/bookmark`);
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
+  async getBookmarkInUser() {
+    try {
+      return await this.API.get(`${baseUrl}${prefix}/bookmark`);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
