@@ -5173,14 +5173,14 @@ var PageRepo = /** @class */ (function () {
     function PageRepo() {
         this.API = new API();
     }
-    PageRepo.prototype.getNoteInfoList = function (pageId, channelId) {
+    PageRepo.prototype.getAllPageList = function (channelId) {
         return __awaiter(this, void 0, void 0, function () {
             var e_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.get("".concat(prefix, "/noteinfo?action=List&note_id=").concat(pageId, "&note_channel_id=").concat(channelId))];
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/page/all"))];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
                         e_1 = _a.sent();
@@ -5190,11 +5190,48 @@ var PageRepo = /** @class */ (function () {
             });
         });
     };
-    PageRepo.prototype.createPage = function (dto) {
+    PageRepo.prototype.getRecentList = function (channelId, num) {
+        return __awaiter(this, void 0, void 0, function () {
+            var query, e_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        query = num ? "?count=".concat(num) : '';
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/page").concat(query))];
+                    case 2: return [2 /*return*/, _a.sent()];
+                    case 3:
+                        e_2 = _a.sent();
+                        throw Error(JSON.stringify(e_2));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    PageRepo.prototype.getNoteInfoList = function (pageId, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var e_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/page/").concat(pageId))];
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        e_3 = _a.sent();
+                        throw Error(JSON.stringify(e_3));
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    PageRepo.prototype.createPage = function (channelId, chapterId, dto) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, this.API.post("".concat(prefix, "/note"), {
+                    return [2 /*return*/, this.API.post("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter/").concat(chapterId, "/page"), {
                             dto: dto,
                         })];
                 }
@@ -5205,69 +5242,15 @@ var PageRepo = /** @class */ (function () {
             });
         });
     };
-    PageRepo.prototype.deletePage = function (pageList) {
-        return __awaiter(this, void 0, void 0, function () {
-            var e_2;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.post("".concat(prefix, "/note?action=Delete"), {
-                                dto: {
-                                    noteList: pageList,
-                                },
-                            })];
-                    case 1: return [2 /*return*/, _a.sent()];
-                    case 2:
-                        e_2 = _a.sent();
-                        throw Error(JSON.stringify(e_2));
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    PageRepo.prototype.updatePage = function (dto) {
-        return __awaiter(this, void 0, void 0, function () {
-            var e_3;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.put("".concat(prefix, "/note?action=Update"), {
-                                dto: dto,
-                            })];
-                    case 1: return [2 /*return*/, _a.sent()];
-                    case 2:
-                        e_3 = _a.sent();
-                        throw Error(JSON.stringify(e_3));
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    PageRepo.prototype.createSharePage = function (pageList) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.API.post("".concat(prefix, "/noteshare"), {
-                        dto: {
-                            noteList: pageList,
-                        },
-                    })];
-            });
-        });
-    };
-    PageRepo.prototype.throwPage = function (pageList) {
+    // 단일 페이지 삭제
+    PageRepo.prototype.deletePage = function (channelId, chapterId, pageId) {
         return __awaiter(this, void 0, void 0, function () {
             var e_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.post("".concat(prefix, "/noteRecycleBin?action=Update"), {
-                                dto: {
-                                    noteList: pageList,
-                                },
-                            })];
+                        return [4 /*yield*/, this.API.delete("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter/").concat(chapterId, "/page/").concat(pageId))];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
                         e_4 = _a.sent();
@@ -5277,17 +5260,15 @@ var PageRepo = /** @class */ (function () {
             });
         });
     };
-    PageRepo.prototype.restorePage = function (pageList) {
+    PageRepo.prototype.updatePage = function (channelId, chapterId, action, dto) {
         return __awaiter(this, void 0, void 0, function () {
             var e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.post("".concat(prefix, "/noteRecycleBin?action=Update"), {
-                                dto: {
-                                    noteList: pageList,
-                                },
+                        return [4 /*yield*/, this.API.put("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter/").concat(chapterId, "/page?action=").concat(action), {
+                                dto: dto,
                             })];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
@@ -5298,17 +5279,24 @@ var PageRepo = /** @class */ (function () {
             });
         });
     };
-    PageRepo.prototype.bookmarkPage = function (pageId) {
+    PageRepo.prototype.createSharePage = function (channelId, dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.API.post("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/page/copy"), {
+                        dto: dto,
+                    })];
+            });
+        });
+    };
+    PageRepo.prototype.updateRecyclePage = function (channelId, action, dto) {
         return __awaiter(this, void 0, void 0, function () {
             var e_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.post("".concat(prefix, "/bookmark"), {
-                                dto: {
-                                    note_id: pageId,
-                                },
+                        return [4 /*yield*/, this.API.post("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/page/recycle?action=").concat(action), {
+                                dto: dto,
                             })];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
@@ -5319,18 +5307,14 @@ var PageRepo = /** @class */ (function () {
             });
         });
     };
-    PageRepo.prototype.unbookmarkPage = function (pageId) {
+    PageRepo.prototype.bookmarkPage = function (pageId) {
         return __awaiter(this, void 0, void 0, function () {
             var e_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.post("".concat(prefix, "/bookmark?action=Delete"), {
-                                dto: {
-                                    note_id: pageId,
-                                },
-                            })];
+                        return [4 /*yield*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/bookmark"))];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
                         e_7 = _a.sent();
@@ -5340,42 +5324,53 @@ var PageRepo = /** @class */ (function () {
             });
         });
     };
-    PageRepo.prototype.getbookmarkList = function (channelId) {
+    PageRepo.prototype.unbookmarkPage = function (pageId) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, e_8;
+            var e_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = channelId ? "&note_channel_id=".concat(channelId) : '';
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.API.get("".concat(prefix, "/bookmark?action=List").concat(query))];
-                    case 2: return [2 /*return*/, _a.sent()];
-                    case 3:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.delete("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/bookmark"))];
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
                         e_8 = _a.sent();
                         throw Error(JSON.stringify(e_8));
-                    case 4: return [2 /*return*/];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    PageRepo.prototype.getRecentList = function (channelId, num) {
+    PageRepo.prototype.getBookmarkInChannel = function (channelId) {
         return __awaiter(this, void 0, void 0, function () {
-            var query, e_9;
+            var e_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        query = num ? "&rownum=".concat(num) : '';
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 3, , 4]);
-                        return [4 /*yield*/, this.API.get("".concat(prefix, "/noteRecent?action=List&note_channel_id=").concat(channelId).concat(query))];
-                    case 2: return [2 /*return*/, _a.sent()];
-                    case 3:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/bookmark"))];
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
                         e_9 = _a.sent();
                         throw Error(JSON.stringify(e_9));
-                    case 4: return [2 /*return*/];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    PageRepo.prototype.getBookmarkInUser = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var e_10;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/bookmark"))];
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        e_10 = _a.sent();
+                        throw Error(JSON.stringify(e_10));
+                    case 3: return [2 /*return*/];
                 }
             });
         });
