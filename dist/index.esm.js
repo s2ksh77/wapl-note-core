@@ -5387,12 +5387,7 @@ var SearchRepo = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, this.API.post("".concat(prefix, "/noteSearch?action=List"), {
-                            dto: {
-                                note_channel_id: channelId,
-                                text: searchKey,
-                            },
-                        })];
+                    return [2 /*return*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/search?text=").concat(searchKey))];
                 }
                 catch (e) {
                     throw Error(JSON.stringify(e));
