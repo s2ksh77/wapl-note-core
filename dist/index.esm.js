@@ -5409,14 +5409,26 @@ var TagRepo = /** @class */ (function () {
     function TagRepo() {
         this.API = new API();
     }
-    TagRepo.prototype.createTag = function (tagList) {
+    TagRepo.prototype.getAllTagList = function (channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/tag"))];
+            });
+        });
+    };
+    TagRepo.prototype.getTagList = function (pageId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/, this.API.get("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"))];
+            });
+        });
+    };
+    TagRepo.prototype.createTag = function (pageId, dto) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, this.API.post("".concat(prefix, "/tag"), {
-                            dto: {
-                                tagList: tagList,
-                            },
+                    return [2 /*return*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
+                            dto: dto,
                         })];
                 }
                 catch (e) {
@@ -5426,14 +5438,12 @@ var TagRepo = /** @class */ (function () {
             });
         });
     };
-    TagRepo.prototype.deleteTag = function (targetList) {
+    TagRepo.prototype.deleteTag = function (pageId, dto) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, this.API.post("".concat(prefix, "/tag?action=Delete"), {
-                            dto: {
-                                tagList: targetList,
-                            },
+                    return [2 /*return*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
+                            dto: dto,
                         })];
                 }
                 catch (e) {
@@ -5443,43 +5453,18 @@ var TagRepo = /** @class */ (function () {
             });
         });
     };
-    TagRepo.prototype.updateTag = function (tagList) {
+    TagRepo.prototype.updateTag = function (pageId, dto) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, this.API.post("".concat(prefix, "/tag?action=Update"), {
-                            dto: {
-                                tagList: tagList,
-                            },
+                    return [2 /*return*/, this.API.put("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
+                            dto: dto,
                         })];
                 }
                 catch (e) {
                     throw Error(JSON.stringify(e));
                 }
                 return [2 /*return*/];
-            });
-        });
-    };
-    TagRepo.prototype.getNoteTagList = function (pageId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.API.get("".concat(prefix, "/tag?action=List&note_id=").concat(pageId, "&t=").concat(new Date().getTime().toString()))];
-            });
-        });
-    };
-    TagRepo.prototype.getAllSortedTagList = function (ChannelId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.API.get("".concat(prefix, "/tagSort?action=List&note_channel_id=").concat(ChannelId, "&t=").concat(new Date()
-                        .getTime()
-                        .toString()))];
-            });
-        });
-    };
-    TagRepo.prototype.getTagNoteList = function (tagId, userId, ChannelId) {
-        return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                return [2 /*return*/, this.API.get("".concat(prefix, "/tagnote?action=List&tag_id=").concat(tagId, "&USER_ID=").concat(userId, "\n      &note_channel_id=").concat(ChannelId))];
             });
         });
     };

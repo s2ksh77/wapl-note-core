@@ -1,8 +1,9 @@
+import { ChannelId, PageId } from "../@types/common";
+import { TagDTO } from "../models/dto/TagDTO";
 export interface ITagRepo {
-    createTag(tagList: any): any;
-    deleteTag(tagList: any): any;
-    updateTag(tagList: any): any;
-    getNoteTagList(pageId: any): any;
-    getAllSortedTagList(ChannelId: any): any;
-    getTagNoteList(tagId: any, userId: any, ChannelId: any): any;
+    getAllTagList(channelId: ChannelId): any;
+    getTagList(pageId: PageId): any;
+    createTag(pageId: PageId, dto: TagDTO[]): any;
+    deleteTag(pageId: PageId, dto: TagDTO[]): any;
+    updateTag(pageId: PageId, dto: TagDTO[]): any;
 }
