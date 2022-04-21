@@ -1,6 +1,7 @@
 import API from '~/lib/API';
 import type { ITagRepo } from '~/repositories/TagRepoType';
-import { prefix } from '~/@types/common';
+import { baseUrl, ChannelId, PageId, prefix } from '~/@types/common';
+import { TagDTO } from '~/models/dto/TagDTO';
 
 export class TagRepo implements ITagRepo {
   API: API;
@@ -9,61 +10,42 @@ export class TagRepo implements ITagRepo {
     this.API = new API();
   }
 
-  async createTag(tagList) {
+  async getAllTagList(channelId: ChannelId) {
+    return this.API.get(`${baseUrl}${prefix}/app/${channelId}/tag`);
+  }
+
+  async getTagList(pageId: PageId) {
+    return this.API.get(`${baseUrl}${prefix}/page/${pageId}/tag`);
+  }
+
+  async createTag(pageId: PageId, dto: TagDTO[]) {
     try {
-      return this.API.post(`${prefix}/tag`, {
-        dto: {
-          tagList,
-        },
+      return this.API.post(`${baseUrl}${prefix}/page/${pageId}/tag`, {
+        dto,
       });
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
   }
 
-  async deleteTag(targetList) {
+  async deleteTag(pageId: PageId, dto: TagDTO[]) {
     try {
-      return this.API.post(`${prefix}/tag?action=Delete`, {
-        dto: {
-          tagList: targetList,
-        },
+      return this.API.post(`${baseUrl}${prefix}/page/${pageId}/tag`, {
+        dto,
       });
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
   }
 
-  async updateTag(tagList) {
+  async updateTag(pageId: PageId, dto: TagDTO[]) {
     try {
-      return this.API.post(`${prefix}/tag?action=Update`, {
-        dto: {
-          tagList,
-        },
+      return this.API.put(`${baseUrl}${prefix}/page/${pageId}/tag`, {
+        dto,
       });
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
-  }
-
-  async getNoteTagList(pageId) {
-    return this.API.get(
-      `${prefix}/tag?action=List&note_id=${pageId}&t=${new Date().getTime().toString()}`,
-    );
-  }
-
-  async getAllSortedTagList(ChannelId) {
-    return this.API.get(
-      `${prefix}/tagSort?action=List&note_channel_id=${ChannelId}&t=${new Date()
-        .getTime()
-        .toString()}`,
-    );
-  }
-
-  async getTagNoteList(tagId, userId, ChannelId) {
-    return this.API.get(
-      `${prefix}/tagnote?action=List&tag_id=${tagId}&USER_ID=${userId}
-      &note_channel_id=${ChannelId}`,
-    );
   }
 }
 
