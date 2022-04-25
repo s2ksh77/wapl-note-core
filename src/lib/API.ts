@@ -15,9 +15,9 @@ class API {
       // withCredentials: true, // 인증정보 담아서 줄 때
     });
 
-    axios.interceptors.response.use(
+    this.instance.interceptors.response.use(
       response => {
-        return response;
+        return response.data;
       },
       error => {
         return Promise.reject(error);
