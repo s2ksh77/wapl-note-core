@@ -4821,8 +4821,8 @@ var API = /** @class */ (function () {
             },
             // withCredentials: true, // 인증정보 담아서 줄 때
         });
-        axios.interceptors.response.use(function (response) {
-            return response;
+        this.instance.interceptors.response.use(function (response) {
+            return response.data;
         }, function (error) {
             return Promise.reject(error);
         });
