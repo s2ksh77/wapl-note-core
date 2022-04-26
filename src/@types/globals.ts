@@ -1,15 +1,24 @@
 /* eslint-disable @typescript-eslint/no-namespace */
+import { ChapterModel, PageModel } from '~/models';
 import type {
-  GetChapterListResponseDTO,
-  GetChapterChildrenResponseDTO,
-  GetChapterInfoResponseDTO,
+  ChapterResponseArray,
+  ChapterResponseObject,
 } from '~/repositories/ChapterRepoType';
+import { PageResponseArray, PageResponseObject } from '~/repositories/PageRepoType';
 
 declare global {
-  namespace Dto {
-    type GetChapterListResponse = GetChapterListResponseDTO;
-    type GetChapterChildrenResponse = GetChapterChildrenResponseDTO;
-    type GetChapterInfoResponse = GetChapterInfoResponseDTO;
+  namespace DTO {
+    type GetChapterListResponse = ChapterResponseArray; // model 변환 안한 dto 채로 넘길때 사용해야 되나?
+    type GetChapterInfoResponse = ChapterResponseObject;
+
+    type GetPageListResponse = PageResponseArray;
+    type GEtPageInfoResponse = PageResponseObject;
+
+    type ChapterList = ChapterModel[];
+    type ChapterInfo = ChapterModel;
+
+    type PageList = PageModel[];
+    type PageInfo = PageModel;
   }
 }
 

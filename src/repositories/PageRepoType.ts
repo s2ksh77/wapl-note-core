@@ -1,10 +1,21 @@
 import { PageId, ChannelId, ChapterId } from '~/@types/common';
-import { PageDTO } from '~/models/dto/PageDTO';
+import { PageModel } from '~/models';
 
+export type PageResponseArray = {
+  success: boolean;
+  response?: PageModel[] | null;
+  error?: string | null;
+};
+
+export type PageResponseObject = {
+  success: boolean;
+  response?: PageModel | null;
+  error?: string | null;
+};
 export interface IPageRepo {
-  getAllPageList(channelId: ChannelId);
-  getRecentList(channelId: ChannelId, num);
-  getNoteInfoList(pageId: PageId, channelId: ChannelId);
+  getAllPageList(channelId: ChannelId): Promise<DTO.PageList>;
+  getRecentList(channelId: ChannelId, num): Promise<DTO.PageInfo>;
+  getNoteInfoList(pageId: PageId, channelId: ChannelId): Promise<DTO.GEtPageInfoResponse>;
   createPage(channelId: ChannelId, chapterId: ChapterId, dto: PageDTO);
   deletePage(channelId: ChannelId, chapterId: ChapterId, pageId: PageId);
   updatePage(channelId: ChannelId, chapterId: ChapterId, action: string, dto: PageDTO);

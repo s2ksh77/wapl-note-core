@@ -11,7 +11,7 @@ export class PageRepo implements IPageRepo {
     this.API = new API();
   }
 
-  async getAllPageList(channelId: ChannelId) {
+  async getAllPageList(channelId: ChannelId): Promise<DTO.PageList> {
     try {
       return await this.API.get(`${baseUrl}${prefix}/app/${channelId}/page/all`);
     } catch (e) {
@@ -19,7 +19,7 @@ export class PageRepo implements IPageRepo {
     }
   }
 
-  async getRecentList(channelId: ChannelId, num) {
+  async getRecentList(channelId: ChannelId, num): Promise<DTO.PageInfo> {
     const query = num ? `?count=${num}` : '';
     try {
       return await this.API.get(`${baseUrl}${prefix}/app/${channelId}/page${query}`);
@@ -28,7 +28,10 @@ export class PageRepo implements IPageRepo {
     }
   }
 
-  async getNoteInfoList(pageId: PageId, channelId: ChannelId) {
+  async getNoteInfoList(
+    pageId: PageId,
+    channelId: ChannelId,
+  ): Promise<DTO.GEtPageInfoResponse> {
     try {
       return await this.API.get(`${baseUrl}${prefix}/app/${channelId}/page/${pageId}`);
     } catch (e) {

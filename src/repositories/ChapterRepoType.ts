@@ -1,27 +1,25 @@
-import { ChannelId, ChapterId, ResponseFormat } from '~/@types/common';
-import type { ChapterDTO } from '~/models/dto/ChapterDTO';
-import type { PageDTO } from '~/models/dto/PageDTO';
+import { ChannelId, ChapterId } from '~/@types/common';
+import { ChapterModel } from '~/models';
 
-export type GetChapterListResponseDTO = {
+export type ChapterResponseArray = {
   success: boolean;
-  response: ChapterDTO[];
+  response?: ChapterModel[] | null;
+  error?: string | null;
 };
 
-export type GetChapterChildrenResponseDTO = {
+export type ChapterResponseObject = {
   success: boolean;
-  response: PageDTO[];
-};
-
-export type GetChapterInfoResponseDTO = {
-  success: boolean;
-  response: ChapterDTO;
+  response?: ChapterModel | null;
+  error?: string | null;
 };
 
 export interface IChapterRepo {
-  getChapterList(channelId: ChannelId): Promise<ResponseFormat>;
-  getChapterInfoList(chapterId: ChapterId, channelId: ChannelId);
+  getChapterList(channelId: ChannelId): Promise<DTO.ChapterList>;
+  getChapterInfoList(
+    chapterId: ChapterId,
+    channelId: ChannelId,
+  ): Promise<DTO.ChapterInfo>;
   createShareChapter(chapterList, channelId: ChannelId);
   createChapter(dto: ChapterDTO, i18nLanguage: string, channelId: ChannelId);
-  // deleteChapter(chapterList: ChapterDTO[], channelId: ChannelId, chapterId: ChapterId);
   updateChapter(dto: ChapterDTO, channelId: ChannelId);
 }

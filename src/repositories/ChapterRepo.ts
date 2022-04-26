@@ -1,10 +1,11 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable consistent-return */
 import API from '~/lib/API';
-import type { ChannelId, ChapterId, ResponseFormat } from '~/@types/common';
+import type { ChannelId, ChapterId } from '~/@types/common';
 import { baseUrl, prefix } from '~/@types/common';
 import type { IChapterRepo } from '~/repositories/ChapterRepoType';
 import { ChapterDTO } from '~/models/dto/ChapterDTO';
+import { ChapterModel } from '~/models';
 
 export class ChapterRepo implements IChapterRepo {
   API: API;
@@ -13,21 +14,25 @@ export class ChapterRepo implements IChapterRepo {
     this.API = new API();
   }
 
-  async getChapterList(channelId: ChannelId): Promise<ResponseFormat> {
+  async getChapterList(channelId: ChannelId): Promise<DTO.ChapterList> {
     try {
       const res = await this.API.get(`${baseUrl}${prefix}/app/${channelId}`);
-      return res;
+      if (res.success)
+        return res.response?.map(chapter => new ChapterModel(chapter) || []);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
   }
 
-  async getChapterInfoList(chapterId: ChapterId, channelId: ChannelId) {
+  async getChapterInfoList(
+    chapterId: ChapterId,
+    channelId: ChannelId,
+  ): Promise<DTO.ChapterInfo> {
     try {
       const res = await this.API.get(
         `${baseUrl}${prefix}/app/${channelId}/chapter/${chapterId}`,
       );
-      return res;
+      if (res.success) return new ChapterModel(res.response);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }

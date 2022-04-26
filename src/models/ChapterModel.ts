@@ -1,4 +1,3 @@
-import { ChapterType } from '~/@types/chapter';
 import {
   ChannelId,
   ChapterId,
@@ -8,19 +7,19 @@ import {
   SharedRoomId,
   SharedUserId,
   Name,
+  Type,
 } from '~/@types/common';
 import { ChapterDTO } from '~/models/dto/ChapterDTO';
 import type { PageDTO } from '~/models/dto/PageDTO';
+import { makeAutoObservable, observable } from 'mobx';
 
 export class ChapterModel {
-  type: ChapterType;
   response: ChapterDTO;
 
-  constructor(chapterInfo: ChapterDTO) {
-    this.type = chapterInfo.type;
-
+  constructor(chapter: ChapterDTO) {
     // Origin
-    this.response = chapterInfo;
+    this.response = chapter;
+    makeAutoObservable<ChapterModel>(this);
   }
 
   get id(): ChapterId {
@@ -33,6 +32,10 @@ export class ChapterModel {
 
   get name(): Name {
     return this.response.name;
+  }
+
+  get type(): Type {
+    return this.response.type;
   }
 
   get modifiedDate(): ModifiedDate {

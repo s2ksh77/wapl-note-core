@@ -1,3 +1,4 @@
+import { makeAutoObservable } from 'mobx';
 import {
   PageId,
   ChannelId,
@@ -21,8 +22,9 @@ import type { PageDTO } from '~/models/dto/PageDTO';
 export class PageModel {
   response: PageDTO;
 
-  constructor(pageInfo: PageDTO) {
-    this.response = pageInfo;
+  constructor(page: PageDTO) {
+    this.response = page;
+    makeAutoObservable<PageModel>(this);
   }
 
   get id(): PageId {
