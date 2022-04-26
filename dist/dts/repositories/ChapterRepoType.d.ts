@@ -1,4 +1,4 @@
-import { ChannelId, ChapterId } from "../@types/common";
+import { ChannelId, ChapterId, ResponseFormat } from "../@types/common";
 import type { ChapterDTO } from "../models/dto/ChapterDTO";
 import type { PageDTO } from "../models/dto/PageDTO";
 export declare type GetChapterListResponseDTO = {
@@ -14,7 +14,7 @@ export declare type GetChapterInfoResponseDTO = {
     response: ChapterDTO;
 };
 export interface IChapterRepo {
-    getChapterList(channelId: ChannelId): any;
+    getChapterList(channelId: ChannelId): Promise<ResponseFormat>;
     getChapterInfoList(chapterId: ChapterId, channelId: ChannelId): any;
     createShareChapter(chapterList: any, channelId: ChannelId): any;
     createChapter(dto: ChapterDTO, i18nLanguage: string, channelId: ChannelId): any;

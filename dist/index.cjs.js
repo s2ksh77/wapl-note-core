@@ -4827,12 +4827,12 @@ var API = /** @class */ (function () {
             return Promise.reject(error);
         });
     }
-    API.prototype.get = function (url, queryString) {
+    API.prototype.get = function (url, config) {
         return __awaiter(this, void 0, void 0, function () {
             var res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.instance.get(url, queryString)];
+                    case 0: return [4 /*yield*/, this.instance.get(url, config)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];
@@ -4840,12 +4840,12 @@ var API = /** @class */ (function () {
             });
         });
     };
-    API.prototype.post = function (url, payload) {
+    API.prototype.post = function (url, payload, config) {
         return __awaiter(this, void 0, void 0, function () {
             var res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.instance.post(url, payload)];
+                    case 0: return [4 /*yield*/, this.instance.post(url, payload, config)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];
@@ -4853,12 +4853,12 @@ var API = /** @class */ (function () {
             });
         });
     };
-    API.prototype.put = function (url, payload, queryString) {
+    API.prototype.put = function (url, payload, config) {
         return __awaiter(this, void 0, void 0, function () {
             var res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.instance.put(url, payload, queryString)];
+                    case 0: return [4 /*yield*/, this.instance.put(url, payload, config)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];
@@ -4866,12 +4866,12 @@ var API = /** @class */ (function () {
             });
         });
     };
-    API.prototype.delete = function (url) {
+    API.prototype.delete = function (url, config) {
         return __awaiter(this, void 0, void 0, function () {
             var res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.instance.delete(url)];
+                    case 0: return [4 /*yield*/, this.instance.delete(url, config)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];
@@ -4896,7 +4896,6 @@ var ChapterRepo = /** @class */ (function () {
                         return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId))];
                     case 1:
                         res = _a.sent();
-                        console.log('res', res);
                         return [2 /*return*/, res];
                     case 2:
                         e_1 = _a.sent();
@@ -5489,19 +5488,34 @@ var ChapterStore = /** @class */ (function () {
     function ChapterStore(rootStore) {
         mobx.makeAutoObservable(this);
         this.rootStore = rootStore;
+        this.repo = ChapterRepoImpl;
     }
     ChapterStore.prototype.setHeaderTitle = function (title) {
         this.headerTitle = title;
     };
     ChapterStore.prototype.getChapterList = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var _a, success, response;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0: return [4 /*yield*/, this.repo.getChapterList('79b3f1b3-85dc-4965-a8a2-0c4c56244b82')];
+                    case 1:
+                        _a = _b.sent(), success = _a.success, response = _a.response;
+                        if (success)
+                            return [2 /*return*/, response];
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ChapterStore.prototype.getChapterInfoList = function (chapterId, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
             var res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, ChapterRepoImpl.getChapterList('79b3f1b3-85dc-4965-a8a2-0c4c56244b82')];
+                    case 0: return [4 /*yield*/, this.repo.getChapterInfoList(chapterId, channelId)];
                     case 1:
                         res = _a.sent();
-                        console.log(res);
                         return [2 /*return*/, res];
                 }
             });

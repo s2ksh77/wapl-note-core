@@ -1,10 +1,16 @@
 import { AxiosInstance } from 'axios';
+interface APIInstance extends AxiosInstance {
+    get: (url: string, queryString?: any) => Promise<any>;
+    post: (url: string, payload?: any, config?: any) => Promise<any>;
+    put: (url: string, payload?: any, config?: any) => Promise<any>;
+    delete: (url: string, config?: any) => Promise<any>;
+}
 declare class API {
-    instance: AxiosInstance;
+    instance: APIInstance;
     constructor();
-    get(url: string, queryString?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    post(url: string, payload?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    put(url: string, payload?: any, queryString?: any): Promise<import("axios").AxiosResponse<any, any>>;
-    delete(url: string): Promise<import("axios").AxiosResponse<any, any>>;
+    get(url: string, config?: any): Promise<any>;
+    post(url: string, payload?: any, config?: any): Promise<any>;
+    put(url: string, payload?: any, config?: any): Promise<any>;
+    delete(url: string, config?: any): Promise<any>;
 }
 export default API;
