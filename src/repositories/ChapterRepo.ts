@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable consistent-return */
 import API from '~/lib/API';
-import type { ChannelId, ChapterId } from '~/@types/common';
+import type { ChannelId, ChapterId, ResponseFormat } from '~/@types/common';
 import { baseUrl, prefix } from '~/@types/common';
 import type { IChapterRepo } from '~/repositories/ChapterRepoType';
 import { ChapterDTO } from '~/models/dto/ChapterDTO';
@@ -13,10 +13,9 @@ export class ChapterRepo implements IChapterRepo {
     this.API = new API();
   }
 
-  async getChapterList(channelId: ChannelId) {
+  async getChapterList(channelId: ChannelId): Promise<ResponseFormat> {
     try {
       const res = await this.API.get(`${baseUrl}${prefix}/app/${channelId}`);
-      console.log('res', res);
       return res;
     } catch (e) {
       throw Error(JSON.stringify(e));

@@ -2,8 +2,14 @@
 import axios, { AxiosInstance } from 'axios';
 import { baseUrl } from '~/@types/common';
 
+interface APIInstance extends AxiosInstance {
+  get: (url: string, queryString?: any) => Promise<any>;
+  post: (url: string, payload?: any, config?: any) => Promise<any>;
+  put: (url: string, payload?: any, config?: any) => Promise<any>;
+  delete: (url: string, config?: any) => Promise<any>;
+}
 class API {
-  instance: AxiosInstance;
+  instance: APIInstance;
 
   constructor() {
     this.instance = axios.create({
@@ -25,24 +31,24 @@ class API {
     );
   }
 
-  public async get(url: string, queryString?) {
-    const res = await this.instance.get(url, queryString);
+  public async get(url: string, config?) {
+    const res = await this.instance.get(url, config);
 
     return res;
   }
 
-  public async post(url: string, payload?) {
-    const res = await this.instance.post(url, payload);
+  public async post(url: string, payload?, config?) {
+    const res = await this.instance.post(url, payload, config);
     return res;
   }
 
-  public async put(url: string, payload?: any, queryString?) {
-    const res = await this.instance.put(url, payload, queryString);
+  public async put(url: string, payload?, config?) {
+    const res = await this.instance.put(url, payload, config);
     return res;
   }
 
-  public async delete(url: string) {
-    const res = await this.instance.delete(url);
+  public async delete(url: string, config?) {
+    const res = await this.instance.delete(url, config);
     return res;
   }
 }
