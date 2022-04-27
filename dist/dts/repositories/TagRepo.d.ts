@@ -5,10 +5,10 @@ import { TagDTO } from "../models/dto/TagDTO";
 export declare class TagRepo implements ITagRepo {
     API: API;
     constructor();
-    getAllTagList(channelId: ChannelId): Promise<any>;
-    getTagList(pageId: PageId): Promise<any>;
-    createTag(pageId: PageId, dto: TagDTO[]): Promise<any>;
-    deleteTag(pageId: PageId, dto: TagDTO[]): Promise<any>;
-    updateTag(pageId: PageId, dto: TagDTO[]): Promise<any>;
+    getAllTagList(channelId: ChannelId): Promise<import("axios").AxiosResponse<any, any>>;
+    getTagList(pageId: PageId): Promise<import("axios").AxiosResponse<any, any>>;
+    createTag(pageId: PageId, dto: TagDTO[]): Promise<import("axios").AxiosResponse<any, any>>;
+    deleteTag(pageId: PageId, dto: TagDTO[]): Promise<import("axios").AxiosResponse<any, any>>;
+    updateTag(pageId: PageId, dto: TagDTO[]): Promise<import("axios").AxiosResponse<any, any>>;
 }
 export declare const TagRepoImpl: TagRepo;

@@ -6,9 +6,9 @@ export declare class PageRepo implements IPageRepo {
     API: API;
     channelId: any;
     constructor();
-    getAllPageList(channelId: ChannelId): Promise<any>;
-    getRecentList(channelId: ChannelId, num: any): Promise<any>;
-    getNoteInfoList(pageId: PageId, channelId: ChannelId): Promise<any>;
+    getAllPageList(channelId: ChannelId): Promise<DTO.PageList>;
+    getRecentList(channelId: ChannelId, num: any): Promise<DTO.PageInfo>;
+    getNoteInfoList(pageId: PageId, channelId: ChannelId): Promise<DTO.GEtPageInfoResponse>;
     createPage(channelId: ChannelId, chapterId: ChapterId, dto: PageDTO): Promise<any>;
     deletePage(channelId: ChannelId, chapterId: ChapterId, pageId: PageId): Promise<any>;
     updatePage(channelId: ChannelId, chapterId: ChapterId, action: string, dto: PageDTO): Promise<any>;

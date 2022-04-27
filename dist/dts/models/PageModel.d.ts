@@ -2,7 +2,7 @@ import { PageId, ChannelId, Name, CreatedDate, ModifiedDate, SharedDate, SharedR
 import type { PageDTO } from "./dto/PageDTO";
 export declare class PageModel {
     response: PageDTO;
-    constructor(pageInfo: PageDTO);
+    constructor(page: PageDTO);
     get id(): PageId;
     get channelId(): ChannelId;
     get name(): Name;

@@ -1,21 +1,19 @@
-import { ChannelId, ChapterId, ResponseFormat } from "../@types/common";
+import { ChannelId, ChapterId } from "../@types/common";
+import { ChapterModel } from "../models";
 import type { ChapterDTO } from "../models/dto/ChapterDTO";
-import type { PageDTO } from "../models/dto/PageDTO";
-export declare type GetChapterListResponseDTO = {
+export declare type ChapterResponseArray = {
     success: boolean;
-    response: ChapterDTO[];
+    response?: ChapterModel[] | null;
+    error?: string | null;
 };
-export declare type GetChapterChildrenResponseDTO = {
+export declare type ChapterResponseObject = {
     success: boolean;
-    response: PageDTO[];
-};
-export declare type GetChapterInfoResponseDTO = {
-    success: boolean;
-    response: ChapterDTO;
+    response?: ChapterModel | null;
+    error?: string | null;
 };
 export interface IChapterRepo {
-    getChapterList(channelId: ChannelId): Promise<ResponseFormat>;
-    getChapterInfoList(chapterId: ChapterId, channelId: ChannelId): any;
+    getChapterList(channelId: ChannelId): Promise<DTO.GetChapterListResponse>;
+    getChapterInfoList(chapterId: ChapterId, channelId: ChannelId): Promise<DTO.GetChapterInfoResponse>;
     createShareChapter(chapterList: any, channelId: ChannelId): any;
     createChapter(dto: ChapterDTO, i18nLanguage: string, channelId: ChannelId): any;
     updateChapter(dto: ChapterDTO, channelId: ChannelId): any;

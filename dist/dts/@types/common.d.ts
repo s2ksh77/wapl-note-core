@@ -37,8 +37,3 @@ export declare enum MenuType {
     PAGE = "page",
     TAG = "tag"
 }
-export declare type ResponseFormat = {
-    success: boolean;
-    response?: [] | null;
-    error?: string | null;
-};

@@ -1,4 +1,5 @@
 import type { ChannelId, ChapterId, PageId } from "../../@types/common";
+import { TagDTO } from './TagDTO';
 export interface PageDTO {
     id: PageId;
     chapterId: ChapterId;
@@ -21,5 +22,5 @@ export interface PageDTO {
     textContent: string;
     read: boolean;
     fileList: any;
-    tagList: any;
+    tagList: TagDTO[];
 }

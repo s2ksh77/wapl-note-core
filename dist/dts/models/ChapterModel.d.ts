@@ -1,14 +1,13 @@
-import { ChapterType } from "../@types/chapter";
-import { ChannelId, ChapterId, Color, SharedDate, ModifiedDate, SharedRoomId, SharedUserId, Name } from "../@types/common";
+import { ChannelId, ChapterId, Color, SharedDate, ModifiedDate, SharedRoomId, SharedUserId, Name, Type } from "../@types/common";
 import { ChapterDTO } from "./dto/ChapterDTO";
 import type { PageDTO } from "./dto/PageDTO";
 export declare class ChapterModel {
-    type: ChapterType;
     response: ChapterDTO;
-    constructor(chapterInfo: ChapterDTO);
+    constructor(chapter: ChapterDTO);
     get id(): ChapterId;
     get channelId(): ChannelId;
     get name(): Name;
+    get type(): Type;
     get modifiedDate(): ModifiedDate;
     get color(): Color;
     get pageList(): PageDTO[];

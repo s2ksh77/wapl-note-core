@@ -4,6 +4,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 
 var i18next = require('i18next');
 var reactI18next = require('react-i18next');
+var mobx = require('mobx');
 var http = require('http');
 var https = require('https');
 var url = require('url');
@@ -13,7 +14,6 @@ var tty = require('tty');
 var util = require('util');
 var os = require('os');
 var zlib = require('zlib');
-var mobx = require('mobx');
 var React = require('react');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -690,10 +690,10 @@ var useNoteCore = function () {
 };
 
 var ChapterModel = /** @class */ (function () {
-    function ChapterModel(chapterInfo) {
-        this.type = chapterInfo.type;
+    function ChapterModel(chapter) {
         // Origin
-        this.response = chapterInfo;
+        this.response = chapter;
+        mobx.makeAutoObservable(this);
     }
     Object.defineProperty(ChapterModel.prototype, "id", {
         get: function () {
@@ -712,6 +712,13 @@ var ChapterModel = /** @class */ (function () {
     Object.defineProperty(ChapterModel.prototype, "name", {
         get: function () {
             return this.response.name;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(ChapterModel.prototype, "type", {
+        get: function () {
+            return this.response.type;
         },
         enumerable: false,
         configurable: true
@@ -762,8 +769,9 @@ var ChapterModel = /** @class */ (function () {
 }());
 
 var PageModel = /** @class */ (function () {
-    function PageModel(pageInfo) {
-        this.response = pageInfo;
+    function PageModel(page) {
+        this.response = page;
+        mobx.makeAutoObservable(this);
     }
     Object.defineProperty(PageModel.prototype, "id", {
         get: function () {
@@ -4887,18 +4895,21 @@ var ChapterRepo = /** @class */ (function () {
         this.API = new API();
     }
     ChapterRepo.prototype.getChapterList = function (channelId) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var res, e_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        _b.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId))];
                     case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
+                        res = _b.sent();
+                        if (res.success)
+                            return [2 /*return*/, (_a = res.response) === null || _a === void 0 ? void 0 : _a.map(function (chapter) { return new ChapterModel(chapter) || []; })];
+                        return [3 /*break*/, 3];
                     case 2:
-                        e_1 = _a.sent();
+                        e_1 = _b.sent();
                         throw Error(JSON.stringify(e_1));
                     case 3: return [2 /*return*/];
                 }
@@ -4915,7 +4926,9 @@ var ChapterRepo = /** @class */ (function () {
                         return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter/").concat(chapterId))];
                     case 1:
                         res = _a.sent();
-                        return [2 /*return*/, res];
+                        if (res.success)
+                            return [2 /*return*/, new ChapterModel(res.response)];
+                        return [3 /*break*/, 3];
                     case 2:
                         e_2 = _a.sent();
                         throw Error(JSON.stringify(e_2));
@@ -5484,6 +5497,15 @@ var TagRepo = /** @class */ (function () {
 }());
 var TagRepoImpl = new TagRepo();
 
+var ChapterType;
+(function (ChapterType) {
+    ChapterType["DEFAULT"] = "DEFAULT";
+    ChapterType["NOTEBOOK"] = "NOTEBOOK";
+    ChapterType["SHARED_PAGE"] = "SHARED_PAGE";
+    ChapterType["SHARED"] = "SHARED";
+    ChapterType["RECYCLE_BIN"] = "RECYCLE_BIN";
+})(ChapterType || (ChapterType = {}));
+
 var ChapterStore = /** @class */ (function () {
     function ChapterStore(rootStore) {
         mobx.makeAutoObservable(this);
@@ -5493,18 +5515,27 @@ var ChapterStore = /** @class */ (function () {
     ChapterStore.prototype.setHeaderTitle = function (title) {
         this.headerTitle = title;
     };
-    ChapterStore.prototype.getChapterList = function () {
+    ChapterStore.prototype.getChapterList = function (channelId) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, success, response;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0: return [4 /*yield*/, this.repo.getChapterList('79b3f1b3-85dc-4965-a8a2-0c4c56244b82')];
+            var chapters;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.getChapterList(channelId)];
                     case 1:
-                        _a = _b.sent(), success = _a.success, response = _a.response;
-                        if (success)
-                            return [2 /*return*/, response];
-                        return [2 /*return*/];
+                        chapters = _a.sent();
+                        return [2 /*return*/, this.sortChapterList(chapters)];
                 }
+            });
+        });
+    };
+    ChapterStore.prototype.sortChapterList = function (chapters) {
+        return __awaiter(this, void 0, void 0, function () {
+            var normal, shared, recycle;
+            return __generator(this, function (_a) {
+                normal = chapters.filter(function (chapter) { return chapter.type === ChapterType.NOTEBOOK; });
+                shared = chapters.filter(function (chapter) { return chapter.type === ChapterType.SHARED && ChapterType.SHARED_PAGE; });
+                recycle = chapters.filter(function (chapter) { return chapter.type === ChapterType.RECYCLE_BIN; });
+                return [2 /*return*/, { normal: normal, shared: shared, recycle: recycle }];
             });
         });
     };
