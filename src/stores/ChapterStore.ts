@@ -2,7 +2,9 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { makeAutoObservable } from 'mobx';
+import { ChapterType } from '~/@types/chapter';
 import { ChannelId, ChapterId } from '~/@types/common';
+import { ChapterModel } from '~/models';
 import { ChapterRepoImpl } from '~/repositories';
 import { IChapterRepo } from '~/repositories/ChapterRepoType';
 
@@ -22,11 +24,20 @@ export class ChapterStore {
     this.headerTitle = title;
   }
 
-  async getChapterList() {
-    const chapters = await this.repo.getChapterList(
-      '79b3f1b3-85dc-4965-a8a2-0c4c56244b82',
+  async getChapterList(channelId: ChannelId) {
+    const chapters = await this.repo.getChapterList(channelId);
+
+    return this.sortChapterList(chapters);
+  }
+
+  async sortChapterList(chapters: ChapterModel[]) {
+    // 임시
+    const normal = chapters.filter(chapter => chapter.type === ChapterType.NOTEBOOK);
+    const shared = chapters.filter(
+      chapter => chapter.type === ChapterType.SHARED && ChapterType.SHARED_PAGE,
     );
-    return chapters;
+    const recycle = chapters.filter(chapter => chapter.type === ChapterType.RECYCLE_BIN);
+    return { normal, shared, recycle };
   }
 
   async getChapterInfoList(chapterId: ChapterId, channelId: ChannelId) {
