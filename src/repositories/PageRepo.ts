@@ -1,7 +1,9 @@
+/* eslint-disable consistent-return */
 import API from '~/lib/API';
 import { baseUrl, ChannelId, ChapterId, PageId, prefix } from '~/@types/common';
 import { PageDTO } from '~/models/dto/PageDTO';
 import type { IPageRepo } from '~/repositories/PageRepoType';
+import { PageModel } from '~/models';
 
 export class PageRepo implements IPageRepo {
   API: API;
@@ -116,9 +118,10 @@ export class PageRepo implements IPageRepo {
     }
   }
 
-  async getBookmarkInChannel(channelId: ChannelId) {
+  async getBookmarkInChannel(channelId: ChannelId): Promise<DTO.PageList> {
     try {
-      return await this.API.get(`${baseUrl}${prefix}/app/${channelId}/bookmark`);
+      const res = await this.API.get(`${baseUrl}${prefix}/app/${channelId}/bookmark`);
+      if (res.success) return res.response?.map(page => new PageModel(page) || []);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }

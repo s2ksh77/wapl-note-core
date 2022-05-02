@@ -48,12 +48,17 @@ export class ChapterRepo implements IChapterRepo {
     return res;
   }
 
-  async createChapter(dto: ChapterDTO, i18nLanguage: string, channelId: ChannelId) {
+  async createChapter(
+    dto: ChapterModel,
+    language: string,
+    channelId: ChannelId,
+  ): Promise<DTO.ChapterInfo> {
     try {
-      const res = await this.API.post(`${baseUrl}${prefix}/app/${channelId}/chapter`, {
-        dto,
-      });
-      return res;
+      const res = await this.API.post(
+        `${baseUrl}${prefix}/app/${channelId}/chapter?language=${language}`,
+        dto.response,
+      );
+      if (res.success) return new ChapterModel(res.response);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }

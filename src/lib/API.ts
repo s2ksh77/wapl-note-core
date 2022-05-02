@@ -16,7 +16,7 @@ class API {
       baseURL: baseUrl,
       headers: {
         'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/json',
       },
       // withCredentials: true, // 인증정보 담아서 줄 때
     });

@@ -23,6 +23,6 @@ export interface IPageRepo {
   updateRecyclePage(channelId: ChannelId, action: string, dto: PageDTO);
   bookmarkPage(pageId: PageId);
   unbookmarkPage(pageId: PageId);
-  getBookmarkInChannel(channelId: ChannelId);
+  getBookmarkInChannel(channelId: ChannelId): Promise<DTO.PageList>;
   getBookmarkInUser();
 }

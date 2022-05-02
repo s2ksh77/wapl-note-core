@@ -20,6 +20,10 @@ export interface IChapterRepo {
     channelId: ChannelId,
   ): Promise<DTO.ChapterInfo>;
   createShareChapter(chapterList, channelId: ChannelId);
-  createChapter(dto: ChapterDTO, i18nLanguage: string, channelId: ChannelId);
+  createChapter(
+    dto: ChapterModel,
+    language: string,
+    channelId: ChannelId,
+  ): Promise<DTO.ChapterInfo>;
   updateChapter(dto: ChapterDTO, channelId: ChannelId);
 }
