@@ -4825,7 +4825,7 @@ var API = /** @class */ (function () {
             baseURL: baseUrl,
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-Type': 'application/json',
             },
             // withCredentials: true, // 인증정보 담아서 줄 때
         });
@@ -4952,19 +4952,19 @@ var ChapterRepo = /** @class */ (function () {
             });
         });
     };
-    ChapterRepo.prototype.createChapter = function (dto, i18nLanguage, channelId) {
+    ChapterRepo.prototype.createChapter = function (dto, language, channelId) {
         return __awaiter(this, void 0, void 0, function () {
             var res, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.post("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter"), {
-                                dto: dto,
-                            })];
+                        return [4 /*yield*/, this.API.post("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter?language=").concat(language), dto.response)];
                     case 1:
                         res = _a.sent();
-                        return [2 /*return*/, res];
+                        if (res.success)
+                            return [2 /*return*/, new ChapterModel(res.response)];
+                        return [3 /*break*/, 3];
                     case 2:
                         e_3 = _a.sent();
                         throw Error(JSON.stringify(e_3));
@@ -5372,16 +5372,21 @@ var PageRepo = /** @class */ (function () {
         });
     };
     PageRepo.prototype.getBookmarkInChannel = function (channelId) {
+        var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var e_9;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var res, e_9;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        _b.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/bookmark"))];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 1:
+                        res = _b.sent();
+                        if (res.success)
+                            return [2 /*return*/, (_a = res.response) === null || _a === void 0 ? void 0 : _a.map(function (page) { return new PageModel(page) || []; })];
+                        return [3 /*break*/, 3];
                     case 2:
-                        e_9 = _a.sent();
+                        e_9 = _b.sent();
                         throw Error(JSON.stringify(e_9));
                     case 3: return [2 /*return*/];
                 }
@@ -5552,6 +5557,39 @@ var ChapterStore = /** @class */ (function () {
             });
         });
     };
+    ChapterStore.prototype.createChapter = function (dto, language, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.createChapter(dto, language, channelId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    Object.defineProperty(ChapterStore.prototype, "RandomColor", {
+        get: function () {
+            var colorArray = [
+                '#C84847',
+                '#F29274',
+                '#F6C750',
+                '#77B69B',
+                '#679886',
+                '#3A7973',
+                '#77BED3',
+                '#5C83DA',
+                '#8F91E7',
+                '#DF97AA',
+                '#CA6D6D',
+            ];
+            return colorArray[Math.floor(Math.random() * colorArray.length)];
+        },
+        enumerable: false,
+        configurable: true
+    });
     return ChapterStore;
 }());
 
@@ -5585,9 +5623,23 @@ var PageStore = /** @class */ (function () {
     function PageStore(rootStore) {
         mobx.makeAutoObservable(this);
         this.rootStore = rootStore;
+        this.repo = PageRepoImpl;
     }
     PageStore.prototype.changeMode = function () {
         this.isLongPressed = !this.isLongPressed;
+    };
+    PageStore.prototype.getBookmarkInChannel = function (channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.getBookmarkInChannel(channelId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
     };
     return PageStore;
 }());

@@ -16,7 +16,7 @@ export declare class PageRepo implements IPageRepo {
     updateRecyclePage(channelId: ChannelId, action: string, dto: PageDTO): Promise<any>;
     bookmarkPage(pageId: PageId): Promise<any>;
     unbookmarkPage(pageId: PageId): Promise<any>;
-    getBookmarkInChannel(channelId: ChannelId): Promise<any>;
+    getBookmarkInChannel(channelId: ChannelId): Promise<DTO.PageList>;
     getBookmarkInUser(): Promise<any>;
 }
 export declare const PageRepoImpl: PageRepo;

@@ -18,4 +18,6 @@ export declare class ChapterStore {
         recycle: ChapterModel[];
     }>;
     getChapterInfoList(chapterId: ChapterId, channelId: ChannelId): Promise<ChapterModel>;
+    createChapter(dto: ChapterModel, language: string, channelId: ChannelId): Promise<ChapterModel>;
+    get RandomColor(): string;
 }
