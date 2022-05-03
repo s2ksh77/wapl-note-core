@@ -1,3 +1,5 @@
+import { TagDTO } from '~/models/dto/TagDTO';
+
 export type ChannelId = string | null;
 export type UserId = string | null;
 export type ChapterId = string | null;
@@ -20,6 +22,7 @@ export type Content = string | null;
 export type UpdatedUserId = string | null;
 export type Type = string | null;
 export type TextContent = string | null;
+export type TagList = TagDTO[] | null;
 
 export const baseUrl = 'http://192.168.151.53:8282'; // for test
 export const prefix = '/apis/v1';

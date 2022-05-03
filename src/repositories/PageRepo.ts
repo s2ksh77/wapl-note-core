@@ -30,12 +30,12 @@ export class PageRepo implements IPageRepo {
     }
   }
 
-  async getNoteInfoList(
-    pageId: PageId,
-    channelId: ChannelId,
-  ): Promise<DTO.GEtPageInfoResponse> {
+  async getPageInfoList(pageId: PageId, channelId: ChannelId): Promise<DTO.PageInfo> {
     try {
-      return await this.API.get(`${baseUrl}${prefix}/app/${channelId}/page/${pageId}`);
+      const res = await this.API.get(
+        `${baseUrl}${prefix}/app/${channelId}/page/${pageId}`,
+      );
+      if (res.success) return new PageModel(res.response);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }

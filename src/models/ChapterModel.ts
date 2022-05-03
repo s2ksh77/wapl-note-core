@@ -11,12 +11,12 @@ import {
 } from '~/@types/common';
 import { ChapterDTO } from '~/models/dto/ChapterDTO';
 import type { PageDTO } from '~/models/dto/PageDTO';
-import { makeAutoObservable, observable } from 'mobx';
+import { makeAutoObservable } from 'mobx';
 
 export class ChapterModel {
   response: ChapterDTO;
 
-  constructor(chapter: ChapterDTO) {
+  constructor(chapter?: ChapterDTO) {
     // Origin
     this.response = chapter;
     makeAutoObservable<ChapterModel>(this);

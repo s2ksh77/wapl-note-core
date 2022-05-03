@@ -1,5 +1,6 @@
 import { makeAutoObservable } from 'mobx';
-import { ChannelId } from '~/@types/common';
+import { ChannelId, PageId } from '~/@types/common';
+import { PageModel } from '~/models';
 import { PageRepoImpl } from '~/repositories';
 import { IPageRepo } from '~/repositories/PageRepoType';
 
@@ -7,6 +8,7 @@ export class PageStore {
   rootStore;
   repo: IPageRepo;
   isLongPressed: boolean;
+  pageInfo: PageModel;
 
   constructor(rootStore) {
     makeAutoObservable(this);
@@ -20,6 +22,12 @@ export class PageStore {
 
   async getBookmarkInChannel(channelId: ChannelId) {
     const res = await this.repo.getBookmarkInChannel(channelId);
+    return res;
+  }
+
+  async getPageInfoList(pageId: PageId, channelId: ChannelId) {
+    const res = await this.repo.getPageInfoList(pageId, channelId);
+    this.pageInfo = res;
     return res;
   }
 }
