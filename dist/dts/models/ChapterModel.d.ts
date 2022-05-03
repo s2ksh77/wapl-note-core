@@ -3,7 +3,7 @@ import { ChapterDTO } from "./dto/ChapterDTO";
 import type { PageDTO } from "./dto/PageDTO";
 export declare class ChapterModel {
     response: ChapterDTO;
-    constructor(chapter: ChapterDTO);
+    constructor(chapter?: ChapterDTO);
     get id(): ChapterId;
     get channelId(): ChannelId;
     get name(): Name;

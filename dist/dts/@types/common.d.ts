@@ -1,3 +1,4 @@
+import { TagDTO } from "../models/dto/TagDTO";
 export declare type ChannelId = string | null;
 export declare type UserId = string | null;
 export declare type ChapterId = string | null;
@@ -20,6 +21,7 @@ export declare type Content = string | null;
 export declare type UpdatedUserId = string | null;
 export declare type Type = string | null;
 export declare type TextContent = string | null;
+export declare type TagList = TagDTO[] | null;
 export declare const baseUrl = "http://192.168.151.53:8282";
 export declare const prefix = "/apis/v1";
 export declare enum NoteViewType {

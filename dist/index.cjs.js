@@ -5240,15 +5240,19 @@ var PageRepo = /** @class */ (function () {
             });
         });
     };
-    PageRepo.prototype.getNoteInfoList = function (pageId, channelId) {
+    PageRepo.prototype.getPageInfoList = function (pageId, channelId) {
         return __awaiter(this, void 0, void 0, function () {
-            var e_3;
+            var res, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/page/").concat(pageId))];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 1:
+                        res = _a.sent();
+                        if (res.success)
+                            return [2 /*return*/, new PageModel(res.response)];
+                        return [3 /*break*/, 3];
                     case 2:
                         e_3 = _a.sent();
                         throw Error(JSON.stringify(e_3));
@@ -5636,6 +5640,20 @@ var PageStore = /** @class */ (function () {
                     case 0: return [4 /*yield*/, this.repo.getBookmarkInChannel(channelId)];
                     case 1:
                         res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.getPageInfoList = function (pageId, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.getPageInfoList(pageId, channelId)];
+                    case 1:
+                        res = _a.sent();
+                        this.pageInfo = res;
                         return [2 /*return*/, res];
                 }
             });
