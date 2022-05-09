@@ -20,15 +20,11 @@ import {
 import type { PageDTO } from '~/models/dto/PageDTO';
 
 export class PageModel {
-  response: PageDTO;
+  response: Partial<PageDTO>;
 
-  constructor(page: PageDTO) {
+  constructor(page: Partial<PageDTO>) {
     this.response = page;
-    makeAutoObservable<PageModel>(this);
-  }
-
-  get id(): PageId {
-    return this.response.id;
+    makeAutoObservable(this);
   }
 
   get channelId(): ChannelId {
