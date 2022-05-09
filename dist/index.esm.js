@@ -755,13 +755,6 @@ var PageModel = /** @class */ (function () {
         this.response = page;
         makeAutoObservable(this);
     }
-    Object.defineProperty(PageModel.prototype, "id", {
-        get: function () {
-            return this.response.id;
-        },
-        enumerable: false,
-        configurable: true
-    });
     Object.defineProperty(PageModel.prototype, "channelId", {
         get: function () {
             return this.response.channelId;
@@ -769,9 +762,16 @@ var PageModel = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Object.defineProperty(PageModel.prototype, "name", {
+    Object.defineProperty(PageModel.prototype, "chapterId", {
         get: function () {
-            return this.response.name;
+            return this.response.chapterId;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PageModel.prototype, "content", {
+        get: function () {
+            return this.response.content;
         },
         enumerable: false,
         configurable: true
@@ -783,44 +783,16 @@ var PageModel = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Object.defineProperty(PageModel.prototype, "modifiedDate", {
+    Object.defineProperty(PageModel.prototype, "createdUserId", {
         get: function () {
-            return this.response.modifiedDate;
+            return this.response.createdUserId;
         },
         enumerable: false,
         configurable: true
     });
-    Object.defineProperty(PageModel.prototype, "sharedDate", {
+    Object.defineProperty(PageModel.prototype, "deletedDate", {
         get: function () {
-            return this.response.sharedDate;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(PageModel.prototype, "sharedRoomId", {
-        get: function () {
-            return this.response.sharedRoomId;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(PageModel.prototype, "sharedUserId", {
-        get: function () {
-            return this.response.sharedUserId;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(PageModel.prototype, "restoreChapterId", {
-        get: function () {
-            return this.response.restoreChapterId;
-        },
-        enumerable: false,
-        configurable: true
-    });
-    Object.defineProperty(PageModel.prototype, "userName", {
-        get: function () {
-            return this.response.userName;
+            return this.response.deletedDate;
         },
         enumerable: false,
         configurable: true
@@ -839,16 +811,86 @@ var PageModel = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Object.defineProperty(PageModel.prototype, "content", {
+    Object.defineProperty(PageModel.prototype, "fileList", {
         get: function () {
-            return this.response.content;
+            return this.response.fileList;
         },
         enumerable: false,
         configurable: true
     });
-    Object.defineProperty(PageModel.prototype, "updatedUserId", {
+    Object.defineProperty(PageModel.prototype, "id", {
         get: function () {
-            return this.response.updatedUserId;
+            return this.response.id;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PageModel.prototype, "modifiedDate", {
+        get: function () {
+            return this.response.modifiedDate;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PageModel.prototype, "name", {
+        get: function () {
+            return this.response.name;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PageModel.prototype, "read", {
+        get: function () {
+            return this.response.read;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PageModel.prototype, "restoreChapterId", {
+        get: function () {
+            return this.response.restoreChapterId;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PageModel.prototype, "shared", {
+        get: function () {
+            return this.response.shared;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PageModel.prototype, "sharedDate", {
+        get: function () {
+            return this.response.shared ? this.response.createdDate : null;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PageModel.prototype, "sharedRoomId", {
+        get: function () {
+            return this.response.sharedRoomId;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PageModel.prototype, "sharedUserId", {
+        get: function () {
+            return this.response.sharedUserId;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PageModel.prototype, "tagList", {
+        get: function () {
+            return this.response.tagList;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PageModel.prototype, "textContent", {
+        get: function () {
+            return this.response.textContent;
         },
         enumerable: false,
         configurable: true
@@ -860,9 +902,16 @@ var PageModel = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
-    Object.defineProperty(PageModel.prototype, "textContent", {
+    Object.defineProperty(PageModel.prototype, "updatedUserId", {
         get: function () {
-            return this.response.textContent;
+            return this.response.updatedUserId;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(PageModel.prototype, "userName", {
+        get: function () {
+            return this.response.userName;
         },
         enumerable: false,
         configurable: true
@@ -5306,15 +5355,17 @@ var PageRepo = /** @class */ (function () {
     };
     PageRepo.prototype.updateRecyclePage = function (channelId, action, dto) {
         return __awaiter(this, void 0, void 0, function () {
-            var e_6;
+            var res, e_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.post("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/page/recycle?action=").concat(action), {
-                                dto: dto,
-                            })];
-                    case 1: return [2 /*return*/, _a.sent()];
+                        return [4 /*yield*/, this.API.put("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/page/recycle?action=").concat(action), dto.response)];
+                    case 1:
+                        res = _a.sent();
+                        if (res.success)
+                            return [2 /*return*/, new PageModel(res.response)];
+                        return [3 /*break*/, 3];
                     case 2:
                         e_6 = _a.sent();
                         throw Error(JSON.stringify(e_6));
@@ -5636,6 +5687,19 @@ var PageStore = /** @class */ (function () {
                     case 1:
                         res = _a.sent();
                         this.pageInfo = res;
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.throwPage = function (channelId, action, dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.updateRecyclePage(channelId, action, dto)];
+                    case 1:
+                        res = _a.sent();
                         return [2 /*return*/, res];
                 }
             });

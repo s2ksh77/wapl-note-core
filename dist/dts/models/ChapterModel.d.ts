@@ -2,8 +2,8 @@ import { ChannelId, ChapterId, Color, SharedDate, ModifiedDate, SharedRoomId, Sh
 import { ChapterDTO } from "./dto/ChapterDTO";
 import type { PageDTO } from "./dto/PageDTO";
 export declare class ChapterModel {
-    response: ChapterDTO;
-    constructor(chapter?: ChapterDTO);
+    response: Partial<ChapterDTO>;
+    constructor(chapter?: Partial<ChapterDTO>);
     get id(): ChapterId;
     get channelId(): ChannelId;
     get name(): Name;

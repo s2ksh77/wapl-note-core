@@ -10,4 +10,5 @@ export declare class PageStore {
     changeMode(): void;
     getBookmarkInChannel(channelId: ChannelId): Promise<DTO.PageList>;
     getPageInfoList(pageId: PageId, channelId: ChannelId): Promise<PageModel>;
+    throwPage(channelId: ChannelId, action: string, dto: PageModel): Promise<DTO.PageInfo>;
 }
