@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 import API from '~/lib/API';
-import { baseUrl, ChannelId, ChapterId, PageId, prefix } from '~/@types/common';
+import { baseUrl, ChannelId, ChapterId, PageId, prefix, Action } from '~/@types/common';
 import { PageDTO } from '~/models/dto/PageDTO';
 import type { IPageRepo } from '~/repositories/PageRepoType';
 import { PageModel } from '~/models';
@@ -91,7 +91,7 @@ export class PageRepo implements IPageRepo {
 
   async updateRecyclePage(
     channelId: ChannelId,
-    action: string,
+    action: Action,
     dto: PageModel,
   ): Promise<DTO.PageInfo> {
     try {

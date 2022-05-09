@@ -29,6 +29,8 @@ export type TextContent = string | null;
 export type TagList = TagDTO[] | null;
 export type FileList = any;
 
+export type Action = 'THROW' | 'RESTORE';
+
 export const baseUrl = 'http://192.168.151.53:8282'; // for test
 export const prefix = '/apis/v1';
 
