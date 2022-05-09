@@ -30,4 +30,13 @@ export class PageStore {
     this.pageInfo = res;
     return res;
   }
+
+  async throwPage(
+    channelId: ChannelId,
+    action: string,
+    dto: PageModel,
+  ): Promise<DTO.PageInfo> {
+    const res = await this.repo.updateRecyclePage(channelId, action, dto);
+    return res;
+  }
 }
