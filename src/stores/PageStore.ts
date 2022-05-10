@@ -31,6 +31,11 @@ export class PageStore {
     return res;
   }
 
+  async getRecentList(channelId: ChannelId, num?: number) {
+    const res = await this.repo.getRecentList(channelId, num);
+    return res;
+  }
+
   async throwPage(channelId: ChannelId, dto: PageModel): Promise<DTO.PageInfo> {
     const res = await this.repo.updateRecyclePage(channelId, 'THROW', dto);
     return res;
