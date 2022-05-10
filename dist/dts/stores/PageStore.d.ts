@@ -13,4 +13,6 @@ export declare class PageStore {
     getRecentList(channelId: ChannelId, num?: number): Promise<DTO.PageList>;
     throwPage(channelId: ChannelId, dto: PageModel): Promise<DTO.PageInfo>;
     restorePage(channelId: ChannelId, dto: PageModel): Promise<DTO.PageInfo>;
+    bookmarkPage(pageId: PageId): Promise<any>;
+    unbookmarkPage(pageId: PageId): Promise<any>;
 }
