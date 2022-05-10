@@ -1,6 +1,6 @@
 /* eslint-disable consistent-return */
 import API from '~/lib/API';
-import { baseUrl, ChannelId, ChapterId, PageId, prefix } from '~/@types/common';
+import { baseUrl, ChannelId, ChapterId, PageId, prefix, Action } from '~/@types/common';
 import { PageDTO } from '~/models/dto/PageDTO';
 import type { IPageRepo } from '~/repositories/PageRepoType';
 import { PageModel } from '~/models';
@@ -89,14 +89,17 @@ export class PageRepo implements IPageRepo {
     });
   }
 
-  async updateRecyclePage(channelId: ChannelId, action: string, dto: PageDTO) {
+  async updateRecyclePage(
+    channelId: ChannelId,
+    action: Action,
+    dto: PageModel,
+  ): Promise<DTO.PageInfo> {
     try {
-      return await this.API.post(
+      const res = await this.API.put(
         `${baseUrl}${prefix}/app/${channelId}/page/recycle?action=${action}`,
-        {
-          dto,
-        },
+        dto.response,
       );
+      if (res.success) return new PageModel(res.response);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }

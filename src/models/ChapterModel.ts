@@ -14,12 +14,12 @@ import type { PageDTO } from '~/models/dto/PageDTO';
 import { makeAutoObservable } from 'mobx';
 
 export class ChapterModel {
-  response: ChapterDTO;
+  response: Partial<ChapterDTO>;
 
-  constructor(chapter?: ChapterDTO) {
+  constructor(chapter?: Partial<ChapterDTO>) {
     // Origin
     this.response = chapter;
-    makeAutoObservable<ChapterModel>(this);
+    makeAutoObservable(this);
   }
 
   get id(): ChapterId {

@@ -1,70 +1,60 @@
 import { makeAutoObservable } from 'mobx';
 import {
-  PageId,
   ChannelId,
-  Name,
+  ChapterId,
+  Content,
   CreatedDate,
+  CreatedUserId,
+  DeletedDate,
+  EditingUserId,
+  Favorite,
+  FileList,
+  PageId,
   ModifiedDate,
-  SharedDate,
+  Name,
+  Read,
+  RestoreChapterId,
+  Shared,
   SharedRoomId,
   SharedUserId,
-  Favorite,
-  EditingUserId,
-  UserName,
-  RestoreChapterId,
-  Content,
-  UpdatedUserId,
-  Type,
+  TagList,
   TextContent,
+  UpdatedUserId,
+  UserName,
+  Type,
 } from '~/@types/common';
 import type { PageDTO } from '~/models/dto/PageDTO';
 
 export class PageModel {
-  response: PageDTO;
+  response: Partial<PageDTO>;
 
-  constructor(page: PageDTO) {
+  constructor(page: Partial<PageDTO>) {
     this.response = page;
-    makeAutoObservable<PageModel>(this);
-  }
-
-  get id(): PageId {
-    return this.response.id;
+    makeAutoObservable(this);
   }
 
   get channelId(): ChannelId {
     return this.response.channelId;
   }
 
-  get name(): Name {
-    return this.response.name;
+  get chapterId(): ChapterId {
+    return this.response.chapterId;
+  }
+
+  get content(): Content {
+    return this.response.content;
   }
 
   get createdDate(): CreatedDate {
     return this.response.createdDate;
   }
 
-  get modifiedDate(): ModifiedDate {
-    return this.response.modifiedDate;
+  get createdUserId(): CreatedUserId {
+    return this.response.createdUserId;
   }
 
-  get sharedDate(): SharedDate {
-    return this.response.sharedDate;
-  }
-
-  get sharedRoomId(): SharedRoomId {
-    return this.response.sharedRoomId;
-  }
-
-  get sharedUserId(): SharedUserId {
-    return this.response.sharedUserId;
-  }
-
-  get restoreChapterId(): RestoreChapterId {
-    return this.response.restoreChapterId;
-  }
-
-  get userName(): UserName {
-    return this.response.userName;
+  get deletedDate(): DeletedDate {
+    return this.response.deletedDate;
   }
 
   get editingUserId(): EditingUserId {
@@ -75,19 +65,63 @@ export class PageModel {
     return this.response.favorite;
   }
 
-  get content(): Content {
-    return this.response.content;
+  get fileList(): FileList {
+    return this.response.fileList;
   }
 
-  get updatedUserId(): UpdatedUserId {
-    return this.response.updatedUserId;
+  get id(): PageId {
+    return this.response.id;
+  }
+
+  get modifiedDate(): ModifiedDate {
+    return this.response.modifiedDate;
+  }
+
+  get name(): Name {
+    return this.response.name;
+  }
+
+  get read(): Read {
+    return this.response.read;
+  }
+
+  get restoreChapterId(): RestoreChapterId {
+    return this.response.restoreChapterId;
+  }
+
+  get shared(): Shared {
+    return this.response.shared;
+  }
+
+  get sharedDate(): CreatedDate {
+    return this.response.shared ? this.response.createdDate : null;
+  }
+
+  get sharedRoomId(): SharedRoomId {
+    return this.response.sharedRoomId;
+  }
+
+  get sharedUserId(): SharedUserId {
+    return this.response.sharedUserId;
+  }
+
+  get tagList(): TagList {
+    return this.response.tagList;
+  }
+
+  get textContent(): TextContent {
+    return this.response.textContent;
   }
 
   get type(): Type {
     return this.response.type;
   }
 
-  get textContent(): TextContent {
-    return this.response.textContent;
+  get updatedUserId(): UpdatedUserId {
+    return this.response.updatedUserId;
+  }
+
+  get userName(): UserName {
+    return this.response.userName;
   }
 }
