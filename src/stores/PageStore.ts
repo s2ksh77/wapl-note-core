@@ -45,4 +45,14 @@ export class PageStore {
     const res = await this.repo.updateRecyclePage(channelId, 'RESTORE', dto);
     return res;
   }
+
+  async bookmarkPage(pageId: PageId) {
+    const res = await this.repo.bookmarkPage(pageId);
+    return res;
+  }
+
+  async unbookmarkPage(pageId: PageId) {
+    const res = await this.repo.unbookmarkPage(pageId);
+    return res;
+  }
 }
