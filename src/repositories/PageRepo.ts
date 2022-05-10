@@ -21,10 +21,11 @@ export class PageRepo implements IPageRepo {
     }
   }
 
-  async getRecentList(channelId: ChannelId, num): Promise<DTO.PageInfo> {
+  async getRecentList(channelId: ChannelId, num): Promise<DTO.PageList> {
     const query = num ? `?count=${num}` : '';
     try {
-      return await this.API.get(`${baseUrl}${prefix}/app/${channelId}/page${query}`);
+      const res = await this.API.get(`${baseUrl}${prefix}/app/${channelId}/page${query}`);
+      if (res.success) return res.response?.map(page => new PageModel(page) || []);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
