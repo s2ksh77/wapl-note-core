@@ -8,7 +8,7 @@ export class PageStore {
   rootStore;
   repo: IPageRepo;
   isLongPressed: boolean;
-  pageInfo: PageModel;
+  pageInfo: PageModel = new PageModel({});
 
   constructor(rootStore) {
     makeAutoObservable(this);
