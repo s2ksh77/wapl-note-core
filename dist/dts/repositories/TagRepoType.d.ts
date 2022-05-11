@@ -1,9 +1,9 @@
 import { ChannelId, PageId } from "../@types/common";
-import { TagDTO } from "../models/dto/TagDTO";
+import { TagDTO, TagListObjDTO } from "../models/dto/TagDTO";
 export interface ITagRepo {
-    getAllTagList(channelId: ChannelId): any;
-    getTagList(pageId: PageId): any;
-    createTag(pageId: PageId, dto: TagDTO[]): any;
-    deleteTag(pageId: PageId, dto: TagDTO[]): any;
-    updateTag(pageId: PageId, dto: TagDTO[]): any;
+    getAllTagList(channelId: ChannelId): Promise<TagListObjDTO>;
+    getTagList(pageId: PageId): Promise<TagDTO[]>;
+    createTag(pageId: PageId, dto: Pick<TagDTO, 'name' | 'pageId'>[]): Promise<TagDTO[]>;
+    deleteTag(pageId: PageId, dto: Pick<TagDTO, 'id' | 'pageId'>[]): Promise<void>;
+    updateTag(pageId: PageId, dto: Pick<TagDTO, 'id' | 'name' | 'pageId'>[]): Promise<void>;
 }

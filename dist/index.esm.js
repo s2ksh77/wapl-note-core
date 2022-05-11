@@ -919,6 +919,42 @@ var PageModel = /** @class */ (function () {
     return PageModel;
 }());
 
+var TagModel = /** @class */ (function () {
+    function TagModel(tag) {
+        this.response = tag;
+        makeAutoObservable(this);
+    }
+    Object.defineProperty(TagModel.prototype, "id", {
+        get: function () {
+            return this.response.id;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(TagModel.prototype, "name", {
+        get: function () {
+            return this.response.name;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(TagModel.prototype, "pageId", {
+        get: function () {
+            return this.response.name;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(TagModel.prototype, "tagCount", {
+        get: function () {
+            return this.response.tagCount;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return TagModel;
+}());
+
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -5483,30 +5519,61 @@ var TagRepo = /** @class */ (function () {
     }
     TagRepo.prototype.getAllTagList = function (channelId) {
         return __awaiter(this, void 0, void 0, function () {
+            var res, e_1;
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/tag"))];
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/tag"))];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.response];
+                    case 2:
+                        e_1 = _a.sent();
+                        throw Error(JSON.stringify(e_1));
+                    case 3: return [2 /*return*/];
+                }
             });
         });
     };
     TagRepo.prototype.getTagList = function (pageId) {
         return __awaiter(this, void 0, void 0, function () {
+            var res, e_2;
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.API.get("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"))];
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"))];
+                    case 1:
+                        res = _a.sent();
+                        console.log('from core repo', pageId);
+                        return [2 /*return*/, res.response];
+                    case 2:
+                        e_2 = _a.sent();
+                        throw Error(JSON.stringify(e_2));
+                    case 3: return [2 /*return*/];
+                }
             });
         });
     };
     TagRepo.prototype.createTag = function (pageId, dto) {
         return __awaiter(this, void 0, void 0, function () {
+            var res, e_3;
             return __generator(this, function (_a) {
-                try {
-                    return [2 /*return*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
-                            dto: dto,
-                        })];
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
+                                dto: dto,
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.response];
+                    case 2:
+                        e_3 = _a.sent();
+                        throw Error(JSON.stringify(e_3));
+                    case 3: return [2 /*return*/];
                 }
-                catch (e) {
-                    throw Error(JSON.stringify(e));
-                }
-                return [2 /*return*/];
             });
         });
     };
@@ -5514,7 +5581,7 @@ var TagRepo = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
+                    return [2 /*return*/, this.API.delete("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
                             dto: dto,
                         })];
                 }
@@ -5529,9 +5596,9 @@ var TagRepo = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, this.API.put("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
-                            dto: dto,
-                        })];
+                    this.API.put("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
+                        dto: dto,
+                    });
                 }
                 catch (e) {
                     throw Error(JSON.stringify(e));
@@ -5766,11 +5833,99 @@ var PageStore = /** @class */ (function () {
     return PageStore;
 }());
 
+var TagStore = /** @class */ (function () {
+    function TagStore() {
+        this.sortedTagList = { KOR: null, ENG: null, NUM: null, ETC: null };
+        this.pageTagList = [];
+        makeAutoObservable(this);
+        this.repo = TagRepoImpl;
+    }
+    TagStore.prototype.fetchSortedTagList = function (channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, this.repo.getAllTagList(channelId)];
+                    case 1:
+                        _a.sortedTagList = _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagStore.prototype.fetchPageTagList = function (pageId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.getTagList(pageId)];
+                    case 1:
+                        res = _a.sent();
+                        this.pageTagList = res.map(function (tag) {
+                            return new TagModel(tag);
+                        });
+                        console.log('from core store', this.pageTagList);
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagStore.prototype.createTag = function (pageId, tagName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var dto, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        dto = [{ pageId: pageId, name: tagName }];
+                        return [4 /*yield*/, this.repo.createTag(pageId, dto)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    TagStore.prototype.deleteTag = function (pageId, tagId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var dto;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        dto = [{ id: tagId, pageId: pageId }];
+                        return [4 /*yield*/, this.repo.deleteTag(pageId, dto)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagStore.prototype.updateTag = function (pageId, tagId, newTagName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var dto;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        dto = [{ id: tagId, name: newTagName, pageId: pageId }];
+                        return [4 /*yield*/, this.repo.updateTag(pageId, dto)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return TagStore;
+}());
+
 var RootStore = /** @class */ (function () {
     function RootStore() {
         this.pageStore = new PageStore(this);
         this.noteViewStore = new NoteViewStore(this);
         this.chapterStore = new ChapterStore(this);
+        this.tagStore = new TagStore();
     }
     return RootStore;
 }());
@@ -5780,4 +5935,4 @@ var StoreContext = React.createContext(StoreInstance);
 var StoreProvider = StoreContext.Provider;
 var useStore = function () { return React.useContext(StoreContext); };
 
-export { ChapterModel, ChapterRepo, ChapterRepoImpl, ChapterStore, FileRepo, FileRepoImpl, NoteStore, NoteViewStore, PageModel, PageRepo, PageRepoImpl, PageStore, RootStore, SearchRepo, SearchRepoImpl, StoreContext, StoreInstance, StoreProvider, TagRepo, TagRepoImpl, useNoteCore, useNoteI18nInit, useStore };
+export { ChapterModel, ChapterRepo, ChapterRepoImpl, ChapterStore, FileRepo, FileRepoImpl, NoteStore, NoteViewStore, PageModel, PageRepo, PageRepoImpl, PageStore, RootStore, SearchRepo, SearchRepoImpl, StoreContext, StoreInstance, StoreProvider, TagModel, TagRepo, TagRepoImpl, TagStore, useNoteCore, useNoteI18nInit, useStore };
