@@ -10,4 +10,7 @@ export declare class PageStore {
     changeMode(): void;
     getBookmarkInChannel(channelId: ChannelId): Promise<DTO.PageList>;
     getPageInfoList(pageId: PageId, channelId: ChannelId): Promise<PageModel>;
+    getRecentList(channelId: ChannelId, num?: number): Promise<DTO.PageList>;
+    throwPage(channelId: ChannelId, dto: PageModel): Promise<DTO.PageInfo>;
+    restorePage(channelId: ChannelId, dto: PageModel): Promise<DTO.PageInfo>;
 }

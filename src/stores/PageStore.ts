@@ -30,4 +30,19 @@ export class PageStore {
     this.pageInfo = res;
     return res;
   }
+
+  async getRecentList(channelId: ChannelId, num?: number) {
+    const res = await this.repo.getRecentList(channelId, num);
+    return res;
+  }
+
+  async throwPage(channelId: ChannelId, dto: PageModel): Promise<DTO.PageInfo> {
+    const res = await this.repo.updateRecyclePage(channelId, 'THROW', dto);
+    return res;
+  }
+
+  async restorePage(channelId: ChannelId, dto: PageModel): Promise<DTO.PageInfo> {
+    const res = await this.repo.updateRecyclePage(channelId, 'RESTORE', dto);
+    return res;
+  }
 }

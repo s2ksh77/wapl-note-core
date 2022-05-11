@@ -1,4 +1,4 @@
-import { PageId, ChannelId, ChapterId } from '~/@types/common';
+import { PageId, ChannelId, ChapterId, Action } from '~/@types/common';
 import { PageModel } from '~/models';
 
 export type PageResponseArray = {
@@ -14,13 +14,13 @@ export type PageResponseObject = {
 };
 export interface IPageRepo {
   getAllPageList(channelId: ChannelId): Promise<DTO.PageList>;
-  getRecentList(channelId: ChannelId, num): Promise<DTO.PageInfo>;
+  getRecentList(channelId: ChannelId, num): Promise<DTO.PageList>;
   getPageInfoList(pageId: PageId, channelId: ChannelId): Promise<DTO.PageInfo>;
   createPage(channelId: ChannelId, chapterId: ChapterId, dto: PageDTO);
   deletePage(channelId: ChannelId, chapterId: ChapterId, pageId: PageId);
   updatePage(channelId: ChannelId, chapterId: ChapterId, action: string, dto: PageDTO);
   createSharePage(channelId: ChannelId, dto: PageDTO);
-  updateRecyclePage(channelId: ChannelId, action: string, dto: PageDTO);
+  updateRecyclePage(channelId: ChannelId, action: Action, dto: PageModel);
   bookmarkPage(pageId: PageId);
   unbookmarkPage(pageId: PageId);
   getBookmarkInChannel(channelId: ChannelId): Promise<DTO.PageList>;
