@@ -5809,9 +5809,9 @@ var PageStore = /** @class */ (function () {
 var TagStore = /** @class */ (function () {
     function TagStore() {
         this.sortedTagList = { KOR: null, ENG: null, NUM: null, ETC: null };
+        this.pageTagList = [];
         makeAutoObservable(this);
         this.repo = TagRepoImpl;
-        this.pageTagList = [];
     }
     TagStore.prototype.fetchSortedTagList = function (channelId) {
         return __awaiter(this, void 0, void 0, function () {
