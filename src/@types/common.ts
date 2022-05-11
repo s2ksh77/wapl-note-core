@@ -30,6 +30,7 @@ export type TagList = TagDTO[] | null;
 export type FileList = any;
 
 export type Action = 'THROW' | 'RESTORE';
+export type TagId = string;
 
 export const baseUrl = 'http://192.168.151.53:8282'; // for test
 export const prefix = '/apis/v1';

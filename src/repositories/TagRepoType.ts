@@ -1,8 +1,8 @@
 import { ChannelId, PageId } from '~/@types/common';
-import { TagDTO, TagListDTO } from '~/models/dto/TagDTO';
+import { TagDTO, TagListObjDTO } from '~/models/dto/TagDTO';
 
 export interface ITagRepo {
-  getAllTagList(channelId: ChannelId): Promise<TagListDTO>;
+  getAllTagList(channelId: ChannelId): Promise<TagListObjDTO>;
   getTagList(pageId: PageId): Promise<TagDTO[]>;
   createTag(pageId: PageId, dto: Pick<TagDTO, 'name' | 'pageId'>[]): Promise<TagDTO[]>;
   deleteTag(pageId: PageId, dto: Pick<TagDTO, 'id' | 'pageId'>[]): Promise<void>;

@@ -5769,11 +5769,96 @@ var PageStore = /** @class */ (function () {
     return PageStore;
 }());
 
+var TagStore = /** @class */ (function () {
+    function TagStore() {
+        this.sortedTagList = { KOR: null, ENG: null, NUM: null, ETC: null };
+        makeAutoObservable(this);
+        this.repo = TagRepoImpl;
+    }
+    TagStore.prototype.fetchSortedTagList = function (channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, this.repo.getAllTagList(channelId)];
+                    case 1:
+                        _a.sortedTagList = _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagStore.prototype.fetchPageTagList = function (pageId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, this.repo.getTagList(pageId)];
+                    case 1:
+                        _a.pageTagList = _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagStore.prototype.createTag = function (pageId, tagName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var dto, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        dto = [{ pageId: pageId, name: tagName }];
+                        return [4 /*yield*/, this.repo.createTag(pageId, dto)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    TagStore.prototype.deleteTag = function (pageId, tagId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var dto;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        dto = [{ id: tagId, pageId: pageId }];
+                        return [4 /*yield*/, this.repo.deleteTag(pageId, dto)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagStore.prototype.updateTag = function (pageId, tagId, newTagName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var dto;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        dto = [{ id: tagId, name: newTagName, pageId: pageId }];
+                        return [4 /*yield*/, this.repo.updateTag(pageId, dto)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return TagStore;
+}());
+
 var RootStore = /** @class */ (function () {
     function RootStore() {
         this.pageStore = new PageStore(this);
         this.noteViewStore = new NoteViewStore(this);
         this.chapterStore = new ChapterStore(this);
+        this.tagStore = new TagStore();
     }
     return RootStore;
 }());
@@ -5783,4 +5868,4 @@ var StoreContext = React.createContext(StoreInstance);
 var StoreProvider = StoreContext.Provider;
 var useStore = function () { return React.useContext(StoreContext); };
 
-export { ChapterModel, ChapterRepo, ChapterRepoImpl, ChapterStore, FileRepo, FileRepoImpl, NoteStore, NoteViewStore, PageModel, PageRepo, PageRepoImpl, PageStore, RootStore, SearchRepo, SearchRepoImpl, StoreContext, StoreInstance, StoreProvider, TagRepo, TagRepoImpl, useNoteCore, useNoteI18nInit, useStore };
+export { ChapterModel, ChapterRepo, ChapterRepoImpl, ChapterStore, FileRepo, FileRepoImpl, NoteStore, NoteViewStore, PageModel, PageRepo, PageRepoImpl, PageStore, RootStore, SearchRepo, SearchRepoImpl, StoreContext, StoreInstance, StoreProvider, TagRepo, TagRepoImpl, TagStore, useNoteCore, useNoteI18nInit, useStore };

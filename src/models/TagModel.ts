@@ -1,12 +1,28 @@
 import { makeAutoObservable } from 'mobx';
-import {} from '~/@types/common';
-import type { TagListDTO } from '~/models/dto/TagDTO';
+import { PageId, TagId } from '~/@types/common';
+import type { TagDTO } from '~/models/dto/TagDTO';
 
-export class TagViewModel {
-  response: TagListDTO;
+export class TagModel {
+  response: TagDTO;
 
-  constructor(tagList: TagListDTO) {
-    this.response = tagList;
+  constructor(tag: TagDTO) {
+    this.response = tag;
     makeAutoObservable(this);
+  }
+
+  get id(): TagId {
+    return this.response.id;
+  }
+
+  get name(): string {
+    return this.response.name;
+  }
+
+  get pageId(): PageId {
+    return this.response.name;
+  }
+
+  get tagCount(): number {
+    return this.response.tagCount;
   }
 }

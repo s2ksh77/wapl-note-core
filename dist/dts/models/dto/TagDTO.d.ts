@@ -7,7 +7,7 @@ export interface TagDTO {
 export interface IndexedTagDTO {
     [key: string]: TagDTO[];
 }
-export interface TagListDTO {
+export interface TagListObjDTO {
     KOR: IndexedTagDTO | null;
     ENG: IndexedTagDTO | null;
     NUM: IndexedTagDTO | null;
