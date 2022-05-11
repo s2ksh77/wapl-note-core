@@ -3,5 +3,6 @@ export declare class RootStore {
     chapterStore: any;
     noteViewStore: any;
     tagStore: any;
+    noteStore: any;
     constructor();
 }
