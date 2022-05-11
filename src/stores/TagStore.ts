@@ -1,16 +1,18 @@
-import { makeAutoObservable } from 'mobx';
+import { makeAutoObservable, IObservableArray } from 'mobx';
 import { ChannelId, TagId, PageId } from '~/@types/common';
 import { TagRepo, TagRepoImpl } from '~/repositories';
 import { TagDTO, TagListObjDTO } from '~/models/dto/TagDTO';
+import { TagModel } from '~/models/TagModel';
 
 export class TagStore {
   sortedTagList: TagListObjDTO = { KOR: null, ENG: null, NUM: null, ETC: null };
-  pageTagList: TagDTO[];
+  pageTagList: TagModel[];
   repo: TagRepo;
 
   constructor() {
     makeAutoObservable(this);
     this.repo = TagRepoImpl;
+    this.pageTagList = [] as IObservableArray<TagModel>;
   }
 
   async fetchSortedTagList(channelId: ChannelId): Promise<void> {
@@ -18,7 +20,11 @@ export class TagStore {
   }
 
   async fetchPageTagList(pageId: PageId): Promise<void> {
-    this.pageTagList = await this.repo.getTagList(pageId);
+    const res = await this.repo.getTagList(pageId);
+    this.pageTagList = res.map((tag: TagDTO) => {
+      return new TagModel(tag);
+    });
+    console.log('from core store', this.pageTagList);
   }
 
   async createTag(pageId: PageId, tagName: string): Promise<TagDTO[]> {

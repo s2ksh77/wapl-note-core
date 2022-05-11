@@ -937,6 +937,42 @@ var PageModel = /** @class */ (function () {
     return PageModel;
 }());
 
+var TagModel = /** @class */ (function () {
+    function TagModel(tag) {
+        this.response = tag;
+        mobx.makeAutoObservable(this);
+    }
+    Object.defineProperty(TagModel.prototype, "id", {
+        get: function () {
+            return this.response.id;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(TagModel.prototype, "name", {
+        get: function () {
+            return this.response.name;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(TagModel.prototype, "pageId", {
+        get: function () {
+            return this.response.name;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    Object.defineProperty(TagModel.prototype, "tagCount", {
+        get: function () {
+            return this.response.tagCount;
+        },
+        enumerable: false,
+        configurable: true
+    });
+    return TagModel;
+}());
+
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
 
@@ -5528,6 +5564,7 @@ var TagRepo = /** @class */ (function () {
                         return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"))];
                     case 1:
                         res = _a.sent();
+                        console.log('from core repo', pageId);
                         return [2 /*return*/, res.response];
                     case 2:
                         e_2 = _a.sent();
@@ -5792,6 +5829,7 @@ var TagStore = /** @class */ (function () {
         this.sortedTagList = { KOR: null, ENG: null, NUM: null, ETC: null };
         mobx.makeAutoObservable(this);
         this.repo = TagRepoImpl;
+        this.pageTagList = [];
     }
     TagStore.prototype.fetchSortedTagList = function (channelId) {
         return __awaiter(this, void 0, void 0, function () {
@@ -5810,14 +5848,16 @@ var TagStore = /** @class */ (function () {
     };
     TagStore.prototype.fetchPageTagList = function (pageId) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _a = this;
-                        return [4 /*yield*/, this.repo.getTagList(pageId)];
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.getTagList(pageId)];
                     case 1:
-                        _a.pageTagList = _b.sent();
+                        res = _a.sent();
+                        this.pageTagList = res.map(function (tag) {
+                            return new TagModel(tag);
+                        });
+                        console.log('from core store', this.pageTagList);
                         return [2 /*return*/];
                 }
             });
@@ -5904,6 +5944,7 @@ exports.SearchRepoImpl = SearchRepoImpl;
 exports.StoreContext = StoreContext;
 exports.StoreInstance = StoreInstance;
 exports.StoreProvider = StoreProvider;
+exports.TagModel = TagModel;
 exports.TagRepo = TagRepo;
 exports.TagRepoImpl = TagRepoImpl;
 exports.TagStore = TagStore;

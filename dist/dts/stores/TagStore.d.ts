@@ -1,9 +1,10 @@
 import { ChannelId, TagId, PageId } from "../@types/common";
 import { TagRepo } from "../repositories";
 import { TagDTO, TagListObjDTO } from "../models/dto/TagDTO";
+import { TagModel } from "../models/TagModel";
 export declare class TagStore {
     sortedTagList: TagListObjDTO;
-    pageTagList: TagDTO[];
+    pageTagList: TagModel[];
     repo: TagRepo;
     constructor();
     fetchSortedTagList(channelId: ChannelId): Promise<void>;
