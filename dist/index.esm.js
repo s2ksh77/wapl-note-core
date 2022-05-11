@@ -5483,30 +5483,60 @@ var TagRepo = /** @class */ (function () {
     }
     TagRepo.prototype.getAllTagList = function (channelId) {
         return __awaiter(this, void 0, void 0, function () {
+            var res, e_1;
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/tag"))];
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/tag"))];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.response];
+                    case 2:
+                        e_1 = _a.sent();
+                        throw Error(JSON.stringify(e_1));
+                    case 3: return [2 /*return*/];
+                }
             });
         });
     };
     TagRepo.prototype.getTagList = function (pageId) {
         return __awaiter(this, void 0, void 0, function () {
+            var res, e_2;
             return __generator(this, function (_a) {
-                return [2 /*return*/, this.API.get("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"))];
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"))];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.response];
+                    case 2:
+                        e_2 = _a.sent();
+                        throw Error(JSON.stringify(e_2));
+                    case 3: return [2 /*return*/];
+                }
             });
         });
     };
     TagRepo.prototype.createTag = function (pageId, dto) {
         return __awaiter(this, void 0, void 0, function () {
+            var res, e_3;
             return __generator(this, function (_a) {
-                try {
-                    return [2 /*return*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
-                            dto: dto,
-                        })];
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
+                                dto: dto,
+                            })];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.response];
+                    case 2:
+                        e_3 = _a.sent();
+                        throw Error(JSON.stringify(e_3));
+                    case 3: return [2 /*return*/];
                 }
-                catch (e) {
-                    throw Error(JSON.stringify(e));
-                }
-                return [2 /*return*/];
             });
         });
     };
@@ -5514,7 +5544,7 @@ var TagRepo = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
+                    return [2 /*return*/, this.API.delete("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
                             dto: dto,
                         })];
                 }
@@ -5529,9 +5559,9 @@ var TagRepo = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, this.API.put("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
-                            dto: dto,
-                        })];
+                    this.API.put("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
+                        dto: dto,
+                    });
                 }
                 catch (e) {
                     throw Error(JSON.stringify(e));
