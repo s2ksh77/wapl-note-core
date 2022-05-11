@@ -5663,6 +5663,7 @@ var NoteViewStore = /** @class */ (function () {
 
 var PageStore = /** @class */ (function () {
     function PageStore(rootStore) {
+        this.pageInfo = new PageModel({});
         makeAutoObservable(this);
         this.rootStore = rootStore;
         this.repo = PageRepoImpl;
@@ -5729,6 +5730,32 @@ var PageStore = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.repo.updateRecyclePage(channelId, 'RESTORE', dto)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.bookmarkPage = function (pageId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.bookmarkPage(pageId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.unbookmarkPage = function (pageId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.unbookmarkPage(pageId)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];

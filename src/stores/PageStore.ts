@@ -8,7 +8,7 @@ export class PageStore {
   rootStore;
   repo: IPageRepo;
   isLongPressed: boolean;
-  pageInfo: PageModel;
+  pageInfo: PageModel = new PageModel({});
 
   constructor(rootStore) {
     makeAutoObservable(this);
@@ -43,6 +43,16 @@ export class PageStore {
 
   async restorePage(channelId: ChannelId, dto: PageModel): Promise<DTO.PageInfo> {
     const res = await this.repo.updateRecyclePage(channelId, 'RESTORE', dto);
+    return res;
+  }
+
+  async bookmarkPage(pageId: PageId) {
+    const res = await this.repo.bookmarkPage(pageId);
+    return res;
+  }
+
+  async unbookmarkPage(pageId: PageId) {
+    const res = await this.repo.unbookmarkPage(pageId);
     return res;
   }
 }
