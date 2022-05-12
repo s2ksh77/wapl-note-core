@@ -1,19 +1,23 @@
-import React, { createContext, useContext } from 'react';
-import { action, observable, runInAction } from 'mobx';
-import type { ChannelId, RoomId } from '~/@types/common';
-
-type Props = {
-  roomId: RoomId;
-  channelId: ChannelId;
-};
+import React from 'react';
+import { makeAutoObservable } from 'mobx';
+import type { ChannelId } from '~/@types/common';
+import { ISearchRepo } from '~/repositories/SearchRepoType';
+import { SearchRepoImpl } from '~/repositories';
 
 export class NoteStore {
-  constants;
+  rootStore;
+  searchRepo: ISearchRepo;
 
-  constructor({ roomId, channelId }: Props) {
-    this.constants = Object.freeze({
-      roomId,
-      channelId,
-    });
+  headerTitle: string;
+
+  constructor(rootStore) {
+    makeAutoObservable(this);
+    this.rootStore = rootStore;
+    this.searchRepo = SearchRepoImpl;
+  }
+
+  async getSearchList(searchKey: string, channelId: ChannelId): Promise<void> {
+    const res = await this.searchRepo.getSearchList(searchKey, channelId); // no model
+    return res;
   }
 }

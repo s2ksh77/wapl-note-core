@@ -1,4 +1,4 @@
 import { ChannelId } from "../@types/common";
 export interface ISearchRepo {
-    getSearchList(searchKey: string, channelId: ChannelId): any;
+    getSearchList(searchKey: string, channelId: ChannelId): Promise<void>;
 }

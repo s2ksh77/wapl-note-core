@@ -5498,14 +5498,22 @@ var SearchRepo = /** @class */ (function () {
     }
     SearchRepo.prototype.getSearchList = function (searchKey, channelId) {
         return __awaiter(this, void 0, void 0, function () {
+            var res, e_1;
             return __generator(this, function (_a) {
-                try {
-                    return [2 /*return*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/search?text=").concat(searchKey))];
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/search?text=").concat(searchKey))];
+                    case 1:
+                        res = _a.sent();
+                        if (res.success)
+                            return [2 /*return*/, res.response];
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_1 = _a.sent();
+                        throw Error(JSON.stringify(e_1));
+                    case 3: return [2 /*return*/];
                 }
-                catch (e) {
-                    throw Error(JSON.stringify(e));
-                }
-                return [2 /*return*/];
             });
         });
     };
@@ -5703,13 +5711,24 @@ var ChapterStore = /** @class */ (function () {
 }());
 
 var NoteStore = /** @class */ (function () {
-    function NoteStore(_a) {
-        var roomId = _a.roomId, channelId = _a.channelId;
-        this.constants = Object.freeze({
-            roomId: roomId,
-            channelId: channelId,
-        });
+    function NoteStore(rootStore) {
+        makeAutoObservable(this);
+        this.rootStore = rootStore;
+        this.searchRepo = SearchRepoImpl;
     }
+    NoteStore.prototype.getSearchList = function (searchKey, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.searchRepo.getSearchList(searchKey, channelId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
     return NoteStore;
 }());
 
@@ -5926,6 +5945,7 @@ var RootStore = /** @class */ (function () {
         this.noteViewStore = new NoteViewStore(this);
         this.chapterStore = new ChapterStore(this);
         this.tagStore = new TagStore();
+        this.noteStore = new NoteStore(this);
     }
     return RootStore;
 }());

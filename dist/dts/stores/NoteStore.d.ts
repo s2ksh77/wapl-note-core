@@ -1,10 +1,9 @@
-import type { ChannelId, RoomId } from "../@types/common";
-declare type Props = {
-    roomId: RoomId;
-    channelId: ChannelId;
-};
+import type { ChannelId } from "../@types/common";
+import { ISearchRepo } from "../repositories/SearchRepoType";
 export declare class NoteStore {
-    constants: any;
-    constructor({ roomId, channelId }: Props);
+    rootStore: any;
+    searchRepo: ISearchRepo;
+    headerTitle: string;
+    constructor(rootStore: any);
+    getSearchList(searchKey: string, channelId: ChannelId): Promise<void>;
 }
-export {};

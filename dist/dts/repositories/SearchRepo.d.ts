@@ -4,6 +4,6 @@ import type { ISearchRepo } from "./SearchRepoType";
 export declare class SearchRepo implements ISearchRepo {
     API: API;
     constructor();
-    getSearchList(searchKey: string, channelId: ChannelId): Promise<any>;
+    getSearchList(searchKey: string, channelId: ChannelId): Promise<void>;
 }
 export declare const SearchRepoImpl: SearchRepo;
