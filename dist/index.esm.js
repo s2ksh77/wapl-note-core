@@ -773,6 +773,9 @@ var PageModel = /** @class */ (function () {
         get: function () {
             return this.response.content;
         },
+        set: function (data) {
+            this.response.content = data;
+        },
         enumerable: false,
         configurable: true
     });
@@ -891,6 +894,9 @@ var PageModel = /** @class */ (function () {
     Object.defineProperty(PageModel.prototype, "textContent", {
         get: function () {
             return this.response.textContent;
+        },
+        set: function (data) {
+            this.response.textContent = data;
         },
         enumerable: false,
         configurable: true
@@ -5366,16 +5372,14 @@ var PageRepo = /** @class */ (function () {
             });
         });
     };
-    PageRepo.prototype.updatePage = function (channelId, chapterId, action, dto) {
+    PageRepo.prototype.updatePage = function (channelId, chapterId, action, dto, isNewPage) {
         return __awaiter(this, void 0, void 0, function () {
             var e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.put("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter/").concat(chapterId, "/page?action=").concat(action), {
-                                dto: dto,
-                            })];
+                        return [4 /*yield*/, this.API.put("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter/").concat(chapterId, "/page?action=").concat(action, "&isNewPage=").concat(isNewPage), dto.response)];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
                         e_5 = _a.sent();
@@ -5554,7 +5558,6 @@ var TagRepo = /** @class */ (function () {
                         return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"))];
                     case 1:
                         res = _a.sent();
-                        console.log('from core repo', pageId);
                         return [2 /*return*/, res.response];
                     case 2:
                         e_2 = _a.sent();
@@ -5747,6 +5750,18 @@ var NoteViewStore = /** @class */ (function () {
     return NoteViewStore;
 }());
 
+var Action;
+(function (Action) {
+    Action["EDITING"] = "EDITING";
+    Action["EDIT_DONE"] = "EDIT_DONE";
+    Action["EDIT_START"] = "EDIT_START";
+    Action["MOVE"] = "MOVE";
+    Action["NON_EDIT"] = "NON_EDIT";
+    Action["RENAME"] = "RENAME";
+    Action["RESTORE"] = "RESTORE";
+    Action["THROW"] = "THROW";
+})(Action || (Action = {}));
+
 var PageStore = /** @class */ (function () {
     function PageStore(rootStore) {
         this.pageInfo = new PageModel({});
@@ -5770,7 +5785,7 @@ var PageStore = /** @class */ (function () {
             });
         });
     };
-    PageStore.prototype.getPageInfoList = function (pageId, channelId) {
+    PageStore.prototype.fetchPageInfoList = function (pageId, channelId) {
         return __awaiter(this, void 0, void 0, function () {
             var res;
             return __generator(this, function (_a) {
@@ -5779,7 +5794,7 @@ var PageStore = /** @class */ (function () {
                     case 1:
                         res = _a.sent();
                         this.pageInfo = res;
-                        return [2 /*return*/, res];
+                        return [2 /*return*/];
                 }
             });
         });
@@ -5802,7 +5817,7 @@ var PageStore = /** @class */ (function () {
             var res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.updateRecyclePage(channelId, 'THROW', dto)];
+                    case 0: return [4 /*yield*/, this.repo.updateRecyclePage(channelId, Action.THROW, dto)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];
@@ -5815,7 +5830,7 @@ var PageStore = /** @class */ (function () {
             var res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.updateRecyclePage(channelId, 'RESTORE', dto)];
+                    case 0: return [4 /*yield*/, this.repo.updateRecyclePage(channelId, Action.RESTORE, dto)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];
@@ -5842,6 +5857,19 @@ var PageStore = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.repo.unbookmarkPage(pageId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.savePage = function (channelId, chapterId, dto, isNewPage) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.updatePage(channelId, chapterId, Action.EDIT_DONE, dto, isNewPage)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];

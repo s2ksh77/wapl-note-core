@@ -6,6 +6,7 @@ export declare class PageModel {
     get channelId(): ChannelId;
     get chapterId(): ChapterId;
     get content(): Content;
+    set content(data: Content);
     get createdDate(): CreatedDate;
     get createdUserId(): CreatedUserId;
     get deletedDate(): DeletedDate;
@@ -23,6 +24,7 @@ export declare class PageModel {
     get sharedUserId(): SharedUserId;
     get tagList(): TagList;
     get textContent(): TextContent;
+    set textContent(data: string);
     get type(): Type;
     get updatedUserId(): UpdatedUserId;
     get userName(): UserName;
