@@ -22,7 +22,6 @@ export class TagRepo implements ITagRepo {
   async getTagList(pageId: PageId): Promise<TagDTO[]> {
     try {
       const res = await this.API.get(`${baseUrl}${prefix}/page/${pageId}/tag`);
-      console.log('from core repo', pageId);
       return res.response;
     } catch (e) {
       throw Error(JSON.stringify(e));

@@ -1,9 +1,10 @@
 /* eslint-disable consistent-return */
 import API from '~/lib/API';
-import { baseUrl, ChannelId, ChapterId, PageId, prefix, Action } from '~/@types/common';
+import { baseUrl, ChannelId, ChapterId, PageId, prefix } from '~/@types/common';
 import { PageDTO } from '~/models/dto/PageDTO';
 import type { IPageRepo } from '~/repositories/PageRepoType';
 import { PageModel } from '~/models';
+import { Action } from '~/@types/page';
 
 export class PageRepo implements IPageRepo {
   API: API;
@@ -69,15 +70,14 @@ export class PageRepo implements IPageRepo {
   async updatePage(
     channelId: ChannelId,
     chapterId: ChapterId,
-    action: string,
-    dto: PageDTO,
-  ) {
+    action: Action,
+    dto: PageModel,
+    isNewPage,
+  ): Promise<DTO.PageInfo> {
     try {
       return await this.API.put(
-        `${baseUrl}${prefix}/app/${channelId}/chapter/${chapterId}/page?action=${action}`,
-        {
-          dto,
-        },
+        `${baseUrl}${prefix}/app/${channelId}/chapter/${chapterId}/page?action=${action}&isNewPage=${isNewPage}`,
+        dto.response,
       );
     } catch (e) {
       throw Error(JSON.stringify(e));

@@ -45,6 +45,10 @@ export class PageModel {
     return this.response.content;
   }
 
+  set content(data: Content) {
+    this.response.content = data;
+  }
+
   get createdDate(): CreatedDate {
     return this.response.createdDate;
   }
@@ -111,6 +115,10 @@ export class PageModel {
 
   get textContent(): TextContent {
     return this.response.textContent;
+  }
+
+  set textContent(data: string) {
+    this.response.textContent = data;
   }
 
   get type(): Type {
