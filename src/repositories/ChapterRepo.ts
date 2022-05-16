@@ -109,12 +109,13 @@ export class ChapterRepo implements IChapterRepo {
   //   }
   // }
 
-  async updateChapter(dto: ChapterDTO, channelId: ChannelId) {
+  async updateChapter(dto: ChapterModel, channelId: ChannelId): Promise<DTO.ChapterInfo> {
     try {
-      const res = await this.API.put(`${baseUrl}${prefix}/app/${channelId}/chapter`, {
-        dto,
-      });
-      return res;
+      const res = await this.API.put(
+        `${baseUrl}${prefix}/app/${channelId}/chapter`,
+        dto.response,
+      );
+      if (res.success) return new ChapterModel(res.response);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }

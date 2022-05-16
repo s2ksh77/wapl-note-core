@@ -75,10 +75,11 @@ export class PageRepo implements IPageRepo {
     isNewPage = false,
   ): Promise<DTO.PageInfo> {
     try {
-      return await this.API.put(
+      const res = await this.API.put(
         `${baseUrl}${prefix}/app/${channelId}/chapter/${chapterId}/page?action=${action}&isNewPage=${isNewPage}`,
         dto.response,
       );
+      if (res.success) return new PageModel(res);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
