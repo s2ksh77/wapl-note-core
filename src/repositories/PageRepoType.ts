@@ -28,7 +28,11 @@ export interface IPageRepo {
     isNewPage?: boolean,
   ): Promise<DTO.PageInfo>;
   createSharePage(channelId: ChannelId, dto: PageDTO);
-  updateRecyclePage(channelId: ChannelId, action: Action, dto: PageModel);
+  updateRecyclePage(
+    channelId: ChannelId,
+    action: Action,
+    dto: PageModel,
+  ): Promise<DTO.PageInfo>;
   bookmarkPage(pageId: PageId);
   unbookmarkPage(pageId: PageId);
   getBookmarkInChannel(channelId: ChannelId): Promise<DTO.PageList>;
