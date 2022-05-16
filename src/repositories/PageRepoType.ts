@@ -25,8 +25,7 @@ export interface IPageRepo {
     chapterId: ChapterId,
     action: string,
     dto: PageDTO,
-    isNewPage: boolean,
-  );
+    isNewPage?: boolean,
   createSharePage(channelId: ChannelId, dto: PageDTO);
   updateRecyclePage(channelId: ChannelId, action: Action, dto: PageModel);
   bookmarkPage(pageId: PageId);

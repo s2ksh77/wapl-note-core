@@ -72,7 +72,7 @@ export class PageRepo implements IPageRepo {
     chapterId: ChapterId,
     action: Action,
     dto: PageModel,
-    isNewPage,
+    isNewPage = false,
   ): Promise<DTO.PageInfo> {
     try {
       return await this.API.put(
