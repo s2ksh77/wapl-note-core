@@ -5111,12 +5111,12 @@ var ChapterRepo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.put("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter"), {
-                                dto: dto,
-                            })];
+                        return [4 /*yield*/, this.API.put("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter"), dto.response)];
                     case 1:
                         res = _a.sent();
-                        return [2 /*return*/, res];
+                        if (res.success)
+                            return [2 /*return*/, new ChapterModel(res.response)];
+                        return [3 /*break*/, 3];
                     case 2:
                         e_4 = _a.sent();
                         throw Error(JSON.stringify(e_4));
@@ -5391,14 +5391,19 @@ var PageRepo = /** @class */ (function () {
         });
     };
     PageRepo.prototype.updatePage = function (channelId, chapterId, action, dto, isNewPage) {
+        if (isNewPage === void 0) { isNewPage = false; }
         return __awaiter(this, void 0, void 0, function () {
-            var e_5;
+            var res, e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, this.API.put("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter/").concat(chapterId, "/page?action=").concat(action, "&isNewPage=").concat(isNewPage), dto.response)];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 1:
+                        res = _a.sent();
+                        if (res.success)
+                            return [2 /*return*/, new PageModel(res)];
+                        return [3 /*break*/, 3];
                     case 2:
                         e_5 = _a.sent();
                         throw Error(JSON.stringify(e_5));
@@ -5708,6 +5713,19 @@ var ChapterStore = /** @class */ (function () {
             });
         });
     };
+    ChapterStore.prototype.renameChapter = function (dto, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.updateChapter(dto, channelId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
     Object.defineProperty(ChapterStore.prototype, "RandomColor", {
         get: function () {
             var colorArray = [
@@ -5823,6 +5841,19 @@ var PageStore = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.repo.getRecentList(channelId, num)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.renamePage = function (channelId, chapterId, dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.updatePage(channelId, chapterId, Action.RENAME, dto)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];
