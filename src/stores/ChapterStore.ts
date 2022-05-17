@@ -50,6 +50,11 @@ export class ChapterStore {
     return res;
   }
 
+  async renameChapter(dto: ChapterModel, channelId: ChannelId) {
+    const res = await this.repo.updateChapter(dto, channelId);
+    return res;
+  }
+
   get RandomColor(): string {
     const colorArray = [
       '#C84847',

@@ -36,6 +36,15 @@ export class PageStore {
     return res;
   }
 
+  async renamePage(
+    channelId: ChannelId,
+    chapterId: ChapterId,
+    dto: PageModel,
+  ): Promise<DTO.PageInfo> {
+    const res = await this.repo.updatePage(channelId, chapterId, Action.RENAME, dto);
+    return res;
+  }
+
   async throwPage(channelId: ChannelId, dto: PageModel): Promise<DTO.PageInfo> {
     const res = await this.repo.updateRecyclePage(channelId, Action.THROW, dto);
     return res;

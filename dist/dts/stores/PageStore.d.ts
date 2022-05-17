@@ -11,6 +11,7 @@ export declare class PageStore {
     getBookmarkInChannel(channelId: ChannelId): Promise<DTO.PageList>;
     fetchPageInfoList(pageId: PageId, channelId: ChannelId): Promise<void>;
     getRecentList(channelId: ChannelId, num?: number): Promise<DTO.PageList>;
+    renamePage(channelId: ChannelId, chapterId: ChapterId, dto: PageModel): Promise<DTO.PageInfo>;
     throwPage(channelId: ChannelId, dto: PageModel): Promise<DTO.PageInfo>;
     restorePage(channelId: ChannelId, dto: PageModel): Promise<DTO.PageInfo>;
     bookmarkPage(pageId: PageId): Promise<any>;

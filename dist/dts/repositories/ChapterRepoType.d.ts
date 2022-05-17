@@ -1,6 +1,5 @@
 import { ChannelId, ChapterId } from "../@types/common";
 import { ChapterModel } from "../models";
-import type { ChapterDTO } from "../models/dto/ChapterDTO";
 export declare type ChapterResponseArray = {
     success: boolean;
     response?: ChapterModel[] | null;
@@ -12,9 +11,9 @@ export declare type ChapterResponseObject = {
     error?: string | null;
 };
 export interface IChapterRepo {
-    getChapterList(channelId: ChannelId): Promise<DTO.GetChapterListResponse>;
-    getChapterInfoList(chapterId: ChapterId, channelId: ChannelId): Promise<DTO.GetChapterInfoResponse>;
+    getChapterList(channelId: ChannelId): Promise<DTO.ChapterList>;
+    getChapterInfoList(chapterId: ChapterId, channelId: ChannelId): Promise<DTO.ChapterInfo>;
     createShareChapter(chapterList: any, channelId: ChannelId): any;
-    createChapter(dto: ChapterDTO, i18nLanguage: string, channelId: ChannelId): any;
-    updateChapter(dto: ChapterDTO, channelId: ChannelId): any;
+    createChapter(dto: ChapterModel, language: string, channelId: ChannelId): Promise<DTO.ChapterInfo>;
+    updateChapter(dto: ChapterModel, channelId: ChannelId): Promise<DTO.ChapterInfo>;
 }
