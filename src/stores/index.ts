@@ -5,4 +5,4 @@ export { NoteViewStore } from '~/stores/NoteViewStore';
 export { PageStore } from '~/stores/PageStore';
 export { TagStore } from '~/stores/TagStore';
 export { RootStore } from '~/stores/RootStore';
-export { useStore, StoreProvider, StoreContext, StoreInstance } from '~/stores/Context';
+export * from '~/stores/StoreProvider';
