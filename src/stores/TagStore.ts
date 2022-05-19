@@ -3,6 +3,7 @@ import { ChannelId, TagId, PageId } from '~/@types/common';
 import { TagRepo, TagRepoImpl } from '~/repositories';
 import { TagDTO, TagListObjDTO } from '~/models/dto/TagDTO';
 import { TagModel } from '~/models/TagModel';
+import { PageDTO, PageModel } from '~/models';
 
 export class TagStore {
   sortedTagList: TagListObjDTO = { KOR: null, ENG: null, NUM: null, ETC: null };
@@ -24,6 +25,11 @@ export class TagStore {
       return new TagModel(tag);
     });
     console.log('from core store', this.pageTagList);
+  }
+
+  async fetchTagPageList(tagId: TagId, channelId: ChannelId): Promise<DTO.PageList> {
+    const res = await this.repo.getTagPageList(tagId, channelId);
+    return res.map((page: PageDTO) => new PageModel(page));
   }
 
   async createTag(pageId: PageId, tagName: string): Promise<TagDTO[]> {

@@ -16,7 +16,10 @@ export class NoteStore {
     this.searchRepo = SearchRepoImpl;
   }
 
-  async getSearchList(searchKey: string, channelId: ChannelId): Promise<void> {
+  async getSearchList(
+    searchKey: string,
+    channelId: ChannelId,
+  ): Promise<DTO.SearchResponse> {
     const res = await this.searchRepo.getSearchList(searchKey, channelId); // no model
     return res;
   }
