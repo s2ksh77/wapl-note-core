@@ -10,7 +10,7 @@ import tty from 'tty';
 import util from 'util';
 import os from 'os';
 import zlib from 'zlib';
-import React from 'react';
+import React, { createContext, useContext } from 'react';
 
 var NOTE_PAGE_LIST_CMPNT_DEF_01$1 = "새 챕터";
 var NOTE_PAGE_LIST_CMPNT_DEF_02$1 = "새 페이지";
@@ -5782,6 +5782,7 @@ var Action;
 
 var PageStore = /** @class */ (function () {
     function PageStore(rootStore) {
+        this.isLongPressed = false;
         this.pageInfo = new PageModel({});
         makeAutoObservable(this);
         this.rootStore = rootStore;
@@ -5998,20 +5999,26 @@ var TagStore = /** @class */ (function () {
     return TagStore;
 }());
 
+// import { HeaderStore } from './HeaderStore';
 var RootStore = /** @class */ (function () {
+    // headerStore: HeaderStore;
     function RootStore() {
-        this.pageStore = new PageStore(this);
         this.noteViewStore = new NoteViewStore(this);
         this.chapterStore = new ChapterStore(this);
-        this.tagStore = new TagStore();
+        this.pageStore = new PageStore(this);
         this.noteStore = new NoteStore(this);
+        this.tagStore = new TagStore();
+        // this.headerStore = new HeaderStore(this);
     }
     return RootStore;
 }());
 
-var StoreInstance = new RootStore();
-var StoreContext = React.createContext(StoreInstance);
-var StoreProvider = StoreContext.Provider;
-var useStore = function () { return React.useContext(StoreContext); };
+var rootStore = new RootStore();
+var RootStoreContext = createContext(rootStore);
+var StoreProvider = function (_a) {
+    var children = _a.children;
+    return (React.createElement(RootStoreContext.Provider, { value: rootStore }, children));
+};
+var useNoteStore = function () { return useContext(RootStoreContext); };
 
-export { ChapterModel, ChapterRepo, ChapterRepoImpl, ChapterStore, FileRepo, FileRepoImpl, NoteStore, NoteViewStore, PageModel, PageRepo, PageRepoImpl, PageStore, RootStore, SearchRepo, SearchRepoImpl, StoreContext, StoreInstance, StoreProvider, TagModel, TagRepo, TagRepoImpl, TagStore, useNoteCore, useNoteI18nInit, useStore };
+export { ChapterModel, ChapterRepo, ChapterRepoImpl, ChapterStore, FileRepo, FileRepoImpl, NoteStore, NoteViewStore, PageModel, PageRepo, PageRepoImpl, PageStore, RootStore, SearchRepo, SearchRepoImpl, StoreProvider, TagModel, TagRepo, TagRepoImpl, TagStore, useNoteCore, useNoteI18nInit, useNoteStore };
