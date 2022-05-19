@@ -8,7 +8,7 @@ import { Action } from '~/@types/page';
 export class PageStore {
   rootStore;
   repo: IPageRepo;
-  isLongPressed: boolean;
+  isLongPressed = false;
   pageInfo: PageModel = new PageModel({});
 
   constructor(rootStore) {
