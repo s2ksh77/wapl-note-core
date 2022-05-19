@@ -5800,6 +5800,7 @@ var Action;
 
 var PageStore = /** @class */ (function () {
     function PageStore(rootStore) {
+        this.isLongPressed = false;
         this.pageInfo = new PageModel({});
         mobx.makeAutoObservable(this);
         this.rootStore = rootStore;
@@ -6016,21 +6017,27 @@ var TagStore = /** @class */ (function () {
     return TagStore;
 }());
 
+// import { HeaderStore } from './HeaderStore';
 var RootStore = /** @class */ (function () {
+    // headerStore: HeaderStore;
     function RootStore() {
-        this.pageStore = new PageStore(this);
         this.noteViewStore = new NoteViewStore(this);
         this.chapterStore = new ChapterStore(this);
-        this.tagStore = new TagStore();
+        this.pageStore = new PageStore(this);
         this.noteStore = new NoteStore(this);
+        this.tagStore = new TagStore();
+        // this.headerStore = new HeaderStore(this);
     }
     return RootStore;
 }());
 
-var StoreInstance = new RootStore();
-var StoreContext = React__default["default"].createContext(StoreInstance);
-var StoreProvider = StoreContext.Provider;
-var useStore = function () { return React__default["default"].useContext(StoreContext); };
+var rootStore = new RootStore();
+var RootStoreContext = React.createContext(rootStore);
+var StoreProvider = function (_a) {
+    var children = _a.children;
+    return (React__default["default"].createElement(RootStoreContext.Provider, { value: rootStore }, children));
+};
+var useNoteStore = function () { return React.useContext(RootStoreContext); };
 
 exports.ChapterModel = ChapterModel;
 exports.ChapterRepo = ChapterRepo;
@@ -6047,8 +6054,6 @@ exports.PageStore = PageStore;
 exports.RootStore = RootStore;
 exports.SearchRepo = SearchRepo;
 exports.SearchRepoImpl = SearchRepoImpl;
-exports.StoreContext = StoreContext;
-exports.StoreInstance = StoreInstance;
 exports.StoreProvider = StoreProvider;
 exports.TagModel = TagModel;
 exports.TagRepo = TagRepo;
@@ -6056,4 +6061,4 @@ exports.TagRepoImpl = TagRepoImpl;
 exports.TagStore = TagStore;
 exports.useNoteCore = useNoteCore;
 exports.useNoteI18nInit = useNoteI18nInit;
-exports.useStore = useStore;
+exports.useNoteStore = useNoteStore;
