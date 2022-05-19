@@ -5572,9 +5572,28 @@ var TagRepo = /** @class */ (function () {
             });
         });
     };
-    TagRepo.prototype.createTag = function (pageId, dto) {
+    TagRepo.prototype.getTagPageList = function (tagId, channelId) {
         return __awaiter(this, void 0, void 0, function () {
             var res, e_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/tag/").concat(tagId, "/page"))];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.response];
+                    case 2:
+                        e_3 = _a.sent();
+                        throw Error(JSON.stringify(e_3));
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagRepo.prototype.createTag = function (pageId, dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res, e_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -5586,8 +5605,8 @@ var TagRepo = /** @class */ (function () {
                         res = _a.sent();
                         return [2 /*return*/, res.response];
                     case 2:
-                        e_3 = _a.sent();
-                        throw Error(JSON.stringify(e_3));
+                        e_4 = _a.sent();
+                        throw Error(JSON.stringify(e_4));
                     case 3: return [2 /*return*/];
                 }
             });
@@ -5947,6 +5966,19 @@ var TagStore = /** @class */ (function () {
                         });
                         console.log('from core store', this.pageTagList);
                         return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagStore.prototype.fetchTagPageList = function (tagId, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.getTagPageList(tagId, channelId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.map(function (page) { return new PageModel(page); })];
                 }
             });
         });

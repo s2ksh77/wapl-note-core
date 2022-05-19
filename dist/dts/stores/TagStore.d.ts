@@ -9,6 +9,7 @@ export declare class TagStore {
     constructor();
     fetchSortedTagList(channelId: ChannelId): Promise<void>;
     fetchPageTagList(pageId: PageId): Promise<void>;
+    fetchTagPageList(tagId: TagId, channelId: ChannelId): Promise<DTO.PageList>;
     createTag(pageId: PageId, tagName: string): Promise<TagDTO[]>;
     deleteTag(pageId: PageId, tagId: TagId): Promise<void>;
     updateTag(pageId: PageId, tagId: TagId, newTagName: string): Promise<void>;
