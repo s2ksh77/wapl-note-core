@@ -1,7 +1,8 @@
 import API from '~/lib/API';
 import type { ITagRepo } from '~/repositories/TagRepoType';
-import { baseUrl, ChannelId, PageId, prefix } from '~/@types/common';
+import { baseUrl, ChannelId, PageId, prefix, TagId } from '~/@types/common';
 import { TagDTO, TagListObjDTO } from '~/models/dto/TagDTO';
+import { PageDTO } from '~/models';
 
 export class TagRepo implements ITagRepo {
   API: API;
@@ -22,6 +23,17 @@ export class TagRepo implements ITagRepo {
   async getTagList(pageId: PageId): Promise<TagDTO[]> {
     try {
       const res = await this.API.get(`${baseUrl}${prefix}/page/${pageId}/tag`);
+      return res.response;
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
+  async getTagPageList(tagId: TagId, channelId: ChannelId): Promise<PageDTO[]> {
+    try {
+      const res = await this.API.get(
+        `${baseUrl}${prefix}/app/${channelId}/tag/${tagId}/page`,
+      );
       return res.response;
     } catch (e) {
       throw Error(JSON.stringify(e));

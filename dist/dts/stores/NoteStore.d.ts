@@ -5,5 +5,5 @@ export declare class NoteStore {
     searchRepo: ISearchRepo;
     headerTitle: string;
     constructor(rootStore: any);
-    getSearchList(searchKey: string, channelId: ChannelId): Promise<void>;
+    getSearchList(searchKey: string, channelId: ChannelId): Promise<DTO.SearchResponse>;
 }

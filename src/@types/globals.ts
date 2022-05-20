@@ -19,6 +19,8 @@ declare global {
 
     type PageList = PageModel[];
     type PageInfo = PageModel;
+
+    type SearchResponse = SearchDTO;
   }
 }
 

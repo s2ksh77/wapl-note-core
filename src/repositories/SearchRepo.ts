@@ -10,7 +10,10 @@ export class SearchRepo implements ISearchRepo {
     this.API = new API();
   }
 
-  async getSearchList(searchKey: string, channelId: ChannelId): Promise<void> {
+  async getSearchList(
+    searchKey: string,
+    channelId: ChannelId,
+  ): Promise<DTO.SearchResponse> {
     try {
       const res = await this.API.get(
         `${baseUrl}${prefix}/app/${channelId}/search?text=${searchKey}`,
