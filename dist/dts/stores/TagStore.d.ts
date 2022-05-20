@@ -6,7 +6,8 @@ export declare class TagStore {
     sortedTagList: TagListObjDTO;
     pageTagList: TagModel[];
     repo: TagRepo;
-    constructor();
+    rootStore: any;
+    constructor(rootStore: any);
     fetchSortedTagList(channelId: ChannelId): Promise<void>;
     fetchPageTagList(pageId: PageId): Promise<void>;
     fetchTagPageList(tagId: TagId, channelId: ChannelId): Promise<DTO.PageList>;
