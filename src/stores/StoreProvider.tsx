@@ -5,6 +5,7 @@ import { ChapterStore } from './ChapterStore';
 import { PageStore } from './PageStore';
 import { NoteStore } from './NoteStore';
 import { TagStore } from './TagStore';
+import { EditorStore } from './EditorStore';
 // import { HeaderStore } from './HeaderStore';
 
 interface IRootStore {
@@ -13,6 +14,7 @@ interface IRootStore {
   pageStore: PageStore;
   noteStore: NoteStore;
   tagStore: TagStore;
+  editorStore: EditorStore;
   // headerStore: HeaderStore;
 }
 

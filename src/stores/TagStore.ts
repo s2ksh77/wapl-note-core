@@ -9,10 +9,12 @@ export class TagStore {
   sortedTagList: TagListObjDTO = { KOR: null, ENG: null, NUM: null, ETC: null };
   pageTagList: TagModel[] = [];
   repo: TagRepo;
+  rootStore;
 
-  constructor() {
+  constructor(rootStore) {
     makeAutoObservable(this);
     this.repo = TagRepoImpl;
+    this.rootStore = rootStore;
   }
 
   async fetchSortedTagList(channelId: ChannelId): Promise<void> {
@@ -24,7 +26,6 @@ export class TagStore {
     this.pageTagList = res.map((tag: TagDTO) => {
       return new TagModel(tag);
     });
-    console.log('from core store', this.pageTagList);
   }
 
   async fetchTagPageList(tagId: TagId, channelId: ChannelId): Promise<DTO.PageList> {

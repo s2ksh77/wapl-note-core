@@ -5950,11 +5950,12 @@ var PageStore = /** @class */ (function () {
 }());
 
 var TagStore = /** @class */ (function () {
-    function TagStore() {
+    function TagStore(rootStore) {
         this.sortedTagList = { KOR: null, ENG: null, NUM: null, ETC: null };
         this.pageTagList = [];
         mobx.makeAutoObservable(this);
         this.repo = TagRepoImpl;
+        this.rootStore = rootStore;
     }
     TagStore.prototype.fetchSortedTagList = function (channelId) {
         return __awaiter(this, void 0, void 0, function () {
@@ -5982,7 +5983,6 @@ var TagStore = /** @class */ (function () {
                         this.pageTagList = res.map(function (tag) {
                             return new TagModel(tag);
                         });
-                        console.log('from core store', this.pageTagList);
                         return [2 /*return*/];
                 }
             });
@@ -6049,6 +6049,17 @@ var TagStore = /** @class */ (function () {
     return TagStore;
 }());
 
+var EditorStore = /** @class */ (function () {
+    function EditorStore(rootStore) {
+        mobx.makeAutoObservable(this);
+        this.rootStore = rootStore;
+    }
+    EditorStore.prototype.setEditor = function (editorInstance) {
+        this.tinymce = editorInstance;
+    };
+    return EditorStore;
+}());
+
 // import { HeaderStore } from './HeaderStore';
 var RootStore = /** @class */ (function () {
     // headerStore: HeaderStore;
@@ -6057,7 +6068,8 @@ var RootStore = /** @class */ (function () {
         this.chapterStore = new ChapterStore(this);
         this.pageStore = new PageStore(this);
         this.noteStore = new NoteStore(this);
-        this.tagStore = new TagStore();
+        this.tagStore = new TagStore(this);
+        this.editorStore = new EditorStore(this);
         // this.headerStore = new HeaderStore(this);
     }
     return RootStore;

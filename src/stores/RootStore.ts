@@ -3,6 +3,7 @@ import { ChapterStore } from './ChapterStore';
 import { PageStore } from './PageStore';
 import { NoteStore } from './NoteStore';
 import { TagStore } from './TagStore';
+import { EditorStore } from './EditorStore';
 // import { HeaderStore } from './HeaderStore';
 
 export class RootStore {
@@ -11,6 +12,7 @@ export class RootStore {
   pageStore: PageStore;
   noteStore: NoteStore;
   tagStore: TagStore;
+  editorStore: EditorStore;
   // headerStore: HeaderStore;
 
   constructor() {
@@ -18,7 +20,8 @@ export class RootStore {
     this.chapterStore = new ChapterStore(this);
     this.pageStore = new PageStore(this);
     this.noteStore = new NoteStore(this);
-    this.tagStore = new TagStore();
+    this.tagStore = new TagStore(this);
+    this.editorStore = new EditorStore(this);
     // this.headerStore = new HeaderStore(this);
   }
 }
