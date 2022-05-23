@@ -6,7 +6,7 @@ import { PageStore } from './PageStore';
 import { NoteStore } from './NoteStore';
 import { TagStore } from './TagStore';
 import { EditorStore } from './EditorStore';
-// import { HeaderStore } from './HeaderStore';
+import { UiStore } from './UiStore';
 
 interface IRootStore {
   noteViewStore: NoteViewStore;
@@ -15,7 +15,7 @@ interface IRootStore {
   noteStore: NoteStore;
   tagStore: TagStore;
   editorStore: EditorStore;
-  // headerStore: HeaderStore;
+  uiStore: UiStore;
 }
 
 const rootStore = new RootStore();
