@@ -7,8 +7,7 @@ import { SearchRepoImpl } from '~/repositories';
 export class NoteStore {
   rootStore;
   searchRepo: ISearchRepo;
-
-  headerTitle: string;
+  headerTitle = '';
 
   constructor(rootStore) {
     makeAutoObservable(this);

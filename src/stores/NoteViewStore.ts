@@ -3,22 +3,19 @@ import { NoteViewType } from '../@types/common';
 
 export class NoteViewStore {
   rootStore;
-
-  isLongPressed: boolean;
-
-  type: NoteViewType;
+  isLongPressed = false;
+  type: NoteViewType = NoteViewType.MyNote;
 
   constructor(rootStore) {
     makeAutoObservable(this);
     this.rootStore = rootStore;
-    this.type = NoteViewType.MyNote;
   }
 
   toggleMultiSelectMode(): void {
     this.isLongPressed = !this.isLongPressed;
   }
 
-  setType(type): void {
+  setType(type: NoteViewType): void {
     this.type = type;
   }
 }
