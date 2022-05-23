@@ -5,5 +5,5 @@ export declare class NoteViewStore {
     type: NoteViewType;
     constructor(rootStore: any);
     toggleMultiSelectMode(): void;
-    setType(type: any): void;
+    setType(type: NoteViewType): void;
 }
