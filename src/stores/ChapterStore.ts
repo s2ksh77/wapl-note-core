@@ -11,8 +11,7 @@ import { IChapterRepo } from '~/repositories/ChapterRepoType';
 export class ChapterStore {
   rootStore;
   repo: IChapterRepo;
-
-  headerTitle: string;
+  headerTitle = '';
 
   constructor(rootStore) {
     makeAutoObservable(this);

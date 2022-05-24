@@ -5675,6 +5675,7 @@ var ChapterType;
 
 var ChapterStore = /** @class */ (function () {
     function ChapterStore(rootStore) {
+        this.headerTitle = '';
         mobx.makeAutoObservable(this);
         this.rootStore = rootStore;
         this.repo = ChapterRepoImpl;
@@ -5770,6 +5771,7 @@ var ChapterStore = /** @class */ (function () {
 
 var NoteStore = /** @class */ (function () {
     function NoteStore(rootStore) {
+        this.headerTitle = '';
         mobx.makeAutoObservable(this);
         this.rootStore = rootStore;
         this.searchRepo = SearchRepoImpl;
@@ -5792,9 +5794,10 @@ var NoteStore = /** @class */ (function () {
 
 var NoteViewStore = /** @class */ (function () {
     function NoteViewStore(rootStore) {
+        this.isLongPressed = false;
+        this.type = NoteViewType.MyNote;
         mobx.makeAutoObservable(this);
         this.rootStore = rootStore;
-        this.type = NoteViewType.MyNote;
     }
     NoteViewStore.prototype.toggleMultiSelectMode = function () {
         this.isLongPressed = !this.isLongPressed;
@@ -6060,9 +6063,26 @@ var EditorStore = /** @class */ (function () {
     return EditorStore;
 }());
 
-// import { HeaderStore } from './HeaderStore';
+var UiStore = /** @class */ (function () {
+    function UiStore(rootStore) {
+        this.headerInfo = {};
+        this.isSearching = false;
+        mobx.makeAutoObservable(this);
+        this.rootStore = rootStore;
+    }
+    UiStore.prototype.setHeaderInfo = function (headerInfo) {
+        this.headerInfo = headerInfo;
+    };
+    UiStore.prototype.setHeaderTitle = function (title) {
+        this.headerInfo.title = title;
+    };
+    UiStore.prototype.setIsSearching = function (isSearching) {
+        this.isSearching = isSearching;
+    };
+    return UiStore;
+}());
+
 var RootStore = /** @class */ (function () {
-    // headerStore: HeaderStore;
     function RootStore() {
         this.noteViewStore = new NoteViewStore(this);
         this.chapterStore = new ChapterStore(this);
@@ -6070,7 +6090,7 @@ var RootStore = /** @class */ (function () {
         this.noteStore = new NoteStore(this);
         this.tagStore = new TagStore(this);
         this.editorStore = new EditorStore(this);
-        // this.headerStore = new HeaderStore(this);
+        this.uiStore = new UiStore(this);
     }
     return RootStore;
 }());

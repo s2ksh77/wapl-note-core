@@ -4,7 +4,7 @@ import { PageStore } from './PageStore';
 import { NoteStore } from './NoteStore';
 import { TagStore } from './TagStore';
 import { EditorStore } from './EditorStore';
-// import { HeaderStore } from './HeaderStore';
+import { UiStore } from './UiStore';
 
 export class RootStore {
   noteViewStore: NoteViewStore;
@@ -13,7 +13,7 @@ export class RootStore {
   noteStore: NoteStore;
   tagStore: TagStore;
   editorStore: EditorStore;
-  // headerStore: HeaderStore;
+  uiStore: UiStore;
 
   constructor() {
     this.noteViewStore = new NoteViewStore(this);
@@ -22,6 +22,6 @@ export class RootStore {
     this.noteStore = new NoteStore(this);
     this.tagStore = new TagStore(this);
     this.editorStore = new EditorStore(this);
-    // this.headerStore = new HeaderStore(this);
+    this.uiStore = new UiStore(this);
   }
 }
