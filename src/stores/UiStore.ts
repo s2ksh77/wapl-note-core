@@ -33,4 +33,8 @@ export class UiStore {
   setIsSearching(isSearching: boolean): void {
     this.isSearching = isSearching;
   }
+
+  toggleSearchBar(): void {
+    this.setIsSearching(!this.isSearching);
+  }
 }
