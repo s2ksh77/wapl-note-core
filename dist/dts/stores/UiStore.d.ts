@@ -16,4 +16,5 @@ export declare class UiStore {
     setHeaderInfo(headerInfo: IHeaderInfo): void;
     setHeaderTitle(title: string): void;
     setIsSearching(isSearching: boolean): void;
+    toggleSearchBar(): void;
 }

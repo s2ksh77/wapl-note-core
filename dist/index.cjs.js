@@ -6079,6 +6079,9 @@ var UiStore = /** @class */ (function () {
     UiStore.prototype.setIsSearching = function (isSearching) {
         this.isSearching = isSearching;
     };
+    UiStore.prototype.toggleSearchBar = function () {
+        this.setIsSearching(!this.isSearching);
+    };
     return UiStore;
 }());
 
