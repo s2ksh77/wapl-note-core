@@ -6058,11 +6058,8 @@ var UiStore = /** @class */ (function () {
     UiStore.prototype.setHeaderTitle = function (title) {
         this.headerInfo.title = title;
     };
-    UiStore.prototype.setIsSearching = function (isSearching) {
-        this.isSearching = isSearching;
-    };
     UiStore.prototype.toggleSearchBar = function () {
-        this.setIsSearching(!this.isSearching);
+        this.isSearching = !this.isSearching;
     };
     return UiStore;
 }());
