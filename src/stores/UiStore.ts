@@ -30,11 +30,7 @@ export class UiStore {
     this.headerInfo.title = title;
   }
 
-  setIsSearching(isSearching: boolean): void {
-    this.isSearching = isSearching;
-  }
-
   toggleSearchBar(): void {
-    this.setIsSearching(!this.isSearching);
+    this.isSearching = !this.isSearching;
   }
 }
