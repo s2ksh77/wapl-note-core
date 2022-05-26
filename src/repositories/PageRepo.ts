@@ -94,12 +94,13 @@ export class PageRepo implements IPageRepo {
   async updateRecyclePage(
     channelId: ChannelId,
     action: Action,
-    dto: PageModel,
+    dto: PageModel[],
   ): Promise<DTO.PageInfo> {
     try {
+      const req = dto.map(page => page.response);
       const res = await this.API.put(
         `${baseUrl}${prefix}/app/${channelId}/page/recycle?action=${action}`,
-        dto.response,
+        req,
       );
       if (res.success) return new PageModel(res.response);
     } catch (e) {

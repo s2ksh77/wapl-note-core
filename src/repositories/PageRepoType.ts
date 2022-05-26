@@ -31,7 +31,7 @@ export interface IPageRepo {
   updateRecyclePage(
     channelId: ChannelId,
     action: Action,
-    dto: PageModel,
+    dto: PageModel[],
   ): Promise<DTO.PageInfo>;
   bookmarkPage(pageId: PageId);
   unbookmarkPage(pageId: PageId);

@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { ChannelId, ChapterId, PageId } from '~/@types/common';
-import { PageModel } from '~/models';
+import { PageDTO, PageModel } from '~/models';
 import { PageRepoImpl } from '~/repositories';
 import { IPageRepo } from '~/repositories/PageRepoType';
 import { Action } from '~/@types/page';
@@ -45,12 +45,12 @@ export class PageStore {
     return res;
   }
 
-  async throwPage(channelId: ChannelId, dto: PageModel): Promise<DTO.PageInfo> {
+  async throwPage(channelId: ChannelId, dto: PageModel[]): Promise<DTO.PageInfo> {
     const res = await this.repo.updateRecyclePage(channelId, Action.THROW, dto);
     return res;
   }
 
-  async restorePage(channelId: ChannelId, dto: PageModel): Promise<DTO.PageInfo> {
+  async restorePage(channelId: ChannelId, dto: PageModel[]): Promise<DTO.PageInfo> {
     const res = await this.repo.updateRecyclePage(channelId, Action.RESTORE, dto);
     return res;
   }
