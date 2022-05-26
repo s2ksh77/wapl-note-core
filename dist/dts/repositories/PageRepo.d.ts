@@ -15,7 +15,7 @@ export declare class PageRepo implements IPageRepo {
     deletePage(channelId: ChannelId, chapterId: ChapterId, pageId: PageId): Promise<any>;
     updatePage(channelId: ChannelId, chapterId: ChapterId, action: Action, dto: PageModel, isNewPage?: boolean): Promise<DTO.PageInfo>;
     createSharePage(channelId: ChannelId, dto: PageDTO): Promise<any>;
-    updateRecyclePage(channelId: ChannelId, action: Action, dto: PageModel): Promise<DTO.PageInfo>;
+    updateRecyclePage(channelId: ChannelId, action: Action, dto: PageModel[]): Promise<DTO.PageInfo>;
     bookmarkPage(pageId: PageId): Promise<any>;
     unbookmarkPage(pageId: PageId): Promise<any>;
     getBookmarkInChannel(channelId: ChannelId): Promise<DTO.PageList>;
