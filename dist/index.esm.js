@@ -5658,6 +5658,7 @@ var ChapterType;
 var ChapterStore = /** @class */ (function () {
     function ChapterStore(rootStore) {
         this.headerTitle = '';
+        this.currentId = '';
         makeAutoObservable(this);
         this.rootStore = rootStore;
         this.repo = ChapterRepoImpl;
@@ -5805,6 +5806,7 @@ var Action;
 var PageStore = /** @class */ (function () {
     function PageStore(rootStore) {
         this.isLongPressed = false;
+        this.currentId = '';
         this.pageInfo = new PageModel({});
         makeAutoObservable(this);
         this.rootStore = rootStore;

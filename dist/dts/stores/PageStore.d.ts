@@ -5,6 +5,7 @@ export declare class PageStore {
     rootStore: any;
     repo: IPageRepo;
     isLongPressed: boolean;
+    currentId: string;
     pageInfo: PageModel;
     constructor(rootStore: any);
     changeMode(): void;

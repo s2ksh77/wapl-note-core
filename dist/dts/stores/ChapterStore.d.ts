@@ -5,6 +5,7 @@ export declare class ChapterStore {
     rootStore: any;
     repo: IChapterRepo;
     headerTitle: string;
+    currentId: string;
     constructor(rootStore: any);
     setHeaderTitle(title: any): void;
     getChapterList(channelId: ChannelId): Promise<{
