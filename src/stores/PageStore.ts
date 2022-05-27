@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 import { ChannelId, ChapterId, PageId } from '~/@types/common';
-import { PageDTO, PageModel } from '~/models';
+import { PageModel } from '~/models';
 import { PageRepoImpl } from '~/repositories';
 import { IPageRepo } from '~/repositories/PageRepoType';
 import { Action } from '~/@types/page';
