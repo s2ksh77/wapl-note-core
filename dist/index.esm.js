@@ -5405,12 +5405,13 @@ var PageRepo = /** @class */ (function () {
     };
     PageRepo.prototype.updateRecyclePage = function (channelId, action, dto) {
         return __awaiter(this, void 0, void 0, function () {
-            var res, e_6;
+            var req, res, e_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.put("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/page/recycle?action=").concat(action), dto.response)];
+                        req = dto.map(function (page) { return page.response; });
+                        return [4 /*yield*/, this.API.put("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/page/recycle?action=").concat(action), req)];
                     case 1:
                         res = _a.sent();
                         if (res.success)
