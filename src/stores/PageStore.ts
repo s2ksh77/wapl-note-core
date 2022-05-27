@@ -9,6 +9,7 @@ export class PageStore {
   rootStore;
   repo: IPageRepo;
   isLongPressed = false;
+  currentId = '';
   pageInfo: PageModel = new PageModel({});
 
   constructor(rootStore) {

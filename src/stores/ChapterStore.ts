@@ -12,6 +12,7 @@ export class ChapterStore {
   rootStore;
   repo: IChapterRepo;
   headerTitle = '';
+  currentId = '';
 
   constructor(rootStore) {
     makeAutoObservable(this);
