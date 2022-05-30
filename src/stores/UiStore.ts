@@ -16,6 +16,7 @@ export class UiStore {
   rootStore: RootStore;
   headerInfo: IHeaderInfo = {};
   isSearching = false;
+  selectFilter = '';
 
   constructor(rootStore: RootStore) {
     makeAutoObservable(this);
@@ -32,5 +33,9 @@ export class UiStore {
 
   toggleSearchBar(): void {
     this.isSearching = !this.isSearching;
+  }
+
+  setSelectFilter(selectFilter: string): void {
+    this.selectFilter = selectFilter;
   }
 }
