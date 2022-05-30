@@ -6052,6 +6052,7 @@ var UiStore = /** @class */ (function () {
     function UiStore(rootStore) {
         this.headerInfo = {};
         this.isSearching = false;
+        this.selectFilter = '';
         makeAutoObservable(this);
         this.rootStore = rootStore;
     }
@@ -6063,6 +6064,9 @@ var UiStore = /** @class */ (function () {
     };
     UiStore.prototype.toggleSearchBar = function () {
         this.isSearching = !this.isSearching;
+    };
+    UiStore.prototype.setSelectFilter = function (selectFilter) {
+        this.selectFilter = selectFilter;
     };
     return UiStore;
 }());
