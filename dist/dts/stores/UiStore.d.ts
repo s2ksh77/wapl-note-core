@@ -12,8 +12,10 @@ export declare class UiStore {
     rootStore: RootStore;
     headerInfo: IHeaderInfo;
     isSearching: boolean;
+    selectFilter: string;
     constructor(rootStore: RootStore);
     setHeaderInfo(headerInfo: IHeaderInfo): void;
     setHeaderTitle(title: string): void;
     toggleSearchBar(): void;
+    setSelectFilter(selectFilter: string): void;
 }
