@@ -46,6 +46,15 @@ export class PageStore {
     return res;
   }
 
+  async movePage(
+    channelId: ChannelId,
+    chapterId: ChapterId,
+    dto: PageModel,
+  ): Promise<DTO.PageInfo> {
+    const res = await this.repo.updatePage(channelId, chapterId, Action.MOVE, dto);
+    return res;
+  }
+
   async throwPage(channelId: ChannelId, dto: PageModel[]): Promise<DTO.PageInfo> {
     const res = await this.repo.updateRecyclePage(channelId, Action.THROW, dto);
     return res;
