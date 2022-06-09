@@ -26,7 +26,7 @@ export class PageRepo implements IPageRepo {
     const query = num ? `?count=${num}` : '';
     try {
       const res = await this.API.get(`${baseUrl}${prefix}/app/${channelId}/page${query}`);
-      if (res.success) return res.response?.map(page => new PageModel(page) || []);
+      if (res.success) return res.response;
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
@@ -127,7 +127,7 @@ export class PageRepo implements IPageRepo {
   async getBookmarkInChannel(channelId: ChannelId): Promise<DTO.PageList> {
     try {
       const res = await this.API.get(`${baseUrl}${prefix}/app/${channelId}/bookmark`);
-      if (res.success) return res.response?.map(page => new PageModel(page) || []);
+      if (res.success) return res.response;
     } catch (e) {
       throw Error(JSON.stringify(e));
     }

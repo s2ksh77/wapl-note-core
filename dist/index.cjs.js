@@ -5331,24 +5331,23 @@ var PageRepo = /** @class */ (function () {
         });
     };
     PageRepo.prototype.getRecentList = function (channelId, num) {
-        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var query, res, e_2;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         query = num ? "?count=".concat(num) : '';
-                        _b.label = 1;
+                        _a.label = 1;
                     case 1:
-                        _b.trys.push([1, 3, , 4]);
+                        _a.trys.push([1, 3, , 4]);
                         return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/page").concat(query))];
                     case 2:
-                        res = _b.sent();
+                        res = _a.sent();
                         if (res.success)
-                            return [2 /*return*/, (_a = res.response) === null || _a === void 0 ? void 0 : _a.map(function (page) { return new PageModel(page) || []; })];
+                            return [2 /*return*/, res.response];
                         return [3 /*break*/, 4];
                     case 3:
-                        e_2 = _b.sent();
+                        e_2 = _a.sent();
                         throw Error(JSON.stringify(e_2));
                     case 4: return [2 /*return*/];
                 }
@@ -5497,21 +5496,20 @@ var PageRepo = /** @class */ (function () {
         });
     };
     PageRepo.prototype.getBookmarkInChannel = function (channelId) {
-        var _a;
         return __awaiter(this, void 0, void 0, function () {
             var res, e_9;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
-                        _b.trys.push([0, 2, , 3]);
+                        _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/bookmark"))];
                     case 1:
-                        res = _b.sent();
+                        res = _a.sent();
                         if (res.success)
-                            return [2 /*return*/, (_a = res.response) === null || _a === void 0 ? void 0 : _a.map(function (page) { return new PageModel(page) || []; })];
+                            return [2 /*return*/, res.response];
                         return [3 /*break*/, 3];
                     case 2:
-                        e_9 = _b.sent();
+                        e_9 = _a.sent();
                         throw Error(JSON.stringify(e_9));
                     case 3: return [2 /*return*/];
                 }
