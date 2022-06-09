@@ -82,7 +82,7 @@ export class PageRepo implements IPageRepo {
         `${baseUrl}${prefix}/app/${channelId}/chapter/${chapterId}/page?action=${action}&isNewPage=${isNewPage}`,
         dto.response,
       );
-      if (res.success) return new PageModel(res);
+      if (res.success) return new PageModel(res.response);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
