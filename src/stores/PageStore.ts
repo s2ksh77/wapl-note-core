@@ -37,6 +37,15 @@ export class PageStore {
     return res;
   }
 
+  async createPage(
+    channelId: ChannelId,
+    chapterId: ChapterId,
+    dto: PageModel,
+  ): Promise<void> {
+    const res = await this.repo.createPage(channelId, chapterId, dto);
+    this.pageInfo = res;
+  }
+
   async renamePage(
     channelId: ChannelId,
     chapterId: ChapterId,

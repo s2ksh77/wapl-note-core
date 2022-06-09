@@ -18,7 +18,11 @@ export interface IPageRepo {
   getAllPageList(channelId: ChannelId): Promise<DTO.PageList>;
   getRecentList(channelId: ChannelId, num): Promise<DTO.PageList>;
   getPageInfoList(pageId: PageId, channelId: ChannelId): Promise<DTO.PageInfo>;
-  createPage(channelId: ChannelId, chapterId: ChapterId, dto: PageDTO);
+  createPage(
+    channelId: ChannelId,
+    chapterId: ChapterId,
+    dto: PageModel,
+  ): Promise<DTO.PageInfo>;
   deletePage(channelId: ChannelId, chapterId: ChapterId, pageId: PageId);
   updatePage(
     channelId: ChannelId,
