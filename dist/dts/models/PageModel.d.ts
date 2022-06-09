@@ -11,11 +11,13 @@ export declare class PageModel {
     get createdUserId(): CreatedUserId;
     get deletedDate(): DeletedDate;
     get editingUserId(): EditingUserId;
+    set editingUserId(editingUserId: EditingUserId);
     get favorite(): Favorite;
     get fileList(): FileList;
     get id(): PageId;
     get modifiedDate(): ModifiedDate;
     get name(): Name;
+    set name(name: Name);
     get read(): Read;
     get restoreChapterId(): RestoreChapterId;
     get shared(): Shared;

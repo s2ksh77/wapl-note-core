@@ -804,6 +804,9 @@ var PageModel = /** @class */ (function () {
         get: function () {
             return this.response.editingUserId;
         },
+        set: function (editingUserId) {
+            this.response.editingUserId = editingUserId;
+        },
         enumerable: false,
         configurable: true
     });
@@ -838,6 +841,9 @@ var PageModel = /** @class */ (function () {
     Object.defineProperty(PageModel.prototype, "name", {
         get: function () {
             return this.response.name;
+        },
+        set: function (name) {
+            this.response.name = name;
         },
         enumerable: false,
         configurable: true
@@ -5342,29 +5348,17 @@ var PageRepo = /** @class */ (function () {
     };
     PageRepo.prototype.createPage = function (channelId, chapterId, dto) {
         return __awaiter(this, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                try {
-                    return [2 /*return*/, this.API.post("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter/").concat(chapterId, "/page"), {
-                            dto: dto,
-                        })];
-                }
-                catch (e) {
-                    throw Error(JSON.stringify(e));
-                }
-                return [2 /*return*/];
-            });
-        });
-    };
-    // 단일 페이지 삭제
-    PageRepo.prototype.deletePage = function (channelId, chapterId, pageId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var e_4;
+            var res, e_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.delete("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter/").concat(chapterId, "/page/").concat(pageId))];
-                    case 1: return [2 /*return*/, _a.sent()];
+                        return [4 /*yield*/, this.API.post("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter/").concat(chapterId, "/page"), dto.response)];
+                    case 1:
+                        res = _a.sent();
+                        if (res.success)
+                            return [2 /*return*/, new PageModel(res.response)];
+                        return [3 /*break*/, 3];
                     case 2:
                         e_4 = _a.sent();
                         throw Error(JSON.stringify(e_4));
@@ -5373,10 +5367,28 @@ var PageRepo = /** @class */ (function () {
             });
         });
     };
+    // 단일 페이지 삭제
+    PageRepo.prototype.deletePage = function (channelId, chapterId, pageId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var e_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.delete("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter/").concat(chapterId, "/page/").concat(pageId))];
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        e_5 = _a.sent();
+                        throw Error(JSON.stringify(e_5));
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     PageRepo.prototype.updatePage = function (channelId, chapterId, action, dto, isNewPage) {
         if (isNewPage === void 0) { isNewPage = false; }
         return __awaiter(this, void 0, void 0, function () {
-            var res, e_5;
+            var res, e_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -5385,11 +5397,11 @@ var PageRepo = /** @class */ (function () {
                     case 1:
                         res = _a.sent();
                         if (res.success)
-                            return [2 /*return*/, new PageModel(res)];
+                            return [2 /*return*/, new PageModel(res.response)];
                         return [3 /*break*/, 3];
                     case 2:
-                        e_5 = _a.sent();
-                        throw Error(JSON.stringify(e_5));
+                        e_6 = _a.sent();
+                        throw Error(JSON.stringify(e_6));
                     case 3: return [2 /*return*/];
                 }
             });
@@ -5406,7 +5418,7 @@ var PageRepo = /** @class */ (function () {
     };
     PageRepo.prototype.updateRecyclePage = function (channelId, action, dto) {
         return __awaiter(this, void 0, void 0, function () {
-            var req, res, e_6;
+            var req, res, e_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -5419,23 +5431,6 @@ var PageRepo = /** @class */ (function () {
                             return [2 /*return*/, new PageModel(res.response)];
                         return [3 /*break*/, 3];
                     case 2:
-                        e_6 = _a.sent();
-                        throw Error(JSON.stringify(e_6));
-                    case 3: return [2 /*return*/];
-                }
-            });
-        });
-    };
-    PageRepo.prototype.bookmarkPage = function (pageId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var e_7;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/bookmark"))];
-                    case 1: return [2 /*return*/, _a.sent()];
-                    case 2:
                         e_7 = _a.sent();
                         throw Error(JSON.stringify(e_7));
                     case 3: return [2 /*return*/];
@@ -5443,14 +5438,14 @@ var PageRepo = /** @class */ (function () {
             });
         });
     };
-    PageRepo.prototype.unbookmarkPage = function (pageId) {
+    PageRepo.prototype.bookmarkPage = function (pageId) {
         return __awaiter(this, void 0, void 0, function () {
             var e_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.delete("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/bookmark"))];
+                        return [4 /*yield*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/bookmark"))];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
                         e_8 = _a.sent();
@@ -5460,9 +5455,26 @@ var PageRepo = /** @class */ (function () {
             });
         });
     };
+    PageRepo.prototype.unbookmarkPage = function (pageId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var e_9;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.delete("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/bookmark"))];
+                    case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        e_9 = _a.sent();
+                        throw Error(JSON.stringify(e_9));
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     PageRepo.prototype.getBookmarkInChannel = function (channelId) {
         return __awaiter(this, void 0, void 0, function () {
-            var res, e_9;
+            var res, e_10;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -5474,8 +5486,8 @@ var PageRepo = /** @class */ (function () {
                             return [2 /*return*/, res.response];
                         return [3 /*break*/, 3];
                     case 2:
-                        e_9 = _a.sent();
-                        throw Error(JSON.stringify(e_9));
+                        e_10 = _a.sent();
+                        throw Error(JSON.stringify(e_10));
                     case 3: return [2 /*return*/];
                 }
             });
@@ -5483,7 +5495,7 @@ var PageRepo = /** @class */ (function () {
     };
     PageRepo.prototype.getBookmarkInUser = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var e_10;
+            var e_11;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -5491,8 +5503,8 @@ var PageRepo = /** @class */ (function () {
                         return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/bookmark"))];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
-                        e_10 = _a.sent();
-                        throw Error(JSON.stringify(e_10));
+                        e_11 = _a.sent();
+                        throw Error(JSON.stringify(e_11));
                     case 3: return [2 /*return*/];
                 }
             });
@@ -5856,6 +5868,20 @@ var PageStore = /** @class */ (function () {
             });
         });
     };
+    PageStore.prototype.createPage = function (channelId, chapterId, dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.createPage(channelId, chapterId, dto)];
+                    case 1:
+                        res = _a.sent();
+                        this.pageInfo = res;
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     PageStore.prototype.renamePage = function (channelId, chapterId, dto) {
         return __awaiter(this, void 0, void 0, function () {
             var res;
@@ -5927,6 +5953,19 @@ var PageStore = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, this.repo.unbookmarkPage(pageId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.editPage = function (channelId, chapterId, dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.updatePage(channelId, chapterId, Action.EDIT_START, dto)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];
