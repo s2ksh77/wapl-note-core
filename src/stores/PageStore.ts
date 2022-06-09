@@ -84,6 +84,15 @@ export class PageStore {
     return res;
   }
 
+  async editPage(
+    channelId: ChannelId,
+    chapterId: ChapterId,
+    dto: PageModel,
+  ): Promise<DTO.PageInfo> {
+    const res = await this.repo.updatePage(channelId, chapterId, Action.EDIT_START, dto);
+    return res;
+  }
+
   async savePage(
     channelId: ChannelId,
     chapterId: ChapterId,
