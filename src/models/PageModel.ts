@@ -65,8 +65,16 @@ export class PageModel {
     return this.response.editingUserId;
   }
 
+  set editingUserId(editingUserId: EditingUserId) {
+    this.response.editingUserId = editingUserId;
+  }
+
   get favorite(): Favorite {
     return this.response.favorite;
+  }
+
+  set favorite(favorite: Favorite) {
+    this.response.favorite = favorite;
   }
 
   get fileList(): FileList {
@@ -83,6 +91,10 @@ export class PageModel {
 
   get name(): Name {
     return this.response.name;
+  }
+
+  set name(name: Name) {
+    this.response.name = name;
   }
 
   get read(): Read {

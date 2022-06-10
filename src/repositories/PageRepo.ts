@@ -43,14 +43,17 @@ export class PageRepo implements IPageRepo {
     }
   }
 
-  async createPage(channelId: ChannelId, chapterId: ChapterId, dto: PageDTO) {
+  async createPage(
+    channelId: ChannelId,
+    chapterId: ChapterId,
+    dto: PageModel,
+  ): Promise<DTO.PageInfo> {
     try {
-      return this.API.post(
+      const res = await this.API.post(
         `${baseUrl}${prefix}/app/${channelId}/chapter/${chapterId}/page`,
-        {
-          dto,
-        },
+        dto.response,
       );
+      if (res.success) return new PageModel(res.response);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
@@ -79,7 +82,7 @@ export class PageRepo implements IPageRepo {
         `${baseUrl}${prefix}/app/${channelId}/chapter/${chapterId}/page?action=${action}&isNewPage=${isNewPage}`,
         dto.response,
       );
-      if (res.success) return new PageModel(res);
+      if (res.success) return new PageModel(res.response);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }

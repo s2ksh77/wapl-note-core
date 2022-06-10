@@ -37,6 +37,15 @@ export class PageStore {
     return res;
   }
 
+  async createPage(
+    channelId: ChannelId,
+    chapterId: ChapterId,
+    dto: PageModel,
+  ): Promise<void> {
+    const res = await this.repo.createPage(channelId, chapterId, dto);
+    this.pageInfo = res;
+  }
+
   async renamePage(
     channelId: ChannelId,
     chapterId: ChapterId,
@@ -72,6 +81,15 @@ export class PageStore {
 
   async unbookmarkPage(pageId: PageId) {
     const res = await this.repo.unbookmarkPage(pageId);
+    return res;
+  }
+
+  async editPage(
+    channelId: ChannelId,
+    chapterId: ChapterId,
+    dto: PageModel,
+  ): Promise<DTO.PageInfo> {
+    const res = await this.repo.updatePage(channelId, chapterId, Action.EDIT_START, dto);
     return res;
   }
 
