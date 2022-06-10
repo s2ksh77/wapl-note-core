@@ -13,6 +13,7 @@ export declare class PageModel {
     get editingUserId(): EditingUserId;
     set editingUserId(editingUserId: EditingUserId);
     get favorite(): Favorite;
+    set favorite(favorite: Favorite);
     get fileList(): FileList;
     get id(): PageId;
     get modifiedDate(): ModifiedDate;

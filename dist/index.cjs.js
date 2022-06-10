@@ -832,6 +832,9 @@ var PageModel = /** @class */ (function () {
         get: function () {
             return this.response.favorite;
         },
+        set: function (favorite) {
+            this.response.favorite = favorite;
+        },
         enumerable: false,
         configurable: true
     });
