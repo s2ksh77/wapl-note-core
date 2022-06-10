@@ -73,6 +73,10 @@ export class PageModel {
     return this.response.favorite;
   }
 
+  set favorite(favorite: Favorite) {
+    this.response.favorite = favorite;
+  }
+
   get fileList(): FileList {
     return this.response.fileList;
   }
