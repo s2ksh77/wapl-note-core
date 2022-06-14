@@ -45,9 +45,7 @@ export class TagRepo implements ITagRepo {
     dto: Pick<TagDTO, 'name' | 'pageId'>[],
   ): Promise<TagDTO[]> {
     try {
-      const res = await this.API.post(`${baseUrl}${prefix}/page/${pageId}/tag`, {
-        dto,
-      });
+      const res = await this.API.post(`${baseUrl}${prefix}/page/${pageId}/tag`, dto);
       return res.response;
     } catch (e) {
       throw Error(JSON.stringify(e));
@@ -56,9 +54,7 @@ export class TagRepo implements ITagRepo {
 
   async deleteTag(pageId: PageId, dto: Pick<TagDTO, 'id' | 'pageId'>[]): Promise<void> {
     try {
-      return this.API.delete(`${baseUrl}${prefix}/page/${pageId}/tag`, {
-        dto,
-      });
+      return this.API.post(`${baseUrl}${prefix}/page/${pageId}/tag/delete`, dto);
     } catch (e) {
       throw Error(JSON.stringify(e));
     }
