@@ -5632,9 +5632,7 @@ var TagRepo = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
-                                dto: dto,
-                            })];
+                        return [4 /*yield*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), dto)];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res.response];
@@ -5650,9 +5648,7 @@ var TagRepo = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 try {
-                    return [2 /*return*/, this.API.delete("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"), {
-                            dto: dto,
-                        })];
+                    return [2 /*return*/, this.API.post("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag/delete"), dto)];
                 }
                 catch (e) {
                     throw Error(JSON.stringify(e));
