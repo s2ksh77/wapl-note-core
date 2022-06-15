@@ -69,6 +69,18 @@ export class PageStore {
     return res;
   }
 
+  async getEditingUserIds(pageIds: PageId[], channelId: ChannelId): Promise<string[]> {
+    const editingUserIds: string[] = [];
+    await Promise.all(
+      pageIds.map(async id => {
+        const page = await this.repo.getPageInfoList(id, channelId);
+        if (page.editingUserId) editingUserIds.push(page.editingUserId);
+        return id;
+      }),
+    );
+    return Array.from(new Set(editingUserIds));
+  }
+
   async restorePage(channelId: ChannelId, dto: PageModel[]): Promise<DTO.PageInfo> {
     const res = await this.repo.updateRecyclePage(channelId, Action.RESTORE, dto);
     return res;
