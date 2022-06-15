@@ -25,5 +25,6 @@ export interface IChapterRepo {
     language: string,
     channelId: ChannelId,
   ): Promise<DTO.ChapterInfo>;
+  deleteChapter(dto: ChapterModel[], channelId: ChannelId): Promise<void>;
   updateChapter(dto: ChapterModel, channelId: ChannelId): Promise<DTO.ChapterInfo>;
 }

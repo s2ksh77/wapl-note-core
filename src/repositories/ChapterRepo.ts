@@ -75,39 +75,14 @@ export class ChapterRepo implements IChapterRepo {
   //   }
   // }
 
-  // async deleteChapter(
-  //   chapterList: ChapterDTO[],
-  //   channelId: ChannelId,
-  //   chapterId: ChapterId,
-  // ) {
-  //   try {
-  //     const res = await this.API.delete(
-  //       `${prefix}/app/${channelId}/chapter/${chapterId}`,
-  //       chapterList,
-  //     );
-
-  //   } catch (e) {
-  //     throw Error(JSON.stringify(e));
-  //   }
-  // }
-
-  // async deleteChapter(
-  //   chapterList: ChapterDTO[],
-  //   channelId: ChannelId,
-  //   chapterId: ChapterId,
-  // ) {
-  //   try {
-  //     const res = await this.API.delete(
-  //       `${prefix}/app/${channelId}/chapter/${chapterId}`,
-  //       {
-  //         dto,
-  //       },
-  //     );
-
-  //   } catch (e) {
-  //     throw Error(JSON.stringify(e));
-  //   }
-  // }
+  async deleteChapter(dto: ChapterModel[], channelId: ChannelId): Promise<void> {
+    try {
+      const req = dto.map(chapter => chapter.response);
+      await this.API.post(`${baseUrl}${prefix}/app/${channelId}/chapter/delete`, req);
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
 
   async updateChapter(dto: ChapterModel, channelId: ChannelId): Promise<DTO.ChapterInfo> {
     try {

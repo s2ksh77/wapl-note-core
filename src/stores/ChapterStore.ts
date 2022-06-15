@@ -55,6 +55,10 @@ export class ChapterStore {
     return res;
   }
 
+  async deleteChapter(dto: ChapterModel[], channelId: ChannelId): Promise<void> {
+    await this.repo.deleteChapter(dto, channelId);
+  }
+
   get RandomColor(): string {
     const colorArray = [
       '#C84847',
