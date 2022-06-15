@@ -10,6 +10,7 @@ export declare class ChapterRepo implements IChapterRepo {
     getChapterInfoList(chapterId: ChapterId, channelId: ChannelId): Promise<DTO.ChapterInfo>;
     createShareChapter(chapterList: ChapterDTO[], channelId: ChannelId): Promise<any>;
     createChapter(dto: ChapterModel, language: string, channelId: ChannelId): Promise<DTO.ChapterInfo>;
+    deleteChapter(dto: ChapterModel[], channelId: ChannelId): Promise<void>;
     updateChapter(dto: ChapterModel, channelId: ChannelId): Promise<DTO.ChapterInfo>;
 }
 export declare const ChapterRepoImpl: ChapterRepo;
