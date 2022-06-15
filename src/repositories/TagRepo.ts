@@ -20,6 +20,20 @@ export class TagRepo implements ITagRepo {
     }
   }
 
+  async getAllSearchTagList(
+    channelId: ChannelId,
+    searchKey: string,
+  ): Promise<TagListObjDTO> {
+    try {
+      const res = await this.API.get(
+        `${baseUrl}${prefix}/app/${channelId}/tag/${searchKey}`,
+      );
+      return res.response;
+    } catch (e) {
+      throw Error(JSON.stringify(e));
+    }
+  }
+
   async getTagList(pageId: PageId): Promise<TagDTO[]> {
     try {
       const res = await this.API.get(`${baseUrl}${prefix}/page/${pageId}/tag`);

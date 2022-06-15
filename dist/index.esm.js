@@ -5569,14 +5569,14 @@ var TagRepo = /** @class */ (function () {
             });
         });
     };
-    TagRepo.prototype.getTagList = function (pageId) {
+    TagRepo.prototype.getAllSearchTagList = function (channelId, searchKey) {
         return __awaiter(this, void 0, void 0, function () {
             var res, e_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"))];
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/tag/").concat(searchKey))];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res.response];
@@ -5588,14 +5588,14 @@ var TagRepo = /** @class */ (function () {
             });
         });
     };
-    TagRepo.prototype.getTagPageList = function (tagId, channelId) {
+    TagRepo.prototype.getTagList = function (pageId) {
         return __awaiter(this, void 0, void 0, function () {
             var res, e_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/tag/").concat(tagId, "/page"))];
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/page/").concat(pageId, "/tag"))];
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res.response];
@@ -5607,9 +5607,28 @@ var TagRepo = /** @class */ (function () {
             });
         });
     };
-    TagRepo.prototype.createTag = function (pageId, dto) {
+    TagRepo.prototype.getTagPageList = function (tagId, channelId) {
         return __awaiter(this, void 0, void 0, function () {
             var res, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.API.get("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/tag/").concat(tagId, "/page"))];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.response];
+                    case 2:
+                        e_4 = _a.sent();
+                        throw Error(JSON.stringify(e_4));
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagRepo.prototype.createTag = function (pageId, dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res, e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -5619,8 +5638,8 @@ var TagRepo = /** @class */ (function () {
                         res = _a.sent();
                         return [2 /*return*/, res.response];
                     case 2:
-                        e_4 = _a.sent();
-                        throw Error(JSON.stringify(e_4));
+                        e_5 = _a.sent();
+                        throw Error(JSON.stringify(e_5));
                     case 3: return [2 /*return*/];
                 }
             });
@@ -6004,6 +6023,21 @@ var TagStore = /** @class */ (function () {
                     case 0:
                         _a = this;
                         return [4 /*yield*/, this.repo.getAllTagList(channelId)];
+                    case 1:
+                        _a.sortedTagList = _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagStore.prototype.fetchSearchTagList = function (channelId, searchKey) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, this.repo.getAllSearchTagList(channelId, searchKey)];
                     case 1:
                         _a.sortedTagList = _b.sent();
                         return [2 /*return*/];
@@ -7234,6 +7268,7 @@ var UiStore = /** @class */ (function () {
         this.headerInfo = {};
         this.isSearching = false;
         this.selectFilter = '';
+        this.searchKey = '';
         makeAutoObservable(this);
         this.rootStore = rootStore;
     }
@@ -7245,6 +7280,9 @@ var UiStore = /** @class */ (function () {
     };
     UiStore.prototype.toggleSearchBar = function () {
         this.isSearching = !this.isSearching;
+    };
+    UiStore.prototype.setSearchKey = function (value) {
+        this.searchKey = value;
     };
     UiStore.prototype.setSelectFilter = function (selectFilter) {
         this.selectFilter = selectFilter;

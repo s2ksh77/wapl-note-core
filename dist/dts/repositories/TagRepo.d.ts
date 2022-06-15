@@ -7,6 +7,7 @@ export declare class TagRepo implements ITagRepo {
     API: API;
     constructor();
     getAllTagList(channelId: ChannelId): Promise<TagListObjDTO>;
+    getAllSearchTagList(channelId: ChannelId, searchKey: string): Promise<TagListObjDTO>;
     getTagList(pageId: PageId): Promise<TagDTO[]>;
     getTagPageList(tagId: TagId, channelId: ChannelId): Promise<PageDTO[]>;
     createTag(pageId: PageId, dto: Pick<TagDTO, 'name' | 'pageId'>[]): Promise<TagDTO[]>;
