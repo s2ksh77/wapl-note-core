@@ -21,6 +21,10 @@ export class TagStore {
     this.sortedTagList = await this.repo.getAllTagList(channelId);
   }
 
+  async fetchSearchTagList(channelId: ChannelId, searchKey: string): Promise<void> {
+    this.sortedTagList = await this.repo.getAllSearchTagList(channelId, searchKey);
+  }
+
   async fetchPageTagList(pageId: PageId): Promise<void> {
     const res = await this.repo.getTagList(pageId);
     this.pageTagList = res.map((tag: TagDTO) => {

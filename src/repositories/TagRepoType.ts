@@ -4,6 +4,7 @@ import { TagDTO, TagListObjDTO } from '~/models/dto/TagDTO';
 
 export interface ITagRepo {
   getAllTagList(channelId: ChannelId): Promise<TagListObjDTO>;
+  getAllSearchTagList(channelId: ChannelId, searchKey: string): Promise<TagListObjDTO>;
   getTagList(pageId: PageId): Promise<TagDTO[]>;
   getTagPageList(channelId: ChannelId, tagId: TagId): Promise<PageDTO[]>;
   createTag(pageId: PageId, dto: Pick<TagDTO, 'name' | 'pageId'>[]): Promise<TagDTO[]>;
