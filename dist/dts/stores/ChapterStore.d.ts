@@ -21,5 +21,7 @@ export declare class ChapterStore {
     getChapterInfoList(chapterId: ChapterId, channelId: ChannelId): Promise<ChapterModel>;
     createChapter(dto: ChapterModel, language: string, channelId: ChannelId): Promise<ChapterModel>;
     renameChapter(dto: ChapterModel, channelId: ChannelId): Promise<ChapterModel>;
+    deleteChapter(dto: ChapterModel[], channelId: ChannelId): Promise<void>;
+    getEditingUserIds(chapterIds: ChapterId[], channelId: ChannelId): Promise<string[]>;
     get RandomColor(): string;
 }

@@ -5085,39 +5085,29 @@ var ChapterRepo = /** @class */ (function () {
     //     throw Error(JSON.stringify(e));
     //   }
     // }
-    // async deleteChapter(
-    //   chapterList: ChapterDTO[],
-    //   channelId: ChannelId,
-    //   chapterId: ChapterId,
-    // ) {
-    //   try {
-    //     const res = await this.API.delete(
-    //       `${prefix}/app/${channelId}/chapter/${chapterId}`,
-    //       chapterList,
-    //     );
-    //   } catch (e) {
-    //     throw Error(JSON.stringify(e));
-    //   }
-    // }
-    // async deleteChapter(
-    //   chapterList: ChapterDTO[],
-    //   channelId: ChannelId,
-    //   chapterId: ChapterId,
-    // ) {
-    //   try {
-    //     const res = await this.API.delete(
-    //       `${prefix}/app/${channelId}/chapter/${chapterId}`,
-    //       {
-    //         dto,
-    //       },
-    //     );
-    //   } catch (e) {
-    //     throw Error(JSON.stringify(e));
-    //   }
-    // }
+    ChapterRepo.prototype.deleteChapter = function (dto, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var req, e_4;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        req = dto.map(function (chapter) { return chapter.response; });
+                        return [4 /*yield*/, this.API.post("".concat(baseUrl).concat(prefix, "/app/").concat(channelId, "/chapter/delete"), req)];
+                    case 1:
+                        _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        e_4 = _a.sent();
+                        throw Error(JSON.stringify(e_4));
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     ChapterRepo.prototype.updateChapter = function (dto, channelId) {
         return __awaiter(this, void 0, void 0, function () {
-            var res, e_4;
+            var res, e_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -5129,8 +5119,8 @@ var ChapterRepo = /** @class */ (function () {
                             return [2 /*return*/, new ChapterModel(res.response)];
                         return [3 /*break*/, 3];
                     case 2:
-                        e_4 = _a.sent();
-                        throw Error(JSON.stringify(e_4));
+                        e_5 = _a.sent();
+                        throw Error(JSON.stringify(e_5));
                     case 3: return [2 /*return*/];
                 }
             });
@@ -5778,6 +5768,45 @@ var ChapterStore = /** @class */ (function () {
             });
         });
     };
+    ChapterStore.prototype.deleteChapter = function (dto, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.deleteChapter(dto, channelId)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ChapterStore.prototype.getEditingUserIds = function (chapterIds, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var editingUserIds;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        editingUserIds = [];
+                        return [4 /*yield*/, Promise.all(chapterIds.map(function (id) { return __awaiter(_this, void 0, void 0, function () {
+                                var pageList;
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0: return [4 /*yield*/, this.repo.getChapterInfoList(id, channelId)];
+                                        case 1:
+                                            pageList = (_a.sent()).pageList;
+                                            editingUserIds.push.apply(editingUserIds, pageList.filter(function (page) { return page.editingUserId; }).map(function (page) { return page.editingUserId; }));
+                                            return [2 /*return*/, id];
+                                    }
+                                });
+                            }); }))];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, Array.from(new Set(editingUserIds))];
+                }
+            });
+        });
+    };
     Object.defineProperty(ChapterStore.prototype, "RandomColor", {
         get: function () {
             var colorArray = [
@@ -5953,6 +5982,34 @@ var PageStore = /** @class */ (function () {
                     case 1:
                         res = _a.sent();
                         return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.getEditingUserIds = function (pageIds, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var editingUserIds;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        editingUserIds = [];
+                        return [4 /*yield*/, Promise.all(pageIds.map(function (id) { return __awaiter(_this, void 0, void 0, function () {
+                                var page;
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0: return [4 /*yield*/, this.repo.getPageInfoList(id, channelId)];
+                                        case 1:
+                                            page = _a.sent();
+                                            if (page.editingUserId)
+                                                editingUserIds.push(page.editingUserId);
+                                            return [2 /*return*/, id];
+                                    }
+                                });
+                            }); }))];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, Array.from(new Set(editingUserIds))];
                 }
             });
         });

@@ -16,6 +16,7 @@ export declare class PageStore {
     renamePage(channelId: ChannelId, chapterId: ChapterId, dto: PageModel): Promise<DTO.PageInfo>;
     movePage(channelId: ChannelId, chapterId: ChapterId, dto: PageModel): Promise<DTO.PageInfo>;
     throwPage(channelId: ChannelId, dto: PageModel[]): Promise<DTO.PageInfo>;
+    getEditingUserIds(pageIds: PageId[], channelId: ChannelId): Promise<string[]>;
     restorePage(channelId: ChannelId, dto: PageModel[]): Promise<DTO.PageInfo>;
     bookmarkPage(pageId: PageId): Promise<any>;
     unbookmarkPage(pageId: PageId): Promise<any>;

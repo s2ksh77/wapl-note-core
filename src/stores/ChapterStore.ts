@@ -55,6 +55,27 @@ export class ChapterStore {
     return res;
   }
 
+  async deleteChapter(dto: ChapterModel[], channelId: ChannelId): Promise<void> {
+    await this.repo.deleteChapter(dto, channelId);
+  }
+
+  async getEditingUserIds(
+    chapterIds: ChapterId[],
+    channelId: ChannelId,
+  ): Promise<string[]> {
+    const editingUserIds: string[] = [];
+    await Promise.all(
+      chapterIds.map(async id => {
+        const { pageList } = await this.repo.getChapterInfoList(id, channelId);
+        editingUserIds.push(
+          ...pageList.filter(page => page.editingUserId).map(page => page.editingUserId),
+        );
+        return id;
+      }),
+    );
+    return Array.from(new Set(editingUserIds));
+  }
+
   get RandomColor(): string {
     const colorArray = [
       '#C84847',
