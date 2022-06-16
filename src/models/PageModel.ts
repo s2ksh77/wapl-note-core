@@ -41,6 +41,10 @@ export class PageModel {
     return this.response.chapterId;
   }
 
+  get color(): ChannelId {
+    return this.response.color;
+  }
+
   get content(): Content {
     return this.response.content;
   }
