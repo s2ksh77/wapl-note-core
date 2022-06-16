@@ -31,7 +31,7 @@ export type FileList = any;
 
 export type TagId = string;
 
-export const baseUrl = 'http://192.168.151.53:8282'; // for test
+export const baseUrl = 'http://192.168.151.53:8080'; // for test
 export const prefix = '/apis/v1';
 
 export enum NoteViewType {

@@ -28,7 +28,7 @@ export declare type TextContent = string | null;
 export declare type TagList = TagDTO[] | null;
 export declare type FileList = any;
 export declare type TagId = string;
-export declare const baseUrl = "http://192.168.151.53:8282";
+export declare const baseUrl = "http://192.168.151.53:8080";
 export declare const prefix = "/apis/v1";
 export declare enum NoteViewType {
     MyNote = "MyNote",
