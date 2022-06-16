@@ -21,6 +21,7 @@ export declare class PageModel {
     set name(name: Name);
     get read(): Read;
     get restoreChapterId(): RestoreChapterId;
+    set restoreChapterId(chapterId: RestoreChapterId);
     get shared(): Shared;
     get sharedDate(): CreatedDate;
     get sharedRoomId(): SharedRoomId;

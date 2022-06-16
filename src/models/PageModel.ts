@@ -105,6 +105,10 @@ export class PageModel {
     return this.response.restoreChapterId;
   }
 
+  set restoreChapterId(chapterId) {
+    this.response.restoreChapterId = chapterId;
+  }
+
   get shared(): Shared {
     return this.response.shared;
   }
