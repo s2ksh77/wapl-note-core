@@ -5,6 +5,7 @@ export declare class PageModel {
     constructor(page: Partial<PageDTO>);
     get channelId(): ChannelId;
     get chapterId(): ChapterId;
+    get color(): ChannelId;
     get content(): Content;
     set content(data: Content);
     get createdDate(): CreatedDate;
