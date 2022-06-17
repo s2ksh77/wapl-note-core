@@ -7,8 +7,8 @@ import {
   SharedRoomId,
   SharedUserId,
   Name,
-  Type,
 } from '~/@types/common';
+import { ChapterType } from '~/@types';
 import { ChapterDTO } from '~/models/dto/ChapterDTO';
 import type { PageDTO } from '~/models/dto/PageDTO';
 import { makeAutoObservable } from 'mobx';
@@ -34,7 +34,7 @@ export class ChapterModel {
     return this.response.name;
   }
 
-  get type(): Type {
+  get type(): ChapterType {
     return this.response.type;
   }
 
