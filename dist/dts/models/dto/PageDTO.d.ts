@@ -3,6 +3,7 @@ import { TagDTO } from './TagDTO';
 export interface PageDTO {
     channelId: ChannelId;
     chapterId: ChapterId;
+    color: string;
     content: string;
     createdDate: string;
     createdUserId: string;

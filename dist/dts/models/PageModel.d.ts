@@ -1,10 +1,11 @@
-import { ChannelId, ChapterId, Content, CreatedDate, CreatedUserId, DeletedDate, EditingUserId, Favorite, FileList, PageId, ModifiedDate, Name, Read, RestoreChapterId, Shared, SharedRoomId, SharedUserId, TagList, TextContent, UpdatedUserId, UserName, Type } from "../@types/common";
+import { ChannelId, ChapterId, Content, CreatedDate, CreatedUserId, DeletedDate, EditingUserId, Favorite, FileList, PageId, ModifiedDate, Name, Read, RestoreChapterId, Shared, SharedRoomId, SharedUserId, TagList, TextContent, UpdatedUserId, UserName, Type, Color } from "../@types/common";
 import type { PageDTO } from "./dto/PageDTO";
 export declare class PageModel {
     response: Partial<PageDTO>;
     constructor(page: Partial<PageDTO>);
     get channelId(): ChannelId;
     get chapterId(): ChapterId;
+    get color(): Color;
     get content(): Content;
     set content(data: Content);
     get createdDate(): CreatedDate;

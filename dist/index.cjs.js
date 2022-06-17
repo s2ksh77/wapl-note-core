@@ -787,6 +787,13 @@ var PageModel = /** @class */ (function () {
         enumerable: false,
         configurable: true
     });
+    Object.defineProperty(PageModel.prototype, "color", {
+        get: function () {
+            return this.response.color;
+        },
+        enumerable: false,
+        configurable: true
+    });
     Object.defineProperty(PageModel.prototype, "content", {
         get: function () {
             return this.response.content;
