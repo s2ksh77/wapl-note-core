@@ -22,6 +22,7 @@ import {
   UpdatedUserId,
   UserName,
   Type,
+  Color,
 } from '~/@types/common';
 import type { PageDTO } from '~/models/dto/PageDTO';
 
@@ -41,7 +42,7 @@ export class PageModel {
     return this.response.chapterId;
   }
 
-  get color(): ChannelId {
+  get color(): Color {
     return this.response.color;
   }
 
