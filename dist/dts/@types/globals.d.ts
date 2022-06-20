@@ -1,6 +1,7 @@
 import { ChapterModel, PageModel } from "../models";
 import type { ChapterResponseArray, ChapterResponseObject } from "../repositories/ChapterRepoType";
 import { PageResponseArray, PageResponseObject } from "../repositories/PageRepoType";
+import { SearchDTO } from "../models/dto/SearchDTO";
 declare global {
     namespace DTO {
         type GetChapterListResponse = ChapterResponseArray;
@@ -11,6 +12,7 @@ declare global {
         type ChapterInfo = ChapterModel;
         type PageList = PageModel[];
         type PageInfo = PageModel;
+        type SearchResponse = SearchDTO;
     }
 }
 export {};

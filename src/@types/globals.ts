@@ -5,6 +5,7 @@ import type {
   ChapterResponseObject,
 } from '~/repositories/ChapterRepoType';
 import { PageResponseArray, PageResponseObject } from '~/repositories/PageRepoType';
+import { SearchDTO } from '~/models/dto/SearchDTO';
 
 declare global {
   namespace DTO {
