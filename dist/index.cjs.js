@@ -3458,7 +3458,7 @@ RedirectableRequest.prototype._performRequest = function () {
   // If specified, use the agent corresponding to the protocol
   // (HTTP and HTTPS use different types of agents)
   if (this._options.agents) {
-    var scheme = protocol.substr(0, protocol.length - 1);
+    var scheme = protocol.slice(0, -1);
     this._options.agent = this._options.agents[scheme];
   }
 
@@ -3550,10 +3550,21 @@ RedirectableRequest.prototype._processResponse = function (response) {
     return;
   }
 
+  // Store the request headers if applicable
+  var requestHeaders;
+  var beforeRedirect = this._options.beforeRedirect;
+  if (beforeRedirect) {
+    requestHeaders = Object.assign({
+      // The Host header was set by nativeProtocol.request
+      Host: response.req.getHeader("host"),
+    }, this._options.headers);
+  }
+
   // RFC7231§6.4: Automatic redirection needs to done with
   // care for methods not known to be safe, […]
   // RFC7231§6.4.2–3: For historical reasons, a user agent MAY change
   // the request method from POST to GET for the subsequent request.
+  var method = this._options.method;
   if ((statusCode === 301 || statusCode === 302) && this._options.method === "POST" ||
       // RFC7231§6.4.4: The 303 (See Other) status code indicates that
       // the server is redirecting the user agent to a different resource […]
@@ -3601,10 +3612,18 @@ RedirectableRequest.prototype._processResponse = function (response) {
   }
 
   // Evaluate the beforeRedirect callback
-  if (typeof this._options.beforeRedirect === "function") {
-    var responseDetails = { headers: response.headers };
+  if (typeof beforeRedirect === "function") {
+    var responseDetails = {
+      headers: response.headers,
+      statusCode: statusCode,
+    };
+    var requestDetails = {
+      url: currentUrl,
+      method: method,
+      headers: requestHeaders,
+    };
     try {
-      this._options.beforeRedirect.call(null, this._options, responseDetails);
+      beforeRedirect(this._options, responseDetails, requestDetails);
     }
     catch (err) {
       this.emit("error", err);
@@ -5840,373 +5859,6 @@ var ChapterStore = /** @class */ (function () {
     return ChapterStore;
 }());
 
-var NoteStore = /** @class */ (function () {
-    function NoteStore(rootStore) {
-        this.headerTitle = '';
-        mobx.makeAutoObservable(this);
-        this.rootStore = rootStore;
-        this.searchRepo = SearchRepoImpl;
-    }
-    NoteStore.prototype.getSearchList = function (searchKey, channelId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.searchRepo.getSearchList(searchKey, channelId)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
-                }
-            });
-        });
-    };
-    return NoteStore;
-}());
-
-var NoteViewStore = /** @class */ (function () {
-    function NoteViewStore(rootStore) {
-        this.isLongPressed = false;
-        this.type = exports.NoteViewType.MyNote;
-        mobx.makeAutoObservable(this);
-        this.rootStore = rootStore;
-    }
-    NoteViewStore.prototype.toggleMultiSelectMode = function () {
-        this.isLongPressed = !this.isLongPressed;
-    };
-    NoteViewStore.prototype.setType = function (type) {
-        this.type = type;
-    };
-    return NoteViewStore;
-}());
-
-exports.Action = void 0;
-(function (Action) {
-    Action["EDITING"] = "EDITING";
-    Action["EDIT_DONE"] = "EDIT_DONE";
-    Action["EDIT_START"] = "EDIT_START";
-    Action["MOVE"] = "MOVE";
-    Action["NON_EDIT"] = "NON_EDIT";
-    Action["RENAME"] = "RENAME";
-    Action["RESTORE"] = "RESTORE";
-    Action["THROW"] = "THROW";
-})(exports.Action || (exports.Action = {}));
-
-var PageStore = /** @class */ (function () {
-    function PageStore(rootStore) {
-        this.isLongPressed = false;
-        this.currentId = '';
-        this.pageInfo = new PageModel({});
-        mobx.makeAutoObservable(this);
-        this.rootStore = rootStore;
-        this.repo = PageRepoImpl;
-    }
-    PageStore.prototype.changeMode = function () {
-        this.isLongPressed = !this.isLongPressed;
-    };
-    PageStore.prototype.getBookmarkInChannel = function (channelId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.getBookmarkInChannel(channelId)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
-                }
-            });
-        });
-    };
-    PageStore.prototype.fetchPageInfoList = function (pageId, channelId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.getPageInfoList(pageId, channelId)];
-                    case 1:
-                        res = _a.sent();
-                        this.pageInfo = res;
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    PageStore.prototype.getRecentList = function (channelId, num) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.getRecentList(channelId, num)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
-                }
-            });
-        });
-    };
-    PageStore.prototype.createPage = function (channelId, chapterId, dto) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.createPage(channelId, chapterId, dto)];
-                    case 1:
-                        res = _a.sent();
-                        this.pageInfo = res;
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    PageStore.prototype.renamePage = function (channelId, chapterId, dto) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.updatePage(channelId, chapterId, exports.Action.RENAME, dto)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
-                }
-            });
-        });
-    };
-    PageStore.prototype.movePage = function (channelId, chapterId, dto) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.updatePage(channelId, chapterId, exports.Action.MOVE, dto)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
-                }
-            });
-        });
-    };
-    PageStore.prototype.throwPage = function (channelId, dto) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.updateRecyclePage(channelId, exports.Action.THROW, dto)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
-                }
-            });
-        });
-    };
-    PageStore.prototype.getEditingUserIds = function (pageIds, channelId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var editingUserIds;
-            var _this = this;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        editingUserIds = [];
-                        return [4 /*yield*/, Promise.all(pageIds.map(function (id) { return __awaiter(_this, void 0, void 0, function () {
-                                var page;
-                                return __generator(this, function (_a) {
-                                    switch (_a.label) {
-                                        case 0: return [4 /*yield*/, this.repo.getPageInfoList(id, channelId)];
-                                        case 1:
-                                            page = _a.sent();
-                                            if (page.editingUserId)
-                                                editingUserIds.push(page.editingUserId);
-                                            return [2 /*return*/, id];
-                                    }
-                                });
-                            }); }))];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/, Array.from(new Set(editingUserIds))];
-                }
-            });
-        });
-    };
-    PageStore.prototype.restorePage = function (channelId, dto) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.updateRecyclePage(channelId, exports.Action.RESTORE, dto)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
-                }
-            });
-        });
-    };
-    PageStore.prototype.bookmarkPage = function (pageId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.bookmarkPage(pageId)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
-                }
-            });
-        });
-    };
-    PageStore.prototype.unbookmarkPage = function (pageId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.unbookmarkPage(pageId)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
-                }
-            });
-        });
-    };
-    PageStore.prototype.editPage = function (channelId, chapterId, dto) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.updatePage(channelId, chapterId, exports.Action.EDIT_START, dto)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
-                }
-            });
-        });
-    };
-    PageStore.prototype.savePage = function (channelId, chapterId, dto, isNewPage) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.updatePage(channelId, chapterId, exports.Action.EDIT_DONE, dto, isNewPage)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
-                }
-            });
-        });
-    };
-    return PageStore;
-}());
-
-var TagStore = /** @class */ (function () {
-    function TagStore(rootStore) {
-        this.sortedTagList = { KOR: null, ENG: null, NUM: null, ETC: null };
-        this.pageTagList = [];
-        mobx.makeAutoObservable(this);
-        this.repo = TagRepoImpl;
-        this.rootStore = rootStore;
-    }
-    TagStore.prototype.fetchSortedTagList = function (channelId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _a = this;
-                        return [4 /*yield*/, this.repo.getAllTagList(channelId)];
-                    case 1:
-                        _a.sortedTagList = _b.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    TagStore.prototype.fetchSearchTagList = function (channelId, searchKey) {
-        return __awaiter(this, void 0, void 0, function () {
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
-                    case 0:
-                        _a = this;
-                        return [4 /*yield*/, this.repo.getAllSearchTagList(channelId, searchKey)];
-                    case 1:
-                        _a.sortedTagList = _b.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    TagStore.prototype.fetchPageTagList = function (pageId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.getTagList(pageId)];
-                    case 1:
-                        res = _a.sent();
-                        this.pageTagList = res.map(function (tag) {
-                            return new TagModel(tag);
-                        });
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    TagStore.prototype.fetchTagPageList = function (tagId, channelId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.repo.getTagPageList(tagId, channelId)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res.map(function (page) { return new PageModel(page); })];
-                }
-            });
-        });
-    };
-    TagStore.prototype.createTag = function (pageId, tagName) {
-        return __awaiter(this, void 0, void 0, function () {
-            var dto, res;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        dto = [{ pageId: pageId, name: tagName }];
-                        return [4 /*yield*/, this.repo.createTag(pageId, dto)];
-                    case 1:
-                        res = _a.sent();
-                        return [2 /*return*/, res];
-                }
-            });
-        });
-    };
-    TagStore.prototype.deleteTag = function (pageId, tagId) {
-        return __awaiter(this, void 0, void 0, function () {
-            var dto;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        dto = [{ id: tagId, pageId: pageId }];
-                        return [4 /*yield*/, this.repo.deleteTag(pageId, dto)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    TagStore.prototype.updateTag = function (pageId, tagId, newTagName) {
-        return __awaiter(this, void 0, void 0, function () {
-            var dto;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        dto = [{ id: tagId, name: newTagName, pageId: pageId }];
-                        return [4 /*yield*/, this.repo.updateTag(pageId, dto)];
-                    case 1:
-                        _a.sent();
-                        return [2 /*return*/];
-                }
-            });
-        });
-    };
-    return TagStore;
-}());
-
 /*!***************************************************
 * mark.js v8.11.1
 * https://markjs.io/
@@ -7274,6 +6926,394 @@ return Mark;
 
 })));
 });
+
+var NoteStore = /** @class */ (function () {
+    function NoteStore(rootStore) {
+        this.headerTitle = '';
+        this.searchKeyword = '';
+        mobx.makeAutoObservable(this);
+        this.rootStore = rootStore;
+        this.searchRepo = SearchRepoImpl;
+    }
+    NoteStore.prototype.getSearchList = function (searchKey, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.searchRepo.getSearchList(searchKey, channelId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    NoteStore.prototype.setMarker = function (el) {
+        this.marker = new mark(el);
+    };
+    NoteStore.prototype.mark = function () {
+        this.marker.mark(this.searchKeyword, {
+            accuracy: {
+                value: 'partially',
+                limiters: [],
+            },
+        });
+    };
+    NoteStore.prototype.unmark = function (option) {
+        this.marker.unmark(option);
+    };
+    NoteStore.prototype.setSearchKeyword = function (keyword) {
+        this.searchKeyword = keyword;
+    };
+    NoteStore.prototype.endSearching = function () {
+        this.searchKeyword = '';
+    };
+    return NoteStore;
+}());
+
+var NoteViewStore = /** @class */ (function () {
+    function NoteViewStore(rootStore) {
+        this.isLongPressed = false;
+        this.type = exports.NoteViewType.MyNote;
+        mobx.makeAutoObservable(this);
+        this.rootStore = rootStore;
+    }
+    NoteViewStore.prototype.toggleMultiSelectMode = function () {
+        this.isLongPressed = !this.isLongPressed;
+    };
+    NoteViewStore.prototype.setType = function (type) {
+        this.type = type;
+    };
+    return NoteViewStore;
+}());
+
+exports.Action = void 0;
+(function (Action) {
+    Action["EDITING"] = "EDITING";
+    Action["EDIT_DONE"] = "EDIT_DONE";
+    Action["EDIT_START"] = "EDIT_START";
+    Action["MOVE"] = "MOVE";
+    Action["NON_EDIT"] = "NON_EDIT";
+    Action["RENAME"] = "RENAME";
+    Action["RESTORE"] = "RESTORE";
+    Action["THROW"] = "THROW";
+})(exports.Action || (exports.Action = {}));
+
+var PageStore = /** @class */ (function () {
+    function PageStore(rootStore) {
+        this.isLongPressed = false;
+        this.currentId = '';
+        this.pageInfo = new PageModel({});
+        mobx.makeAutoObservable(this);
+        this.rootStore = rootStore;
+        this.repo = PageRepoImpl;
+    }
+    PageStore.prototype.changeMode = function () {
+        this.isLongPressed = !this.isLongPressed;
+    };
+    PageStore.prototype.getBookmarkInChannel = function (channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.getBookmarkInChannel(channelId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.fetchPageInfoList = function (pageId, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.getPageInfoList(pageId, channelId)];
+                    case 1:
+                        res = _a.sent();
+                        this.pageInfo = res;
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    PageStore.prototype.getRecentList = function (channelId, num) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.getRecentList(channelId, num)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.createPage = function (channelId, chapterId, dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.createPage(channelId, chapterId, dto)];
+                    case 1:
+                        res = _a.sent();
+                        this.pageInfo = res;
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    PageStore.prototype.renamePage = function (channelId, chapterId, dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.updatePage(channelId, chapterId, exports.Action.RENAME, dto)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.movePage = function (channelId, chapterId, dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.updatePage(channelId, chapterId, exports.Action.MOVE, dto)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.throwPage = function (channelId, dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.updateRecyclePage(channelId, exports.Action.THROW, dto)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.getEditingUserIds = function (pageIds, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var editingUserIds;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        editingUserIds = [];
+                        return [4 /*yield*/, Promise.all(pageIds.map(function (id) { return __awaiter(_this, void 0, void 0, function () {
+                                var page;
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0: return [4 /*yield*/, this.repo.getPageInfoList(id, channelId)];
+                                        case 1:
+                                            page = _a.sent();
+                                            if (page.editingUserId)
+                                                editingUserIds.push(page.editingUserId);
+                                            return [2 /*return*/, id];
+                                    }
+                                });
+                            }); }))];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/, Array.from(new Set(editingUserIds))];
+                }
+            });
+        });
+    };
+    PageStore.prototype.restorePage = function (channelId, dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.updateRecyclePage(channelId, exports.Action.RESTORE, dto)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.bookmarkPage = function (pageId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.bookmarkPage(pageId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.unbookmarkPage = function (pageId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.unbookmarkPage(pageId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.editPage = function (channelId, chapterId, dto) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.updatePage(channelId, chapterId, exports.Action.EDIT_START, dto)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    PageStore.prototype.savePage = function (channelId, chapterId, dto, isNewPage) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.updatePage(channelId, chapterId, exports.Action.EDIT_DONE, dto, isNewPage)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    return PageStore;
+}());
+
+var TagStore = /** @class */ (function () {
+    function TagStore(rootStore) {
+        this.sortedTagList = { KOR: null, ENG: null, NUM: null, ETC: null };
+        this.pageTagList = [];
+        mobx.makeAutoObservable(this);
+        this.repo = TagRepoImpl;
+        this.rootStore = rootStore;
+    }
+    TagStore.prototype.fetchSortedTagList = function (channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, this.repo.getAllTagList(channelId)];
+                    case 1:
+                        _a.sortedTagList = _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagStore.prototype.fetchSearchTagList = function (channelId, searchKey) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = this;
+                        return [4 /*yield*/, this.repo.getAllSearchTagList(channelId, searchKey)];
+                    case 1:
+                        _a.sortedTagList = _b.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagStore.prototype.fetchPageTagList = function (pageId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.getTagList(pageId)];
+                    case 1:
+                        res = _a.sent();
+                        this.pageTagList = res.map(function (tag) {
+                            return new TagModel(tag);
+                        });
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagStore.prototype.fetchTagPageList = function (tagId, channelId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.repo.getTagPageList(tagId, channelId)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res.map(function (page) { return new PageModel(page); })];
+                }
+            });
+        });
+    };
+    TagStore.prototype.createTag = function (pageId, tagName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var dto, res;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        dto = [{ pageId: pageId, name: tagName }];
+                        return [4 /*yield*/, this.repo.createTag(pageId, dto)];
+                    case 1:
+                        res = _a.sent();
+                        return [2 /*return*/, res];
+                }
+            });
+        });
+    };
+    TagStore.prototype.deleteTag = function (pageId, tagId) {
+        return __awaiter(this, void 0, void 0, function () {
+            var dto;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        dto = [{ id: tagId, pageId: pageId }];
+                        return [4 /*yield*/, this.repo.deleteTag(pageId, dto)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    TagStore.prototype.updateTag = function (pageId, tagId, newTagName) {
+        return __awaiter(this, void 0, void 0, function () {
+            var dto;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        dto = [{ id: tagId, name: newTagName, pageId: pageId }];
+                        return [4 /*yield*/, this.repo.updateTag(pageId, dto)];
+                    case 1:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
+    return TagStore;
+}());
 
 var EditorStore = /** @class */ (function () {
     function EditorStore(rootStore) {
