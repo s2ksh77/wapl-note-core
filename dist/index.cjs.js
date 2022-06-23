@@ -779,20 +779,14 @@ var ChapterModel = /** @class */ (function () {
 var get12HourFormat = function (time, zone) {
     if (zone === void 0) { zone = 'Asia/Seoul'; }
     // zone은 서버에서 걍 localDateTime이어서 그 지역으로 시간을 주는 듯
-    var timeToMoment = moment__default["default"].tz(time, zone).format();
-    var date = new Date(timeToMoment);
-    var year = date.getFullYear();
-    var mmdd = "".concat("0".concat(date.getMonth() + 1).slice(-2), ".").concat("0".concat(date.getDate()).slice(-2));
-    var hh = date.getHours();
-    if (hh === 0)
-        hh = 24; // 24시간 포멧으로 만들고 12시간 뺴기
-    if (hh > 12)
-        hh -= 12;
-    var tsp;
-    tsp = "".concat("0".concat(hh).slice(-2), ":").concat("0".concat(date.getMinutes()).slice(-2));
-    tsp = date.getHours() >= 12 ? "".concat(mmdd, " \uC624\uD6C4 ").concat(tsp) : "".concat(mmdd, " \uC624\uC804 ").concat(tsp); // TODO: i18n
-    if (year !== new Date().getFullYear())
-        tsp = "".concat(year, ".").concat(tsp);
+    var timeToMoment = moment__default["default"].tz(time, zone);
+    var today = new Date();
+    var tsp = timeToMoment.format("".concat(timeToMoment.hour() < 12 ? '오전' : '오후', " h:mm"));
+    if (timeToMoment.year() !== today.getFullYear())
+        tsp = "".concat(timeToMoment.format('YYYY.MM.DD'), " ").concat(tsp);
+    else if (timeToMoment.month() !== today.getMonth() ||
+        timeToMoment.date() !== today.getDate())
+        tsp = "".concat(timeToMoment.format('MM.DD'), " ").concat(tsp);
     return tsp;
 };
 
