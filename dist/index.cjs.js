@@ -5,6 +5,7 @@ Object.defineProperty(exports, '__esModule', { value: true });
 var i18next = require('i18next');
 var reactI18next = require('react-i18next');
 var mobx = require('mobx');
+var moment = require('moment-timezone');
 var http = require('http');
 var https = require('https');
 var url = require('url');
@@ -19,6 +20,7 @@ var React = require('react');
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
 var i18next__default = /*#__PURE__*/_interopDefaultLegacy(i18next);
+var moment__default = /*#__PURE__*/_interopDefaultLegacy(moment);
 var http__default = /*#__PURE__*/_interopDefaultLegacy(http);
 var https__default = /*#__PURE__*/_interopDefaultLegacy(https);
 var url__default = /*#__PURE__*/_interopDefaultLegacy(url);
@@ -768,6 +770,32 @@ var ChapterModel = /** @class */ (function () {
     return ChapterModel;
 }());
 
+/**
+ * 날짜를 같은 연월일을 생략한 12시간 형식으로 변환한다.
+ * @param {string} time 2022-06-21T16:53:11 (java string date format)
+ * @param {string} zone timezone
+ * @returns 12시간 형식의 날짜
+ */
+var get12HourFormat = function (time, zone) {
+    if (zone === void 0) { zone = 'Asia/Seoul'; }
+    // zone은 서버에서 걍 localDateTime이어서 그 지역으로 시간을 주는 듯
+    var timeToMoment = moment__default["default"].tz(time, zone).format();
+    var date = new Date(timeToMoment);
+    var year = date.getFullYear();
+    var mmdd = "".concat("0".concat(date.getMonth() + 1).slice(-2), ".").concat("0".concat(date.getDate()).slice(-2));
+    var hh = date.getHours();
+    if (hh === 0)
+        hh = 24; // 24시간 포멧으로 만들고 12시간 뺴기
+    if (hh > 12)
+        hh -= 12;
+    var tsp;
+    tsp = "".concat("0".concat(hh).slice(-2), ":").concat("0".concat(date.getMinutes()).slice(-2));
+    tsp = date.getHours() >= 12 ? "".concat(mmdd, " \uC624\uD6C4 ").concat(tsp) : "".concat(mmdd, " \uC624\uC804 ").concat(tsp); // TODO: i18n
+    if (year !== new Date().getFullYear())
+        tsp = "".concat(year, ".").concat(tsp);
+    return tsp;
+};
+
 var PageModel = /** @class */ (function () {
     function PageModel(page) {
         this.response = page;
@@ -861,7 +889,7 @@ var PageModel = /** @class */ (function () {
     });
     Object.defineProperty(PageModel.prototype, "modifiedDate", {
         get: function () {
-            return this.response.modifiedDate;
+            return get12HourFormat(this.response.modifiedDate);
         },
         enumerable: false,
         configurable: true
