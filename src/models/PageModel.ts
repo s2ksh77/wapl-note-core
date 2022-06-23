@@ -25,6 +25,7 @@ import {
   Color,
 } from '~/@types/common';
 import type { PageDTO } from '~/models/dto/PageDTO';
+import { get12HourFormat } from '~/utils/TimeStamp';
 
 export class PageModel {
   response: Partial<PageDTO>;
@@ -91,7 +92,7 @@ export class PageModel {
   }
 
   get modifiedDate(): ModifiedDate {
-    return this.response.modifiedDate;
+    return get12HourFormat(this.response.modifiedDate);
   }
 
   get name(): Name {

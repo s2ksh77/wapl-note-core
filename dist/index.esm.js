@@ -1,6 +1,7 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import { makeAutoObservable } from 'mobx';
+import moment from 'moment-timezone';
 import http from 'http';
 import https from 'https';
 import url from 'url';
@@ -750,6 +751,26 @@ var ChapterModel = /** @class */ (function () {
     return ChapterModel;
 }());
 
+/**
+ * 날짜를 같은 연월일을 생략한 12시간 형식으로 변환한다.
+ * @param {string} time 2022-06-21T16:53:11 (java string date format)
+ * @param {string} zone timezone
+ * @returns 12시간 형식의 날짜
+ */
+var get12HourFormat = function (time, zone) {
+    if (zone === void 0) { zone = 'Asia/Seoul'; }
+    // zone은 서버에서 걍 localDateTime이어서 그 지역으로 시간을 주는 듯
+    var timeToMoment = moment.tz(time, zone);
+    var today = new Date();
+    var tsp = timeToMoment.format("".concat(timeToMoment.hour() < 12 ? '오전' : '오후', " h:mm"));
+    if (timeToMoment.year() !== today.getFullYear())
+        tsp = "".concat(timeToMoment.format('YYYY.MM.DD'), " ").concat(tsp);
+    else if (timeToMoment.month() !== today.getMonth() ||
+        timeToMoment.date() !== today.getDate())
+        tsp = "".concat(timeToMoment.format('MM.DD'), " ").concat(tsp);
+    return tsp;
+};
+
 var PageModel = /** @class */ (function () {
     function PageModel(page) {
         this.response = page;
@@ -843,7 +864,7 @@ var PageModel = /** @class */ (function () {
     });
     Object.defineProperty(PageModel.prototype, "modifiedDate", {
         get: function () {
-            return this.response.modifiedDate;
+            return get12HourFormat(this.response.modifiedDate);
         },
         enumerable: false,
         configurable: true
